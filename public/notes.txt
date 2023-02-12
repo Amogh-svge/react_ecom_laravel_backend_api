@@ -1,0 +1,10 @@
+Anilshrestha@gmail.com
+password = anisherking
+
+
+jakeshrestha@yahoo.com
+password = jakeshrestha321
+
+
+pawanshrestha123@gmail.com
+password = pawanshrestha123

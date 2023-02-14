@@ -38,21 +38,45 @@ class SliderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'slider_image' => 'required|mimes:png,jpg,jpeg'
+    //     ]);
+
+    //     $file = $request->file('slider_image');
+    //     if ($file) {
+    //         $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+
+    //         Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
+    //     }
+    //     $img_url = "http://localhost:8000/storage/slider_image/" . $image_name;
+    //     $addSlide = HomeSlider::create(['slider_image' => $img_url]);
+
+    //     $notification = [
+    //         'alert' => $addSlide ? 'success' : 'failed',
+    //         'message' => $addSlide ?  'Slide Succesfully Added' : 'Failed To Add Slide',
+    //     ];
+
+    //     return  redirect(route("slider.index"))->with('notification', $notification);
+    // }
+
+
     public function store(Request $request)
     {
-        // return public_path('storage/slider_image/') . 'hello.jpg';
         $validated = $request->validate([
             'slider_image' => 'required|mimes:png,jpg,jpeg'
         ]);
 
-        $file = $request->file('slider_image');
-        if ($file) {
-            $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
-
-            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
+        $files = $request->file('slider_image');
+        if ($files) {
+            foreach ($files as $key => $file) {
+                $image_name[] = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+                Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name[$key]);
+                $img_url = "http://localhost:8000/storage/slider_image/" . $image_name[$key];
+                $addSlide = HomeSlider::create(['slider_image' => $img_url]);
+            }
         }
-        $img_url = "http://localhost:8000/storage/slider_image/" . $image_name;
-        $addSlide = HomeSlider::create(['slider_image' => $img_url]);
 
         $notification = [
             'alert' => $addSlide ? 'success' : 'failed',

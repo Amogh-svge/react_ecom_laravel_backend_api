@@ -28,19 +28,20 @@
                             </h4>
                             <p class="az-dashboard-text p-1 mb-3">Choose and Add the picture you want to display in the
                                 slide.</p>
-                            <div>
+                            <button class="clonebtn btn btn-danger">Add +</button>
+                            <div class="slider_file">
                                 <p class="text-danger p-1">*Only Images Supported</p>
-                                <div class="custom-file">
-                                    <input name="slider_image" type="file" class="custom-file-input" id="slider"
+                                <div class="custom-file" id="sliderFileInput">
+                                    <input name="slider_image[]" type="file" class="custom-file-input" id="slider"
                                         accept="image/*">
                                     <label class="custom-file-label" for="slider">Choose file</label>
-
                                 </div>
                             </div>
+
                             @include('admin.common.error', ['field' => 'slider_image'])
 
-                            <img src={{ url('img/no-image.png') }} id="showImage" class="slideImageView  my-3"
-                                alt="slide">
+                            {{-- <img src={{ url('img/no-image.png') }} id="showImage" class="slideImageView  my-3"
+                                alt="slide"> --}}
                         </div>
                     </div>
                 </div>

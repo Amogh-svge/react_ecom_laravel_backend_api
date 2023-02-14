@@ -1,12 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\Backend\OrderController;
 use App\Http\Controllers\Admin\Backend\SliderController as BackendSliderController;
 use App\Http\Controllers\Admin\Backend\SubCategoryController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SiteInfoController;
-use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\AdminController;
-use App\Models\Subcategory;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,7 +32,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
     Route::controller(CategoryController::class)->group(function () {
-        Route::get('/category/list',  'getAllCategory')->name('category.list');
+        Route::get('/category/list', 'getAllCategory')->name('category.list');
         Route::get('/category/create', 'createCategory')->name('category.create');
         Route::post('/category/store', 'storeCategory')->name('category.store');
         Route::get('/category/edit/{categ_id}', 'editCategory')->name('category.edit');
@@ -42,8 +41,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
     Route::controller(SiteInfoController::class)->group(function () {
-        Route::get('/siteinfo',  'manageSiteInfo')->name('siteInfo.manage');
-        Route::put('/siteinfo/update',  'updateSiteInfo')->name('siteInfo.update');
+        Route::get('/siteinfo', 'manageSiteInfo')->name('siteInfo.manage');
+        Route::put('/siteinfo/update', 'updateSiteInfo')->name('siteInfo.update');
+    });
+
+    Route::controller(OrderController::class)->prefix('order')->group(function () {
+        Route::get('/pending', 'pendingList')->name('pending.list');
+        Route::get('/processing', 'processingList')->name('processing.list');
+        Route::get('/purchased', 'purchasedList')->name('purchased.list');
+        Route::put('/details/{id}', 'details')->name('pending.details');
     });
 
     Route::resource('slider', BackendSliderController::class);

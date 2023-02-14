@@ -48,7 +48,18 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-document"></i> Customer Order</a>
                     <nav class="az-menu-sub">
-                        <a href="{{ route('siteInfo.manage') }}" class="nav-link">Manage Order</a>
+                        <div class="m-2 border-dark" onmouseleave="hideMenuOnOver(this)">
+                            <a href="#" onmouseover="showMenuOnOver(this)"
+                                class="nav-link d-flex justify-content-between align-items-center">Manage Order
+                                <ion-icon name="ios-arrow-down"></ion-icon>
+                            </a>
+                            <div class="hidden_menu mt-2">
+                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Pending Order</a>
+                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Processing Order</a>
+                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Complete Order</a>
+                            </div>
+                        </div>
+
                     </nav>
                 </li>
             </ul>

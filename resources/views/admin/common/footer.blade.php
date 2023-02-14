@@ -83,4 +83,15 @@
     // if file_path available then function gets executed
     file_path && file_path.addEventListener('change', getPath);
     slider_path && slider_path.addEventListener('change', getPath);
+
+
+    // side drop down
+    const showMenuOnOver = (event) => {
+        // console.log(event.nextElementSibling);
+        event.nextElementSibling.classList.add('show_menu');
+    }
+
+    const hideMenuOnOver = (event) => {
+        event.childNodes[3].classList.remove('show_menu');
+    }
 </script>

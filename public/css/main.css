@@ -78,6 +78,18 @@ body {
 
 /*Toast End*/
 
+/* sidedrop down */
+.hidden_menu {
+    display: none;
+}
+.show_menu {
+    height: 100px;
+    display: block;
+    /* background-color: #ebebeb; */
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+}
+/* sidedrop down end*/
 /* slide */
 .slideImageView {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -1,6 +1,11 @@
 body {
     overflow-x: hidden;
 }
+
+.box-height {
+    min-height: 761px;
+}
+
 .recent-product-img {
     height: 45px;
     display: flex;
@@ -99,6 +104,16 @@ body {
     object-fit: cover;
 }
 /* slide end */
+
+.order-details-list {
+    list-style: none;
+    flex: column;
+    align-items: center;
+}
+.order-details-list > li {
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
 
 @media only screen and (max-width: 768px) {
     .slideImageView {

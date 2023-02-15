@@ -54,9 +54,9 @@
                                 <ion-icon name="ios-arrow-down"></ion-icon>
                             </a>
                             <div class="hidden_menu mt-2">
-                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Pending Order</a>
-                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Processing Order</a>
-                                <a href="{{ route('siteInfo.manage') }}" class="nav-link">Complete Order</a>
+                                <a href="{{ route('pending.list') }}" class="nav-link">Pending Order</a>
+                                <a href="{{ route('processing.list') }}" class="nav-link">Processing Order</a>
+                                <a href="{{ route('purchased.list') }}" class="nav-link">Complete Order</a>
                             </div>
                         </div>
 

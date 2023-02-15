@@ -56,18 +56,15 @@
     @include('admin.common.header')
     <!-- az-header ends -->
 
-    <div class="az-content az-content-dashboard">
-        <div class="container">
-
-            <!-- content-body starts -->
-            <div class="az-content-body">
-                {{-- nav bar starts --}}
-                @include('admin.common.navbar')
-                {{-- nav bar ends --}}
-                @yield('main_content')
-            </div>
-            <!-- content-body ends -->
+    <div class="az-content container az-content-dashboard">
+        <!-- content-body starts -->
+        <div class="az-content-body">
+            {{-- nav bar starts --}}
+            @include('admin.common.navbar')
+            {{-- nav bar ends --}}
+            @yield('main_content')
         </div>
+        <!-- content-body ends -->
     </div><!-- az-content -->
 
     <div class="toast_container">

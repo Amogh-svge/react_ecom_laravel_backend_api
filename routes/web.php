@@ -49,7 +49,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/pending', 'pendingList')->name('pending.list');
         Route::get('/processing', 'processingList')->name('processing.list');
         Route::get('/purchased', 'purchasedList')->name('purchased.list');
-        Route::put('/details/{id}', 'details')->name('pending.details');
+        Route::get('/details/{id}', 'details')->name('order.details');
     });
 
     Route::resource('slider', BackendSliderController::class);

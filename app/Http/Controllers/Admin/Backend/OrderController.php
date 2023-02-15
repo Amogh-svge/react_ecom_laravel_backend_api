@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function processingList()
     {
-        $processing_orders = CartOrder::where('order_status', 'processing')->get();
+        $processing_orders = CartOrder::where('order_status', 'pending')->get();
         return view('admin.order.order_processing', compact('processing_orders'));
     }
 
@@ -28,5 +28,7 @@ class OrderController extends Controller
 
     public function details($id)
     {
+        $details = CartOrder::find($id);
+        return view('admin.order.order_details', compact('details'));
     }
 }

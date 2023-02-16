@@ -32,8 +32,8 @@
                                 <td>{{ $order->quantity }}</td>
                                 <td>{{ $order->total_price }}</td>
                                 <td>{{ $order->order_date }}</td>
-                                <td>{{ $order->order_status }}</td>
-                                <td><a href="" class="btn btn-info">Details</a></td>
+                                <td class="text-success">{{ $order->order_status }}</td>
+                                <td><a href="{{ route('order.details', $order->id) }}" class="btn btn-info">Details</a></td>
                             </tr>
                         @endforeach
                     </tbody>

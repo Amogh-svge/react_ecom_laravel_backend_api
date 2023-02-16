@@ -50,6 +50,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/processing', 'processingList')->name('processing.list');
         Route::get('/purchased', 'purchasedList')->name('purchased.list');
         Route::get('/details/{id}', 'details')->name('order.details');
+        Route::get('/processing/{id}', 'processing')->name('order.processing');
+        Route::get('/purchasing/{id}', 'purchasing')->name('order.purchasing');
     });
 
     Route::resource('slider', BackendSliderController::class);

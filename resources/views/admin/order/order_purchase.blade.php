@@ -33,7 +33,14 @@
                                 <td>{{ $order->total_price }}</td>
                                 <td>{{ $order->order_date }}</td>
                                 <td>{{ $order->order_status }}</td>
-                                <td><a href="" class="btn btn-info">Details</a></td>
+                                <td>
+                                    <form action="{{ route('order_statement.delete', $order->id) }}" id="statement_form"
+                                        method="POST">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" onclick="confirmDelete(this)"
+                                            class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

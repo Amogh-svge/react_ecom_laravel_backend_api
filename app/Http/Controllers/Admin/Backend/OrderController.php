@@ -26,27 +26,48 @@ class OrderController extends Controller
         return view('admin.order.order_purchase', compact('purchased_orders'));
     }
 
-    public function details($id)
+    //provides order details and status
+    public function details(CartOrder $details)
     {
-        $details = CartOrder::find($id);
         return view('admin.order.order_details', compact('details'));
     }
 
-    public function processing($id)
+    //processes pending order
+    public function processing(CartOrder $process)
     {
-        $details = CartOrder::find($id);
-        $details->update([
+        $processed = $process->update([
             'order_status' => 'Processing'
         ]);
-        return view('admin.order.order_details', compact('details'));
+
+        $notification = [
+            'alert' => $processed ? 'success' : 'failed',
+            'message' => $processed ?  'Order Succesfully Processed' : 'Failed To Process Order',
+        ];
+
+        return  redirect(route("pending.list"))->with('notification', $notification);
     }
 
-    public function purchasing($id)
+    //completes processing order
+    public function purchasing(CartOrder $purchase)
     {
-        $details = CartOrder::find($id);
-        $details->update([
-            'order_status' => 'Processing'
+        $purchased = $purchase->update([
+            'order_status' => 'Purchased'
         ]);
-        return view('admin.order.order_details', compact('details'));
+        $notification = [
+            'alert' => $purchased ? 'success' : 'failed',
+            'message' => $purchased ?  'Order Succesfully Purchased' : 'Failed To Purchase Order',
+        ];
+        return  redirect(route("processing.list"))->with('notification', $notification);
+    }
+
+    //Deletes completed purchased order statements
+    public function statementDelete(CartOrder $delete)
+    {
+        $deleted = $delete->delete();
+        $notification = [
+            'alert' => $deleted ? 'success' : 'failed',
+            'message' => $deleted ?  'Order Statement Succesfully Deleted' : 'Failed To Delete Order Statement',
+        ];
+        return  redirect(route("purchased.list"))->with('notification', $notification);
     }
 }

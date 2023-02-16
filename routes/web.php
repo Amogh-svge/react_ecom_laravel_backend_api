@@ -49,9 +49,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/pending', 'pendingList')->name('pending.list');
         Route::get('/processing', 'processingList')->name('processing.list');
         Route::get('/purchased', 'purchasedList')->name('purchased.list');
-        Route::get('/details/{id}', 'details')->name('order.details');
-        Route::get('/processing/{id}', 'processing')->name('order.processing');
-        Route::get('/purchasing/{id}', 'purchasing')->name('order.purchasing');
+        Route::get('/details/{details}', 'details')->name('order.details');
+        Route::post('/order_processing/{process}', 'processing')->name('order.processing');
+        Route::post('/order_purchasing/{purchase}', 'purchasing')->name('order.purchasing');
+        Route::delete('/statement_delete/{delete}', 'statementDelete')->name('order_statement.delete');
     });
 
     Route::resource('slider', BackendSliderController::class);

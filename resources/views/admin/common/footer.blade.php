@@ -94,4 +94,16 @@
     const hideMenuOnOver = (event) => {
         event.childNodes[3].classList.remove('show_menu');
     }
+
+    //confirms before deleting and cancels event if clicked cancel 
+    const confirmDelete = (info) => {
+        event.preventDefault();
+        //parent id of current node taken 
+        var parentNode_id = info.parentNode.id;
+        var element = document.getElementById(parentNode_id);
+
+        //submit the element if delete is true
+        this.window.confirm('Do you want to delete?') === true && element.submit();
+        // this.window.confirm('Do you want to delete?') === true && document.form.submit();
+    }
 </script>

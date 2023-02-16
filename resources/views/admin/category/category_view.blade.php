@@ -38,13 +38,10 @@
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('category.edit', $item->id) }}>Edit</a>
                                     </span>
-                                    <form action="{{ route('category.delete', $item->id) }}" method="POST">
+                                    <form action="{{ route('category.delete', $item->id) }}" name="form" method="POST">
                                         @method('DELETE')
                                         @csrf
-                                        <button
-                                            onclick="event.preventDefault();
-                                        window.confirm('Do you want to delete?')===true && this.closest('form').submit();"
-                                            class="btn btn-danger" type="submit">Remove</button>
+                                        <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
                                     </form>
                                 </td>
 

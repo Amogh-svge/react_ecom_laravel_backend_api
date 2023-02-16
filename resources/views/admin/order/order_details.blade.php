@@ -83,23 +83,19 @@
                         <span>{{ $details->order_status }}</span>
                     </li>
                     <form
-                        @if ($details->order_status == 'pending') action="{{ route('order.processing', $details->id) }}"
-                        @elseif($details->order_status == 'processing') action="{{ route('order.purchasing', $details->id) }}"
+                        @if ($details->order_status == 'Pending') action="{{ route('order.processing', $details->id) }}"
+                        @elseif($details->order_status == 'Processing') action="{{ route('order.purchasing', $details->id) }}"
                         @else action="#" @endif
-                        method="GET">
+                        method="POST">
+                        @csrf
                         <button class="w-100 btn btn-success mt-3">
-                            @switch($details->order_status)
-                                @case('pending')
-                                    Processing Order
-                                @break
-
-                                @case('processing')
-                                    Purchasing Order
-                                @break
-
-                                @default
-                                    Delete Order
-                            @endswitch
+                            @if ($details->order_status == 'Pending')
+                                Processing Order
+                            @elseif($details->order_status == 'Processing')
+                                Purchase Order
+                            @else
+                                Delete Statement
+                            @endif
                         </button>
                     </form>
                 </ul>

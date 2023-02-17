@@ -105,13 +105,13 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('.clonebtn').click(function(event) {
-            event.preventDefault();
-            if ($('.custom-file').length < 5)
-                $("#sliderFileInput").clone().appendTo('.form_div')
-            else
-                console.log($('.clonebtn').next());
-        });
-    })
+    // $(document).ready(function() {
+    //     $('.clonebtn').click(function(event) {
+    //         event.preventDefault();
+    //         if ($('.custom-file').length < 5)
+    //             $("#sliderFileInput").clone().appendTo('.form_div')
+    //         else
+    //             console.log($('.clonebtn').next());
+    //     });
+    // })
 </script>

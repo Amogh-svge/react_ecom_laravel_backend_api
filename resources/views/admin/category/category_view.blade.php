@@ -34,14 +34,13 @@
                                 <td>{{ $item->category_name }}</td>
                                 <td class="d-flex">
                                     <span>
-
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('category.edit', $item->id) }}>Edit</a>
                                     </span>
-                                    <form action="{{ route('category.delete', $item->id) }}" name="form" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-danger" onclick="confirmDelete()">Remove</button>
+                                    <form action="{{ route('category.delete', $item->id) }}" id="category_form_delete"
+                                        method="POST">
+                                        @method('DELETE') @csrf
+                                        <button class="btn btn-danger" onclick="confirmDelete(this)">Remove</button>
                                     </form>
                                 </td>
 

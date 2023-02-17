@@ -29,11 +29,9 @@
 
     if (toastBody.dataset.message) {
         toastDisplay.classList.add('anime');
-        if (toast_alert === 'success') {
-            console.log('success');
+        if (toast_alert === 'success')
             toastBody.classList.add('success');
-        } else {
-            console.log('failed');
+        else {
             toastBody.classList.add('failed');
         }
         toastDisplay.style.opacity = 1;
@@ -94,7 +92,10 @@
     const hideMenuOnOver = (event) => {
         event.childNodes[3].classList.remove('show_menu');
     }
+    // side drop down
 
+
+    // confirmDelete Starts
     //confirms before deleting and cancels event if clicked cancel 
     const confirmDelete = (info) => {
         event.preventDefault();
@@ -106,4 +107,5 @@
         this.window.confirm('Do you want to delete?') === true && element.submit();
         // this.window.confirm('Do you want to delete?') === true && document.form.submit();
     }
+    // ConfirmDelete Ends
 </script>

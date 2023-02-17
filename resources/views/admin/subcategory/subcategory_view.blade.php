@@ -31,13 +31,11 @@
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('subcategory.edit', $sub_category->id) }}>Edit</a>
                                     </span>
-                                    <form action="{{ route('subcategory.destroy', $sub_category->id) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button
-                                            onclick="event.preventDefault();
-                                        window.confirm('Do you want to delete?')===true && this.closest('form').submit();"
-                                            class="btn btn-danger" type="submit">Remove</button>
+                                    <form action="{{ route('subcategory.destroy', $sub_category->id) }}"
+                                        id="subcategory_delete_form" method="POST">
+                                        @method('DELETE') @csrf
+                                        <button class="btn btn-danger" onclick="confirmDelete(this)"
+                                            type="submit">Remove</button>
                                     </form>
                                 </td>
 

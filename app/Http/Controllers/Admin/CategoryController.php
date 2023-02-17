@@ -99,7 +99,6 @@ class CategoryController extends Controller
     }
 
 
-
     public function deleteCategory(Category $categ_id)
     {
         $deleted = $categ_id->delete();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Backend\OrderController;
+use App\Http\Controllers\Admin\Backend\ProductController;
 use App\Http\Controllers\Admin\Backend\SliderController as BackendSliderController;
 use App\Http\Controllers\Admin\Backend\SubCategoryController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -56,6 +57,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     });
 
     Route::resource('slider', BackendSliderController::class);
-
+    Route::resource('product', ProductController::class);
     Route::resource('subcategory', SubCategoryController::class);
 });

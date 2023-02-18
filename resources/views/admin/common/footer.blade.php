@@ -13,7 +13,7 @@
 <script src="/../lib/ionicons/ionicons.js"></script>
 <script src="/../js/azia.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-
+@yield('script')
 {{-- Toast Starts --}}
 <script>
     var toastDisplay = document.getElementById('liveToast');

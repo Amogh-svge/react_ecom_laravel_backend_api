@@ -55,9 +55,3 @@
         </div>
     </div>
 @endsection
-
-@section('script')
-    <script>
-        console.log('askjdasjhdkashd');
-    </script>
-@endsection

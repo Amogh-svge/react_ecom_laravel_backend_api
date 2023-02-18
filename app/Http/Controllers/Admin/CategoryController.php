@@ -82,6 +82,11 @@ class CategoryController extends Controller
             $image_name = date('YmdHi') . $file->getClientOriginalName();
             Image::make($file)->resize(128, 128)
                 ->save(public_path('storage/images/') . $image_name);
+
+            //Seperate image name from the url
+            $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $categ_id->category_image);
+            $stored_image_name = $existing_image_path[1];
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
         }
         //storing image url in DB
         $image_url = "http://localhost:8000/storage/images/" . $image_name;
@@ -101,8 +106,13 @@ class CategoryController extends Controller
 
     public function deleteCategory(Category $categ_id)
     {
-        $deleted = $categ_id->delete();
+        $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $categ_id->category_image);
+        $stored_image_name = $existing_image_path[1];
 
+        $deleted = $categ_id->delete();
+        if ($deleted) {
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
+        }
         $notification = [
             'alert' => $deleted ? 'success' : 'failed',
             'message' => $deleted ?  'Category Successfully Deleted' : 'Failed To Delete Category',

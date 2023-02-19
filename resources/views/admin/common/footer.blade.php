@@ -40,6 +40,7 @@
     } else toastDisplay.style.opacity = 0;
 </script>
 {{-- Toast Ends --}}
+
 <script>
     //DataTables starts
     $(document).ready(function() {
@@ -57,9 +58,9 @@
     }
     // Ckeditor ends
 
+    // display image when file is selected
 
-    let show_image = document.getElementById("showImage"); //displays image
-
+    let show_image = document.getElementById("showImage"); //image id
     let file_path = document.getElementById("customFile");
     let slider_path = document.getElementById("slider");
 
@@ -82,8 +83,11 @@
     file_path && file_path.addEventListener('change', getPath);
     slider_path && slider_path.addEventListener('change', getPath);
 
+    // display image when file is selected ends
 
-    // side drop down
+
+
+    // side drop down starts
     const showMenuOnOver = (event) => {
         // console.log(event.nextElementSibling);
         event.nextElementSibling.classList.add('show_menu');
@@ -92,10 +96,12 @@
     const hideMenuOnOver = (event) => {
         event.childNodes[3].classList.remove('show_menu');
     }
-    // side drop down
+    // side drop down ends
+
 
 
     // confirmDelete Starts
+
     //confirms before deleting and cancels event if clicked cancel 
     const confirmDelete = (info) => {
         event.preventDefault();
@@ -107,5 +113,6 @@
         this.window.confirm('Do you want to delete?') === true && element.submit();
         // this.window.confirm('Do you want to delete?') === true && document.form.submit();
     }
+
     // ConfirmDelete Ends
 </script>

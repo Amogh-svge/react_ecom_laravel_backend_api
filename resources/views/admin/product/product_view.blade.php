@@ -38,6 +38,10 @@
                                 <td>{{ $product->category }}</td>
                                 <td class="d-flex">
                                     <span>
+                                        <a class="btn btn-info mx-1"
+                                            href={{ route('product.show', $product->id) }}>Details</a>
+                                    </span>
+                                    <span>
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('product.edit', $product->id) }}>Edit</a>
                                     </span>

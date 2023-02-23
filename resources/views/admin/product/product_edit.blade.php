@@ -6,25 +6,26 @@
             <div class="az-content-breadcrumb text-dark m-2">
                 <span>Dashboard</span>
                 <span>Product</span>
-                <span>Create Product</span>
+                <span>Edit Product</span>
             </div>
         </div>
         <x-app-layout>
             <x-slot name="header">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Create Product
+                    Edit Product
                 </h2>
             </x-slot>
 
-            <form method="post" action="{{ route('product.store') }}" name="product_form" enctype="multipart/form-data">
+            <form method="post" action="#" name="product_form" enctype="multipart/form-data">
                 @csrf
+
                 <div class="row p-2">
                     <div class="col-lg-8 ">
                         <div class="border border-white shadow p-4 rounded">
                             <div class="mb-3">
                                 <label for="inputProductTitle" class="az-content-label mb-3">Product Title</label>
                                 <input type="text" name="title" class="w-100 border-0" id="inputProductTitle"
-                                    placeholder="Enter Product Title" value="{{ old('title') }}">
+                                    placeholder="Enter Product Title" value=" {{ $product_info['title'] }}">
                                 @include('admin.common.error', ['field' => 'title']) {{-- error message --}}
                             </div>
 
@@ -60,7 +61,7 @@
 
                             <div class="mb-3">
                                 <label for="inputProductDescription" class="az-content-label mb-3">Short Description</label>
-                                <textarea name="short_description" class="form-control" id="inputProductDescription" rows="2">{{ old('short_description') }}</textarea>
+                                <textarea name="short_description" class="form-control" id="inputProductDescription" rows="2">{{ $product_info['short_description'] }}</textarea>
                                 @include('admin.common.error', ['field' => 'short_description'])
                             </div>
 
@@ -68,7 +69,7 @@
                                 <label for="editor" class="az-content-label mb-3">Product
                                     Description</label>
                                 <textarea class="form-control" name="long_description" placeholder="Enter Product Description" id="editor"
-                                    rows="3">{{ old('long_description') }}</textarea>
+                                    rows="3">{{ $product_info['long_description'] }}</textarea>
                                 @include('admin.common.error', ['field' => 'long_description'])
 
                             </div>
@@ -81,22 +82,24 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="inputPrice" class="az-content-label mb-3">Price</label>
                                     <input type="text" name="price" class="form-control border-0" id="inputPrice"
-                                        placeholder="00.00" value="{{ old('price') }}">
+                                        placeholder="00.00" value="{{ $product_info['price'] }}">
                                     @include('admin.common.error', ['field' => 'price'])
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="inputCompareatprice" class="az-content-label mb-3">Special Price</label>
                                     <input type="text" name="special_price" class="form-control border-0"
-                                        id="inputCompareatprice" placeholder="00.00" value="{{ old('special_price') }}">
+                                        id="inputCompareatprice" placeholder="00.00"
+                                        value="{{ $product_info['special_price'] }}">
                                     @include('admin.common.error', ['field' => 'special_price'])
                                 </div>
 
 
                                 <div class="col-md-12 mb-3">
+
                                     <label for="inputPrice" class="az-content-label mb-3">Product Code</label>
                                     <input type="text" name="product_code" class="form-control border-0" id="inputPrice"
-                                        placeholder="Enter Product Code" value="{{ old('product_code') }}">
+                                        placeholder="Enter Product Code" value="{{ $product_info['product_code'] }}">
                                     @include('admin.common.error', ['field' => 'product_code'])
                                 </div>
 
@@ -104,12 +107,12 @@
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
                                     <select name="category" class="form-select w-100 border-0" id="inputProductType">
                                         <option selected="">Select Category</option>
-                                        @foreach ($category as $item)
+                                        {{-- @foreach ($category as $item)
                                             <option value="{{ $item->category_name }}"
                                                 {{ old('category') == $item->category_name ? 'selected' : '' }}>
                                                 {{ $item->category_name }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                     @include('admin.common.error', ['field' => 'category'])
                                 </div>
@@ -120,12 +123,12 @@
                                     <select name="sub_category" class="form-select w-100 border-0" id="inputProductType">
 
                                         <option selected="">Select SubCategory</option>
-                                        @foreach ($subcategory as $item)
+                                        {{-- @foreach ($subcategory as $item)
                                             <option value="{{ $item->subcategory_name }}"
                                                 {{ old('sub_category') == $item->subcategory_name ? 'selected' : '' }}>
                                                 {{ $item->subcategory_name }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                     @include('admin.common.error', ['field' => 'sub_category'])
                                 </div>
@@ -146,14 +149,15 @@
                                 <div class="col-12 mb-3">
                                     <label class="az-content-label mb-3">Product Size</label>
                                     <input type="text" name="size" class="form-control border-0 visually-hidden"
-                                        data-role="tagsinput" placeholder="S,M,L,XL" value="{{ old('size') }}">
+                                        data-role="tagsinput" placeholder="S,M,L,XL" value="{{ $product_info['size'] }}">
                                     @include('admin.common.error', ['field' => 'size'])
                                 </div>
 
                                 <div class="col-12 mb-3">
                                     <label class="az-content-label mb-3">Product Color</label>
                                     <input type="text" name="color" class="form-control border-0 visually-hidden"
-                                        data-role="tagsinput" placeholder="Red,White,Black" value="{{ old('color') }}">
+                                        data-role="tagsinput" placeholder="Red,White,Black"
+                                        value="{{ $product_info['color'] }}">
                                     @include('admin.common.error', ['field' => 'color'])
                                 </div>
 
@@ -178,7 +182,7 @@
                                 </div>
 
                                 <div class="col-12 mb-3">
-                                    <button class="btn btn-purple" onclick="window.product_form.submit()">Save
+                                    <button class="btn btn-purple" onclick="window.product_form.submit()">Update
                                         Product</button>
                                 </div>
                             </div>
@@ -194,19 +198,4 @@
 @endsection
 
 @section('script')
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor'))
-            .catch((error) => {
-                // console.error(error);
-            });
-
-
-        $('#addSubImage').click((event) => {
-            event.preventDefault();
-            if ($('.sub_image').length < 4)
-                $('#subImageId').clone().appendTo(".sub_image_div");
-            else console.log("limit exceeded");
-        });
-    </script>
 @endsection

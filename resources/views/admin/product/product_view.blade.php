@@ -1,7 +1,7 @@
 @extends('admin.layout.admin_layout')
 
 @section('main_content')
-    <div>
+    <div class="box-height">
         <h2 class="az-content-title">Product List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>
@@ -44,11 +44,14 @@
                                     <span>
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('product.edit', $product->id) }}>Edit</a>
+                                        {{-- <ion-icon name="alert"></ion-icon> --}}
                                     </span>
+
                                     <form action="{{ route('product.destroy', $product->id) }}" id="product_form_delete"
                                         method="POST">
                                         @method('DELETE') @csrf
-                                        <button class="btn btn-danger" onclick="confirmDelete(this)">Remove</button>
+                                        <button class="btn btn-danger" type="submit"
+                                            onclick="confirmDelete(this)">Remove</button>
                                     </form>
                                 </td>
                             </tr>

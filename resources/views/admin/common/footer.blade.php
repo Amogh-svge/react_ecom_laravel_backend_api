@@ -8,7 +8,9 @@
     </div><!-- container -->
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
 <script src="/../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/../lib/ionicons/ionicons.js"></script>
 <script src="/../js/azia.js"></script>

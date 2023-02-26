@@ -88,10 +88,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ProductList $product)
     {
-
-        return view('admin.product.product_create');
+        $product_details = ProductDetails::find($product->id);
+        return view('admin.product.product_details', compact('product_details'));
     }
 
     /**
@@ -102,7 +102,8 @@ class ProductController extends Controller
      */
     public function edit(ProductList $product)
     {
-        // return $product;
+        $category = Category::latest()->get();
+        $subcategory = Subcategory::latest()->get();
         $product_details = ProductDetails::find($product->id);
         $product_info = [
             'title' => $product->title,
@@ -124,7 +125,7 @@ class ProductController extends Controller
             'size' =>  $product_details->size,
         ];
 
-        return view('admin.product.product_edit', compact('product_info'));
+        return view('admin.product.product_edit', compact(['product_info', 'subcategory', 'category']));
     }
 
     /**
@@ -147,6 +148,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // $product_list = ProductList::find($id);
+        // return $product->id;
+        // return $product_details = ProductDetails::find($product->id);
+        // $delete = $product->delete();
     }
 }

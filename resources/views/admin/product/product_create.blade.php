@@ -46,11 +46,17 @@
 
                             <div class="mb-3 ">
                                 <label for="formFile" class="az-content-label mb-3">Sub-Images</label>
-                                <div class="sub_image custom-file my-1" id="subImageId">
-                                    <input name="sub_images" type="file" class="custom-file-input" id="customFile"
-                                        multiple>
-                                    <label class="custom-file-label" for="customFile">Choose File</label>
+                                <div class="d-flex align-items-center" id="subImageId">
+                                    <div class="sub_image custom-file my-1">
+                                        <input name="sub_images" type="file" class="custom-file-input" id="customFile"
+                                            multiple>
+                                        <label class="custom-file-label" for="customFile">Choose File</label>
+                                    </div>
+                                    <button class="removeButton btn btn-danger mx-1">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                    </button>
                                 </div>
+
                                 <div class="sub_image_div">
 
                                 </div>
@@ -204,9 +210,25 @@
 
         $('#addSubImage').click((event) => {
             event.preventDefault();
-            if ($('.sub_image').length < 4)
+            if ($('.sub_image').length < 4) {
                 $('#subImageId').clone().appendTo(".sub_image_div");
-            else console.log("limit exceeded");
+            } else {
+                $('#addSubImage').attr('disabled', 'disabled');
+                console.log("limit exceeded");
+            }
+        });
+        console.log($('.removeButton'));
+        $('.removeButton').nodeList.foreach(element => {
+            console.log(element);
+        });
+
+        $('.removeButton').click((event) => {
+            event.preventDefault();
+            var target = $(event.target).closest('.sub_image');
+            // event.preventDefault();
+            console.log(event);
+            $(this).remove();
+            // $('.sub_image').remove();
         });
     </script>
 @endsection

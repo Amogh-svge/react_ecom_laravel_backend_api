@@ -31,6 +31,16 @@ body {
     border-radius: 6px;
 }
 
+.sub_images {
+    display: flex;
+}
+
+.product-subimage {
+    cursor: pointer;
+    height: auto;
+    width: 50%;
+}
+
 /*Toast End*/
 .toast_container {
     position: absolute;

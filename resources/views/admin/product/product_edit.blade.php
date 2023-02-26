@@ -106,13 +106,15 @@
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
                                     <select name="category" class="form-select w-100 border-0" id="inputProductType">
+
                                         <option selected="">Select Category</option>
-                                        {{-- @foreach ($category as $item)
+
+                                        @foreach ($category as $item)
                                             <option value="{{ $item->category_name }}"
-                                                {{ old('category') == $item->category_name ? 'selected' : '' }}>
+                                                {{ $item->category_name == $product_info['category'] ? 'selected' : '' }}>
                                                 {{ $item->category_name }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                     @include('admin.common.error', ['field' => 'category'])
                                 </div>
@@ -123,12 +125,12 @@
                                     <select name="sub_category" class="form-select w-100 border-0" id="inputProductType">
 
                                         <option selected="">Select SubCategory</option>
-                                        {{-- @foreach ($subcategory as $item)
+                                        @foreach ($subcategory as $item)
                                             <option value="{{ $item->subcategory_name }}"
-                                                {{ old('sub_category') == $item->subcategory_name ? 'selected' : '' }}>
+                                                {{ $product_info['sub_category'] == $item->subcategory_name ? 'selected' : '' }}>
                                                 {{ $item->subcategory_name }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                     @include('admin.common.error', ['field' => 'sub_category'])
                                 </div>
@@ -149,7 +151,8 @@
                                 <div class="col-12 mb-3">
                                     <label class="az-content-label mb-3">Product Size</label>
                                     <input type="text" name="size" class="form-control border-0 visually-hidden"
-                                        data-role="tagsinput" placeholder="S,M,L,XL" value="{{ $product_info['size'] }}">
+                                        data-role="tagsinput" placeholder="S,M,L,XL"
+                                        value="{{ $product_info['size'] }}">
                                     @include('admin.common.error', ['field' => 'size'])
                                 </div>
 
@@ -164,19 +167,22 @@
                                 <div class="col-12 mb-3">
                                     <div class="form-check my-1">
                                         <input class="form-check-input" name="remark" type="radio" value="FEATURED"
-                                            id="flexCheckDefault">
+                                            id="flexCheckDefault"
+                                            {{ $product_info['remark'] == 'FEATURED' ? 'checked' : '' }}>
                                         <label class="form-check-label " for="flexCheckDefault">FEATURED</label>
                                     </div>
 
                                     <div class="form-check my-1">
                                         <input class="form-check-input" checked name="remark" type="radio"
-                                            value="NEW" id="flexCheckDefault">
+                                            value="NEW" id="flexCheckDefault"
+                                            {{ $product_info['remark'] == 'NEW' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="flexCheckDefault">NEW</label>
                                     </div>
 
                                     <div class="form-check my-1">
                                         <input class="form-check-input" name="remark" type="radio" value="COLLECTION"
-                                            id="flexCheckDefault">
+                                            id="flexCheckDefault"
+                                            {{ $product_info['remark'] == 'COLLECTION' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="flexCheckDefault">COLLECTION</label>
                                     </div>
                                 </div>

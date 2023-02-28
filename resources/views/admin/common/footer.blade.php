@@ -37,6 +37,7 @@
             toastBody.classList.add('failed');
         }
         toastDisplay.style.opacity = 1;
+        toastDisplay.style.display = 'inline-block';
         toastBody.innerHTML = (toast_alert === 'success' ? success_icon : failure_icon) + " " + toastBody.dataset
             .message;
     } else toastDisplay.style.opacity = 0;

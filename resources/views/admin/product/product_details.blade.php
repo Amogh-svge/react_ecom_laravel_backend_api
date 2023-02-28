@@ -9,7 +9,7 @@
             <span>Product Details</span>
         </div>
         <div class="row">
-            <div class="col-8">
+            <div class="col-lg-8">
 
                 <div class="card mb-3">
                     <h5 class="card-header">Product Specification</h5>
@@ -57,61 +57,27 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4">
                 <div class="card">
                     <h5 class="card-header">Product Specification</h5>
                     {{-- {{ asset('storage/images/202302041724w.png') }} --}}
-                    <img src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg" class="card-img-top"
-                        alt="...">
+                    <img src="http://localhost:8000/storage/images/202302041726headgears.jpg" class="card-img-top"
+                        alt="product-thumbnails" id="thumnail_subimage">
 
-                    {{-- <div class="sub_images">
-                        <img class="product-subimage"
-                            src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg" alt="">
-
-                        <img class="product-subimage"
-                            src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg" alt="">
-
-                        <img class="product-subimage"
-                            src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg" alt="">
-
-                        <img class="product-subimage"
-                            src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg" alt="">
-
-                    </div> --}}
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img class="product-subimage"
-                                    src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg"
-                                    alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="product-subimage"
-                                    src="https://itti.com.np/pub/media/catalog/product/cache/d73a5018306142840707bd616a4ef293/m/s/msi-gp66-leopard-10ue-price-nepal-i7-10870h-rtx-3060.jpg"
-                                    alt="">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="product-subimage"
-                                    src="https://static-01.daraz.com.np/p/efeace0d7507f3770af3d9fbdeff2427.jpg"
-                                    alt="">
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon text-danger" aria-hidden="true"></span>
-                            <i class="fas fa-angle-left bg-dark "></i>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next bg-primary" href="#carouselExampleIndicators" role="button"
-                            data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+                    <div class="sub_images">
+                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                            src="http://localhost:8000/storage/images/202302041726headgears.jpg" alt="product-thumbnails">
+                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                            src="http://localhost:8000/storage/images/202302041726whirlpool-200-genius-cls-wine-adora-5-nepal_1.jpg"
+                            alt="product-thumbnails">
+                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                            src="http://localhost:8000/storage/images/2023020417266147e4a30f3888963cf088a57ecc4616.jpg"
+                            alt="product-thumbnails">
+                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                            src="http://localhost:8000/storage/images/202302041726whirlpool-200-genius-cls-wine-adora-5-nepal_1.jpg"
+                            alt="product-thumbnails">
                     </div>
+
                     <ul class="list-group">
                         <li class="list-group-item "><b>Product Name:</b>Lenovo Hp 12 </li>
                         <li class="list-group-item"><b>Color: </b> Yellow</li>
@@ -124,7 +90,18 @@
         </div>
         <div class="row">
 
-            <div class="col-4"></div>
+            <div class="col-lg-4"></div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script>
+        let thumbnail_id = document.getElementById('thumnail_subimage');
+        let sub_image = document.querySelectorAll('.product-subimage');
+        const changeDisplayedImage = (event) => {
+            console.log(event.src);
+            thumbnail_id.src = event.src;
+        }
+    </script>
 @endsection

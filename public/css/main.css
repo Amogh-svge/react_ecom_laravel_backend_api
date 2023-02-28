@@ -37,8 +37,14 @@ body {
 
 .product-subimage {
     cursor: pointer;
-    height: auto;
-    width: 50%;
+    width: 25%;
+    aspect-ratio: 2/2;
+    object-fit: contain;
+    margin: 2px auto;
+}
+
+.product-subimage:hover {
+    background-color: #ccc9c9;
 }
 
 /*Toast End*/
@@ -52,6 +58,7 @@ body {
 }
 
 .toaster {
+    display: none;
     opacity: 0;
     background: rgb(247, 244, 244);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,

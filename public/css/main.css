@@ -2,6 +2,9 @@ body {
     overflow-x: hidden;
 }
 
+.text-purple {
+    color: #5b47fb;
+}
 .box-height {
     min-height: 761px;
 }
@@ -33,18 +36,24 @@ body {
 
 .sub_images {
     display: flex;
+    padding: 5px;
 }
 
 .product-subimage {
     cursor: pointer;
     width: 25%;
-    aspect-ratio: 2/2;
+    aspect-ratio: 2.5/3;
     object-fit: contain;
     margin: 2px auto;
 }
 
 .product-subimage:hover {
-    background-color: #ccc9c9;
+    border: 3px solid #e7e1e1c9;
+}
+#thumnail_subimage {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: contain;
 }
 
 /*Toast End*/
@@ -112,6 +121,7 @@ body {
     padding: 10px;
 }
 /* sidedrop down end*/
+
 /* slide */
 .slideImageView {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -90,8 +90,10 @@ class ProductController extends Controller
      */
     public function show(ProductList $product)
     {
-        $product_details = ProductDetails::find($product->id);
-        return view('admin.product.product_details', compact('product_details'));
+
+        $product_details = ProductDetails::where('product_id', $product->id)->first();
+        $product_info = collect($product)->merge($product_details);
+        return view('admin.product.product_details', compact('product_info'));
     }
 
     /**

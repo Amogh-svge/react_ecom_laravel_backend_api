@@ -148,8 +148,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($product)
     {
+        return $product;
         // $product_list = ProductList::find($id);
         // return $product->id;
         // return $product_details = ProductDetails::find($product->id);

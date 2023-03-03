@@ -1,6 +1,6 @@
 @extends('admin.layout.admin_layout')
 @section('main_content')
-    <div>
+    <div class="box-height">
         <h2 class="az-content-title">Sub_Category List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>

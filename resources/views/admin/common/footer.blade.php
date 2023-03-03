@@ -9,10 +9,18 @@
 </div>
 
 
+
+<script src="/../lib/jquery/jquery.min.js"></script>
+{{-- datatables  --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
+{{-- datatables  --}}
 <script src="/../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/../lib/ionicons/ionicons.js"></script>
 <script src="/../js/azia.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
+
+
 
 @yield('script')
 {{-- Toast Starts --}}
@@ -47,6 +55,7 @@
         $('#table_id').DataTable();
     });
     //DataTables end
+
 
     // Ckeditor starts
     for (let index = 0; index < 5; index++) {
@@ -109,4 +118,16 @@
         // this.window.confirm('Do you want to delete?') === true && document.form.submit();
     }
     // ConfirmDelete Ends
+</script>
+
+<script>
+    // $(document).ready(function() {
+    //     $('.clonebtn').click(function(event) {
+    //         event.preventDefault();
+    //         if ($('.custom-file').length < 5)
+    //             $("#sliderFileInput").clone().appendTo('.form_div')
+    //         else
+    //             console.log($('.clonebtn').next());
+    //     });
+    // })
 </script>

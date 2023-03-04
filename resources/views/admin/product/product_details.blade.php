@@ -77,32 +77,42 @@
                     <div class="card-body">
                         <div class="card-text">
                             <h5 class="card-title">Short Description</h5>
-                            <p>{{ $product_info['short_description'] }}</p>
+                            <p>{!! $product_info['short_description'] !!}</p>
                         </div>
 
                         <div class="card-text">
                             <h5>Long Description</h5>
-                            <p>{{ $product_info['long_description'] }}</p>
+                            <p>{!! $product_info['long_description'] !!}</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="card p-2">
-                    {{-- <h5 class="card-header">Product Specification</h5> --}}
-                    {{-- {{ asset('storage/images/202302041724w.png') }} --}}
                     <img src="{{ $product_info['image'] }}" class="card-img-top" alt="product-thumbnails"
                         id="thumnail_subimage">
 
                     <div class="sub_images">
+
+                        @if ($product_info['image_one'])
+                            <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                                src="{{ $product_info['image_one'] }}" alt="product-thumbnails"
+                                onerror="this.src='{{ url('storage/common/no-image.png') }}';">
+                        @endif
+                        @if ($product_info['image_two'])
+                            <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                                src="{{ $product_info['image_two'] }}" alt="product-thumbnails"
+                                onerror="this.src='{{ url('storage/common/no-image.png') }}';">
+                        @endif
+                        @if ($product_info['image_three'])
+                            <img class="product-subimage" onclick="changeDisplayedImage(this)"
+                                src="{{ $product_info['image_three'] }}" alt="product-thumbnails"
+                                onerror="this.src='{{ url('storage/common/no-image.png') }}';">
+                        @endif
+
                         <img class="product-subimage" onclick="changeDisplayedImage(this)"
-                            src="{{ $product_info['image_one'] }}">
-                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
-                            src="{{ $product_info['image_two'] }}" alt="product-thumbnails">
-                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
-                            src="{{ $product_info['image_three'] }}" alt="product-thumbnails">
-                        <img class="product-subimage" onclick="changeDisplayedImage(this)"
-                            src="{{ $product_info['image'] }}" alt="product-thumbnails">
+                            src="{{ $product_info['image'] }}" alt="product-thumbnails"
+                            onerror="this.src='{{ url('storage/common/no-image.png') }}';">
                     </div>
 
                 </div>

@@ -35,6 +35,7 @@ body {
 }
 
 .sub_images {
+    margin-top: 10px;
     display: flex;
     padding: 5px;
 }
@@ -44,7 +45,8 @@ body {
     width: 25%;
     aspect-ratio: 2.5/3;
     object-fit: contain;
-    margin: 2px auto;
+    /* margin: 2px; */
+    margin: 1px;
 }
 
 .product-subimage:hover {

@@ -119,7 +119,6 @@
                 this.confirm('Do you want to delete?') === true && item.submit();
             }
         });
-
     }
 
     // ConfirmDelete Ends

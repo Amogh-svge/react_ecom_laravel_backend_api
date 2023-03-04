@@ -9,6 +9,7 @@ use App\Models\ProductList;
 use App\Models\ProductDetails;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -43,43 +44,60 @@ class ProductController extends Controller
      */
     public function store(AddProductRequest $request)
     {
+
+        if ($request->hasFile('image')) {
+            $image_name = date('YmdHi') . uniqid() . $request->file('image')->getClientOriginalName();
+            $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/' . $image_name;
+            Image::make($request->file('image'))->resize(350, 350)
+                ->save(public_path('storage/product_thumbnails/') . $image_name);
+        }
+        if ($request->hasFile('sub_images')) {
+            foreach ($request->file('sub_images') as $key => $file) {
+                $image_name = date('YmdHi') . uniqid() . $file->getClientOriginalName();
+                $url[] = 'http://localhost:8000/storage/images/' . $image_name;
+                Image::make($file)->resize(280, 280)
+                    ->save(public_path('storage/images/') . $image_name);
+            }
+        }
+
         $product_list = [
             'title' => $request->title,
             'price' => $request->price,
             'special_price' => $request->special_price,
-            'image' => $request->image,
+            'image' => $thumbnail_url,
             'category' => $request->category,
             'sub_category' => $request->sub_category,
             'remark' => $request->remark,
             'brand' => $request->brand,
             'product_code' => $request->product_code,
         ];
+
+        //add product list
         $add_product_list = ProductList::create($product_list);
 
-        $product_details = [
-            'product_id' => $add_product_list->id,
-            'image_one' => 'http://localhost:8000/storage/images/202302050725dell7000.jpeg',
-            'image_two' => 'http://localhost:8000/storage/images/202302050725dell7000.jpeg',
-            'image_three' => 'http://localhost:8000/storage/images/202302050725dell7000.jpeg',
-            'image_four' => 'http://localhost:8000/storage/images/202302050725dell7000.jpeg',
-            'short_description' => $request->short_description,
-            'long_description' => $request->long_description,
-            'color' => $request->color,
-            'size' => $request->size,
-        ];
         if ($add_product_list) {
-            $create_product_details = ProductDetails::create($product_details);
-            return redirect(route('product.index'));
-        } else return "product details addition failed";
+            $product_details = [
+                'product_id' => $add_product_list->id,
+                'image_one' => array_key_exists(0, $url) ? $url[0] : null, //checks if array index exists
+                'image_two' => array_key_exists(1, $url) ? $url[1] : null,
+                'image_three' =>  array_key_exists(2, $url) ? $url[2] : null,
+                'image_four' => array_key_exists(3, $url) ? $url[3] : null,
+                'short_description' => $request->short_description,
+                'long_description' => $request->long_description,
+                'color' => $request->color,
+                'size' => $request->size,
+            ];
 
-        // $add_product = ProductList::create([]);
+            //add product details
+            $add_product_details = ProductDetails::create($product_details);
+        }
 
-        // $notification = [
-        //     'alert' => $Category_create ? 'success' : 'failed',
-        //     'message' => $Category_create ?  'Product Succesfully Added' : 'Failed To Add Product',
-        // ];
+        $notification = [
+            'alert' => $add_product_list && $add_product_details ? 'success' : 'failed',
+            'message' => $add_product_list && $add_product_details ?  'Product Succesfully Added' : 'Failed To Add Product',
+        ];
 
-        // return  redirect(route("product.index"))->with('notification', $notification);
+        return  redirect(route("product.index"))->with('notification', $notification);
     }
 
     /**
@@ -148,12 +166,18 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($product)
+    public function destroy(ProductList $product)
     {
-        return $product;
-        // $product_list = ProductList::find($id);
-        // return $product->id;
-        // return $product_details = ProductDetails::find($product->id);
-        // $delete = $product->delete();
+        $product_details = ProductDetails::where('product_id', $product->id)->first();
+        $product_delete = $product->delete();
+
+        if ($product_details && $product_delete)
+            $product_details_delete = $product_details->delete();
+
+        $notification = [
+            'alert' => $product_delete  ? 'success' : 'failed',
+            'message' => $product_delete  ?  'Product Succesfully Deleted' : 'Failed To Delete Product',
+        ];
+        return  redirect(route("product.index"))->with('notification', $notification);
     }
 }

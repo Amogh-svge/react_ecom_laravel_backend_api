@@ -20,7 +20,7 @@
                 @csrf
                 <div class="row p-2">
                     <div class="col-lg-8 ">
-                        <div class="border border-white shadow p-4 rounded">
+                        <div class=" shadow p-4 rounded">
                             <div class="mb-3">
                                 <label for="inputProductTitle" class="az-content-label mb-3">Product Title</label>
                                 <input type="text" name="title" class="w-100 border-0" id="inputProductTitle"
@@ -46,22 +46,17 @@
 
                             <div class="mb-3 ">
                                 <label for="formFile" class="az-content-label mb-3">Sub-Images</label>
-                                <div class="d-flex align-items-center" id="subImageId">
+                                <div class="d-flex align-items-center subImageClass">
                                     <div class="sub_image custom-file my-1">
-                                        <input name="sub_images" type="file" class="custom-file-input" id="customFile"
+                                        <input name="sub_images[]" type="file" class="custom-file-input" id="customFile"
                                             multiple>
                                         <label class="custom-file-label" for="customFile">Choose File</label>
                                     </div>
-                                    <button class="removeButton btn btn-danger mx-1">
+                                    {{-- <button class="removeButton btn btn-danger mx-1">
                                         <i class="fas fa-trash-alt fa-lg"></i>
-                                    </button>
-                                </div>
-
-                                <div class="sub_image_div">
-
+                                    </button> --}}
                                 </div>
                                 @include('admin.common.error', ['field' => 'sub_images'])
-                                <div class="my-3"><button class="btn btn-info" id='addSubImage'>Add +</button></div>
                             </div>
 
                             <div class="mb-3">
@@ -82,7 +77,7 @@
                     </div>
 
                     <div class="col-lg-4">
-                        <div class="border border-white shadow p-4 rounded">
+                        <div class=" shadow p-4 rounded">
                             <div class="row g-3">
                                 <div class="col-md-6 mb-3">
                                     <label for="inputPrice" class="az-content-label mb-3">Price</label>
@@ -207,28 +202,55 @@
                 // console.error(error);
             });
 
+        // // add sub image file column
+        // $('#addSubImage').click((event) => {
+        //     event.preventDefault();
+        //     if ($('.sub_image').length < 4) {
+        //         // $('#subImageId').clone().appendTo(".sub_image_div");
+        //         $('#subImageId').clone();
+        //         console.log($('#subImageId').find('input:id'));
+        //         $('#subImageId').appendTo(".sub_image_div");
+        //     } else {
+        //         $('#addSubImage').attr('disabled', 'disabled');
+        //         console.log("limit exceeded");
+        //     }
+        // });
+        // // add sub image file column
 
-        $('#addSubImage').click((event) => {
-            event.preventDefault();
-            if ($('.sub_image').length < 4) {
-                $('#subImageId').clone().appendTo(".sub_image_div");
-            } else {
-                $('#addSubImage').attr('disabled', 'disabled');
-                console.log("limit exceeded");
-            }
-        });
-        console.log($('.removeButton'));
-        $('.removeButton').nodeList.foreach(element => {
-            console.log(element);
-        });
 
-        $('.removeButton').click((event) => {
-            event.preventDefault();
-            var target = $(event.target).closest('.sub_image');
-            // event.preventDefault();
-            console.log(event);
-            $(this).remove();
-            // $('.sub_image').remove();
+        // add and remove sub image file column
+        $(document).ready(function() {
+            var max_fields = 3;
+            var wrapper = $(".subImageClass");
+            var add_button = $(".addSubImage");
+            var x = 1; //initial text box count
+            $(add_button).click(function(e) {
+                e.preventDefault();
+                if (x < max_fields) { //max input box allowed
+                    x++; //text box increment
+                    $('.sub_image_div').append(
+                        `<div class="d-flex align-items-center subImageClass">
+                                <div class="sub_image custom-file my-1">
+                                <input name="sub_images" type="file" class="custom-file-input" id="customFile"
+                                    multiple>
+                                <label class="custom-file-label" for="customFile">Choose File</label>
+                            </div>
+                            <button class="removeButton btn btn-danger mx-1">
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </button>
+                        </div>`
+                    ); //add input box
+                }
+
+                $(wrapper).on("click", ".removeButton", function(e) { //user click on remove text
+                    e.preventDefault();
+                    // console.log($(this).parent());
+                    $(this).parent().parent().remove();
+                    x--;
+                });
+            });
+
+
         });
     </script>
 @endsection

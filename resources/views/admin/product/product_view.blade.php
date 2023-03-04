@@ -44,16 +44,7 @@
                                     <span>
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('product.edit', $product->id) }}>Edit</a>
-                                        {{-- <ion-icon name="alert"></ion-icon> --}}
                                     </span>
-
-                                    {{-- <form action={{ route('product.destroy', $product->id) }} method="POST"
-                                        id="product_delete">
-                                        @method('DELETE') @csrf
-                                        <a href="#" class="btn btn-danger"
-                                            onclick="event.preventDefault();
-                                            window.confirm('Do you want to delete?')===true && this.closest('form').submit();">Remove</button>
-                                    </form> --}}
 
                                     <form action="{{ route('product.destroy', $product->id) }}"
                                         data-id="{{ $product->id }}" class="product_form_delete" method="POST">

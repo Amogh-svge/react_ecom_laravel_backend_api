@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -74,6 +75,8 @@ class CategoryController extends Controller
     }
 
 
+
+
     public function updateCategory(AddCategoryRequest $request, Category $categ_id)
     {
         $category_name = $request->category_name;
@@ -84,8 +87,7 @@ class CategoryController extends Controller
                 ->save(public_path('storage/images/') . $image_name);
 
             //Seperate image name from the url
-            $existing_image_path = explode("http://localhost:8000/storage/images/", $categ_id->category_image);
-            $stored_image_name = $existing_image_path[1];
+            $stored_image_name = Str::after($categ_id->category_image, "http://localhost:8000/storage/images/");
             unlink(public_path('storage/images/') . $stored_image_name);
         }
         //storing image url in DB
@@ -104,10 +106,11 @@ class CategoryController extends Controller
     }
 
 
+
+
     public function deleteCategory(Category $categ_id)
     {
-        $existing_image_path = explode("http://localhost:8000/storage/images/", $categ_id->category_image);
-        $stored_image_name = $existing_image_path[1];
+        $stored_image_name = Str::after($categ_id->category_image, "http://localhost:8000/storage/images/");  //Seperate image name from the url
 
         $deleted = $categ_id->delete();
         if ($deleted) {

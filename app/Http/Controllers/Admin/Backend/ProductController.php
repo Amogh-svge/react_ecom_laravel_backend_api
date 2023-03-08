@@ -139,7 +139,6 @@ class ProductController extends Controller
 
             //Seperate image name from the url
             $stored_image_name = Str::after($product->image, "http://localhost:8000/storage/product_thumbnails/");
-            unlink(public_path('storage/product_thumbnails/') . $stored_image_name);
         }
 
         $url = array(); //global array
@@ -208,15 +207,29 @@ class ProductController extends Controller
 
     public function destroy(ProductList $product)
     {
-        $product_details = ProductDetails::where('product_id', $product->id)->first();
+        $productDetail = ProductDetails::where('product_id', $product->id)->first();
         $product_delete = $product->delete();
 
-        if ($product_details && $product_delete)
-            $product_details_delete = $product_details->delete();
+        //Seperate image name from the url
+        $stored_image_name = Str::after($product->image, "http://localhost:8000/storage/product_thumbnails/");
+        unlink(public_path('storage/product_thumbnails/') . $stored_image_name);
 
+        if ($productDetail && $product_delete)
+            $existing_image_path = [
+                'first_image' => $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
+                'second_image' => $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
+                'third_image' => $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
+            ];
+
+        $existing_image_path['first_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['first_image']) : null;
+        $existing_image_path['second_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['second_image']) : null;
+        $existing_image_path['third_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['third_image']) : null;
+
+
+        $product_details_delete = $productDetail->delete();
         $notification = [
-            'alert' => $product_delete  ? 'success' : 'failed',
-            'message' => $product_delete  ?  'Product Succesfully Deleted' : 'Failed To Delete Product',
+            'alert' => $product_delete && $product_details_delete  ? 'success' : 'failed',
+            'message' => $product_delete && $product_details_delete  ?  'Product Succesfully Deleted' : 'Failed To Delete Product',
         ];
         return  redirect(route("product.index"))->with('notification', $notification);
     }

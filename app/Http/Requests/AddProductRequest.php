@@ -30,7 +30,7 @@ class AddProductRequest extends FormRequest
             'short_description' => 'required|max:255',
             'long_description' => 'required',
             'product_code' => 'required|integer',
-            'special_price' => 'required|numeric|min:0',
+            'special_price' => 'numeric|min:0',
             'price' => 'required|numeric|min:0',
             'category' => 'required|alpha',
             'sub_category' => 'required|alpha',

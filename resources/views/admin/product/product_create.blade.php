@@ -185,11 +185,8 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </form>
-
         </x-app-layout>
     </div>
 @endsection
@@ -201,56 +198,5 @@
             .catch((error) => {
                 // console.error(error);
             });
-
-        // // add sub image file column
-        // $('#addSubImage').click((event) => {
-        //     event.preventDefault();
-        //     if ($('.sub_image').length < 4) {
-        //         // $('#subImageId').clone().appendTo(".sub_image_div");
-        //         $('#subImageId').clone();
-        //         console.log($('#subImageId').find('input:id'));
-        //         $('#subImageId').appendTo(".sub_image_div");
-        //     } else {
-        //         $('#addSubImage').attr('disabled', 'disabled');
-        //         console.log("limit exceeded");
-        //     }
-        // });
-        // // add sub image file column
-
-
-        // add and remove sub image file column
-        $(document).ready(function() {
-            var max_fields = 3;
-            var wrapper = $(".subImageClass");
-            var add_button = $(".addSubImage");
-            var x = 1; //initial text box count
-            $(add_button).click(function(e) {
-                e.preventDefault();
-                if (x < max_fields) { //max input box allowed
-                    x++; //text box increment
-                    $('.sub_image_div').append(
-                        `<div class="d-flex align-items-center subImageClass">
-                                <div class="sub_image custom-file my-1">
-                                <input name="sub_images" type="file" class="custom-file-input" id="customFile"
-                                    multiple>
-                                <label class="custom-file-label" for="customFile">Choose File</label>
-                            </div>
-                            <button class="removeButton btn btn-danger mx-1">
-                                <i class="fas fa-trash-alt fa-lg"></i>
-                            </button>
-                        </div>`
-                    ); //add input box
-                }
-
-                $(wrapper).on("click", ".removeButton", function(e) { //user click on remove text
-                    e.preventDefault();
-                    // console.log($(this).parent());
-                    $(this).parent().parent().remove();
-                    x--;
-                });
-            });
-
-
-        });
     </script>
 @endsection

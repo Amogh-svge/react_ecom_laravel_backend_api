@@ -16,8 +16,10 @@
                 </h2>
             </x-slot>
 
-            <form method="post" action="#" name="product_form" enctype="multipart/form-data">
-                @csrf
+            {{-- @dd($product_info) --}}
+            <form method="post" action="{{ route('product.update', $product_info['id']) }}" name="product_form"
+                enctype="multipart/form-data">
+                @csrf @method('PUT')
 
                 <div class="row p-2">
                     <div class="col-lg-8 ">
@@ -52,11 +54,7 @@
                                         multiple>
                                     <label class="custom-file-label" for="customFile">Choose File</label>
                                 </div>
-                                <div class="sub_image_div">
-
-                                </div>
                                 @include('admin.common.error', ['field' => 'sub_images'])
-                                <div class="my-3"><button class="btn btn-info" id='addSubImage'>Add +</button></div>
                             </div>
 
                             <div class="mb-3">
@@ -68,8 +66,9 @@
                             <div class="mb-3">
                                 <label for="editor" class="az-content-label mb-3">Product
                                     Description</label>
-                                <textarea class="form-control" name="long_description" placeholder="Enter Product Description" id="editor"
+                                <textarea class="form-control" name="long_description" id="editor10" placeholder="Enter Product Description"
                                     rows="3">{{ $product_info['long_description'] }}</textarea>
+
                                 @include('admin.common.error', ['field' => 'long_description'])
 
                             </div>
@@ -105,10 +104,10 @@
 
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
+                                    {{ $product_info['category'] }}
                                     <select name="category" class="form-select w-100 border-0" id="inputProductType">
 
-                                        <option selected="">Select Category</option>
-
+                                        <option>Select Category</option>
                                         @foreach ($category as $item)
                                             <option value="{{ $item->category_name }}"
                                                 {{ $item->category_name == $product_info['category'] ? 'selected' : '' }}>
@@ -204,4 +203,11 @@
 @endsection
 
 @section('script')
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor10'))
+            .catch((error) => {
+                // console.error(error);
+            });
+    </script>
 @endsection

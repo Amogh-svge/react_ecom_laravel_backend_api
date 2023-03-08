@@ -23,7 +23,8 @@
                                 <ion-icon size="large" name="pricetag"></ion-icon>
                                 @if ($product_info['special_price'] != 'null')
                                     <h1 class="text-purple ml-2">Rs {{ $product_info['special_price'] }}</h1>
-                                    <strike class="text-weight-light text-danger">Rs {{ $product_info['price'] }}</strike>
+                                    <strike class="text-weight-light text-danger ml-2">Rs
+                                        {{ $product_info['price'] }}</strike>
                                 @else
                                     <h1 class="text-purple ml-2">Rs {{ $product_info['price'] }}</h1>
                                 @endif

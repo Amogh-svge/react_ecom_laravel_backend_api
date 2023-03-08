@@ -34,14 +34,14 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image_name = date('YmdHi') . uniqid() . $request->file('image')->getClientOriginalName();
             $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/' . $image_name;
-            Image::make($request->file('image'))->resize(350, 350)
+            Image::make($request->file('image'))->resize(350, 250)
                 ->save(public_path('storage/product_thumbnails/') . $image_name);
         }
         if ($request->hasFile('sub_images')) {
             foreach ($request->file('sub_images') as $key => $file) {
                 $image_name = date('YmdHi') . uniqid() . $file->getClientOriginalName();
                 $url[] = 'http://localhost:8000/storage/images/' . $image_name;
-                Image::make($file)->resize(280, 280)
+                Image::make($file)->resize(280, 230)
                     ->save(public_path('storage/images/') . $image_name);
             }
         }
@@ -134,20 +134,20 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $image_name = date('YmdHi') . uniqid() . $request->file('image')->getClientOriginalName();
             $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/' . $image_name;
-            Image::make($request->file('image'))->resize(350, 350)
+            Image::make($request->file('image'))->resize(350, 250)
                 ->save(public_path('storage/product_thumbnails/') . $image_name);
 
-            //Seperate image name from the url
-            $stored_image_name = Str::after($product->image, "http://localhost:8000/storage/product_thumbnails/");
+            //Seperate image name from the url and unlink from storage
+            seperate_thumbnail_image_name_and_remove($product->image);
         }
 
-        $url = array(); //global array
+        $url = array(); //global array  
         if ($request->hasFile('sub_images')) {
             foreach ($request->file('sub_images') as $key => $file) {
                 $image_name = date('YmdHi') . uniqid() . $file->getClientOriginalName();
                 global $url;
                 $url[] = 'http://localhost:8000/storage/images/' . $image_name;
-                Image::make($file)->resize(280, 280)
+                Image::make($file)->resize(280, 230)
                     ->save(public_path('storage/images/') . $image_name);
             }
         }
@@ -169,14 +169,13 @@ class ProductController extends Controller
 
         if ($update_product_list) {
             $existing_image_path = [
-                'first_image' => $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
-                'second_image' => $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
-                'third_image' => $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
             ];
 
-            $existing_image_path['first_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['first_image']) : null;
-            $existing_image_path['second_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['second_image']) : null;
-            $existing_image_path['third_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['third_image']) : null;
+            //separate image name and unlink
+            unlink_image_names($existing_image_path); //helper
 
             $product_details = [
                 'product_id' => $product->id,
@@ -211,20 +210,17 @@ class ProductController extends Controller
         $product_delete = $product->delete();
 
         //Seperate image name from the url
-        $stored_image_name = Str::after($product->image, "http://localhost:8000/storage/product_thumbnails/");
-        unlink(public_path('storage/product_thumbnails/') . $stored_image_name);
+        seperate_thumbnail_image_name_and_remove($product->image);
 
         if ($productDetail && $product_delete)
             $existing_image_path = [
-                'first_image' => $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
-                'second_image' => $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
-                'third_image' => $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
             ];
 
-        $existing_image_path['first_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['first_image']) : null;
-        $existing_image_path['second_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['second_image']) : null;
-        $existing_image_path['third_image'] != null ? unlink(public_path('storage/images/') .  $existing_image_path['third_image']) : null;
-
+        //separate image name and unlink
+        unlink_image_names($existing_image_path); //helper
 
         $product_details_delete = $productDetail->delete();
         $notification = [

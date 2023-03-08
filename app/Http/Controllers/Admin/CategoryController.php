@@ -27,7 +27,6 @@ class CategoryController extends Controller
             array_push($categoryDetailsArray, $item);
         }
         return $categoryDetailsArray;
-        // return $result ? "successfully retrieved" : "retriving failed";
     }
 
 
@@ -68,6 +67,8 @@ class CategoryController extends Controller
     }
 
 
+
+
     public function editCategory(Category $categ_id)
     {
         $category = $categ_id;
@@ -87,8 +88,7 @@ class CategoryController extends Controller
                 ->save(public_path('storage/images/') . $image_name);
 
             //Seperate image name from the url
-            $stored_image_name = Str::after($categ_id->category_image, "http://localhost:8000/storage/images/");
-            unlink(public_path('storage/images/') . $stored_image_name);
+            seperate_image_name_and_remove($categ_id->category_image);
         }
         //storing image url in DB
         $image_url = "http://localhost:8000/storage/images/" . $image_name;
@@ -110,12 +110,10 @@ class CategoryController extends Controller
 
     public function deleteCategory(Category $categ_id)
     {
-        $stored_image_name = Str::after($categ_id->category_image, "http://localhost:8000/storage/images/");  //Seperate image name from the url
-
+        //Seperate image name from the url
+        seperate_image_name_and_remove($categ_id->category_image);
         $deleted = $categ_id->delete();
-        if ($deleted) {
-            unlink(public_path('storage/images/') . $stored_image_name);
-        }
+
         $notification = [
             'alert' => $deleted ? 'success' : 'failed',
             'message' => $deleted ?  'Category Successfully Deleted' : 'Failed To Delete Category',

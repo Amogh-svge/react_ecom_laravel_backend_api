@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('price');
-            $table->string('special_price');
+            $table->string('special_price')->nullable();
             $table->string('image');
             $table->string('category');
             $table->string('sub_category');

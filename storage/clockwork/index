@@ -755,3 +755,5 @@
 1678449197-5202-1201063332,1678449197.3733,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,398.88596534729,request
 1678449207-7483-412048424,1678449207.5869,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,361.85812950134,request
 1678449209-1766-430008767,1678449208.9714,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,482.43117332458,request
+1678449497-2230-746658266,1678449497.0886,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,271.6372013092,request
+1678449497-9686-1238517717,1678449497.8538,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,366.23811721802,request

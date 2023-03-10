@@ -18,7 +18,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.5",
         "nesbot/carbon": "^2.66",
-        "yajra/laravel-datatables-oracle": "^10.2"
+        "itsgoingd/clockwork": "^5.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -747,3 +747,11 @@
 1678449045-9782-1510545634,1678449045.776,GET,/order/purchased,"App\Http\Controllers\Admin\Backend\OrderController@purchasedList",200,351.30095481873,request
 1678449049-3138-816034548,1678449049.2397,GET,/dashboard,Closure,200,161.22317314148,request
 1678449050-7730-16131074,1678449050.7002,GET,/dashboard,Closure,200,184.88717079163,request
+1678449187-8254-555517655,1678449187.6017,GET,/dashboard,Closure,200,499.83191490173,request
+1678449189-0148-577404367,1678449188.7936,GET,/dashboard,Closure,200,460.09206771851,request
+1678449192-9434-341060929,1678449192.792,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,381.44612312317,request
+1678449194-0848-1407368720,1678449193.8539,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,444.002866745,request
+1678449196-0696-315559016,1678449195.9102,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,402.49514579773,request
+1678449197-5202-1201063332,1678449197.3733,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,398.88596534729,request
+1678449207-7483-412048424,1678449207.5869,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,361.85812950134,request
+1678449209-1766-430008767,1678449208.9714,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,482.43117332458,request

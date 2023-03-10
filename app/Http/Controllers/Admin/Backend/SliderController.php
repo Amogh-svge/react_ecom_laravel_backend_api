@@ -18,7 +18,7 @@ class SliderController extends Controller
 
     public function index()
     {
-        $slides = HomeSlider::all();
+        $slides = HomeSlider::latest()->paginate(7);
         return view('admin.slider.slide_view', compact('slides'));
     }
 
@@ -40,7 +40,6 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        // return public_path('storage/slider_image/') . 'hello.jpg';
         $validated = $request->validate([
             'slider_image' => 'required|mimes:png,jpg,jpeg'
         ]);
@@ -48,7 +47,6 @@ class SliderController extends Controller
         $file = $request->file('slider_image');
         if ($file) {
             $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
-
             Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
         }
         $img_url = "http://localhost:8000/storage/slider_image/" . $image_name;
@@ -61,6 +59,31 @@ class SliderController extends Controller
 
         return  redirect(route("slider.index"))->with('notification', $notification);
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'slider_image' => 'required|mimes:png,jpg,jpeg'
+    //     ]);
+
+    //     $files = $request->file('slider_image');
+    //     if ($files) {
+    //         foreach ($files as $key => $file) {
+    //             $image_name[] = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+    //             Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name[$key]);
+    //             $img_url = "http://localhost:8000/storage/slider_image/" . $image_name[$key];
+    //             $addSlide = HomeSlider::create(['slider_image' => $img_url]);
+    //         }
+    //     }
+
+    //     $notification = [
+    //         'alert' => $addSlide ? 'success' : 'failed',
+    //         'message' => $addSlide ?  'Slide Succesfully Added' : 'Failed To Add Slide',
+    //     ];
+
+    //     return  redirect(route("slider.index"))->with('notification', $notification);
+    // }
 
     /**
      * Display the specified resource.
@@ -79,9 +102,9 @@ class SliderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(HomeSlider $slider)
     {
-        //
+        return view('admin.slider.slide_edit', compact('slider'));
     }
 
     /**
@@ -91,9 +114,31 @@ class SliderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, HomeSlider $slider)
     {
-        //
+        $validated = $request->validate([
+            'slider_image' => 'required|mimes:png,jpg,jpeg'
+        ]);
+
+        $file = $request->file('slider_image');
+        if ($file) {
+            $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
+
+            //Seperate image name from the url
+            $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $slider->slider_image);
+            $stored_image_name = $existing_image_path[1];
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
+        }
+        $img_url = "http://localhost:8000/storage/slider_image/" . $image_name;
+        $updateSlide = $slider->update(['slider_image' => $img_url]);
+
+        $notification = [
+            'alert' => $updateSlide ? 'success' : 'failed',
+            'message' => $updateSlide ?  'Slide Succesfully Updated' : 'Failed To Update Slide',
+        ];
+
+        return  redirect(route("slider.index"))->with('notification', $notification);
     }
 
     /**
@@ -102,9 +147,15 @@ class SliderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(HomeSlider $slider)
     {
-        $deleted = HomeSlider::find($id)->delete();
+        $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $slider->slider_image);
+        $stored_image_name = $existing_image_path[1];
+
+        $deleted = $slider->delete();
+        if ($deleted) {
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
+        }
         $notification = [
             'alert' => $deleted ? 'success' : 'failed',
             'message' => $deleted ?  'Slide Succesfully Deleted' : 'Failed To Delete Slide',

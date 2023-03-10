@@ -1,6 +1,6 @@
 @extends('admin.layout.admin_layout')
 @section('main_content')
-    <div>
+    <div class="box-height">
         <h2 class="az-content-title">Sub_Category List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>
@@ -23,6 +23,9 @@
                                 </h5>
                             </button>
                             <div class="w-50 d-flex justify-content-end align-items-center">
+                                <a href="{{ route('slider.edit', $slide->id) }}" type="submit" class="btn btn-dark mx-2">
+                                    <i class="fas fa-edit fa-lg "></i>
+                                </a>
                                 <form method="POST" action="{{ route('slider.destroy', $slide->id) }}">
                                     @method('DELETE')
                                     @csrf
@@ -30,7 +33,7 @@
                                         onclick="event.preventDefault(); window.confirm('Do you want to delete?')===true &&
                                         this.closest('form').submit();"
                                         type="submit" class="btn btn-dark">
-                                        <i class="fas fa-trash fa-lg mx-1"></i>
+                                        <i class="fas fa-trash fa-lg"></i>
                                     </button>
                                 </form>
                             </div>
@@ -45,6 +48,9 @@
                     </div>
                 </div>
             @endforeach
+            <div class="d-flex justify-content-center mt-5">
+                {!! $slides->links() !!}
+            </div>
         </div>
     </div>
 @endsection

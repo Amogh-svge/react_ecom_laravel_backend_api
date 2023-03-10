@@ -781,3 +781,15 @@
 1678449851-4206-499459403,1678449851.2583,DELETE,/slider/26,"App\Http\Controllers\Admin\Backend\SliderController@destroy",302,425.940990448,request
 1678449851-8672-1184990145,1678449851.6951,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,431.156873703,request
 1678449853-2966-1911486,1678449853.1213,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,391.21794700623,request
+1678450212-0380-1137811413,1678450211.8633,GET,/product/create,"App\Http\Controllers\Admin\Backend\ProductController@create",500,758.62312316895,request
+1678450215-3977-121350085,1678450215.2411,GET,/order/purchased,"App\Http\Controllers\Admin\Backend\OrderController@purchasedList",200,336.00306510925,request
+1678450218-2938-1868961049,1678450218.1066,GET,/category/list,"App\Http\Controllers\Admin\CategoryController@getAllCategory",200,398.25797080994,request
+1678450220-0107-2127627575,1678450219.8213,GET,/category/list,"App\Http\Controllers\Admin\CategoryController@getAllCategory",200,414.17694091797,request
+1678450221-5470-698213034,1678450221.365,GET,/category/page-signup.html,,404,349.12610054016,request
+1678450223-0188-987221674,1678450222.8573,GET,/category/list,"App\Http\Controllers\Admin\CategoryController@getAllCategory",200,383.90302658081,request
+1678450226-4462-789658086,1678450226.2708,GET,/order/processing,"App\Http\Controllers\Admin\Backend\OrderController@processingList",200,380.24401664734,request
+1678450228-1988-1046594200,1678450227.9953,GET,/order/processing,"App\Http\Controllers\Admin\Backend\OrderController@processingList",200,417.36888885498,request
+1678450229-5929-2060840333,1678450229.4367,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,374.8459815979,request
+1678450231-3239-1963132890,1678450231.1335,GET,/slider,"App\Http\Controllers\Admin\Backend\SliderController@index",200,410.91012954712,request
+1678450234-3116-745056224,1678450234.1557,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,340.84486961365,request
+1678450235-6517-2028983629,1678450235.4813,GET,/slider/create,"App\Http\Controllers\Admin\Backend\SliderController@create",200,365.70906639099,request

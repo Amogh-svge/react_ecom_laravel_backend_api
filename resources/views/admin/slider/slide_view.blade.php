@@ -1,11 +1,11 @@
 @extends('admin.layout.admin_layout')
 @section('main_content')
     <div class="box-height">
-        <h2 class="az-content-title">Sub_Category List</h2>
+        <h2 class="az-content-title">Slide Images List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>
-            <span>Sub_Category</span>
-            <span>List Sub_Category</span>
+            <span>Slides</span>
+            <span>List Slides</span>
         </div>
 
 

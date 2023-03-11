@@ -7,6 +7,7 @@ use App\Http\Requests\AddToCartRequest;
 use App\Models\CartOrder;
 use App\Models\ProductCart;
 use App\Models\ProductList;
+use App\Notifications\PendingOrder;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class ProductCartController extends Controller
             $price = $Product_details->price;
             $special_price = $Product_details->special_price;
 
-            if ($special_price != 'null') {
+            if ($special_price) {
                 $total_price =  $special_price * $quantity;
                 $unit_price =  $special_price;
             } else {
@@ -124,12 +125,10 @@ class ProductCartController extends Controller
         date_default_timezone_set("Asia/Dhaka");
         $request_time = date("h:i:sa");
         $request_date = date("d-m-y");
-
         $cart_list = ProductCart::where('email', $email)->get();
 
         foreach ($cart_list as $cart_item) {
             $cartInsertDeleteResult = "";
-
             $result = CartOrder::insert([
                 'invoice_no' => "Easy" . $invoice_no,
                 'product_name' => $cart_item['product_name'],
@@ -150,7 +149,16 @@ class ProductCartController extends Controller
                 'order_status' => "Pending",
             ]);
 
+
             if ($result == 1) {
+                //notify the order to vendor
+                $order = CartOrder::where('email', auth()->user()->email)
+                    ->where('order_date', date("d-m-y"))
+                    ->where('order_status', 'Pending')->get();
+
+                auth()->user()->notify(new PendingOrder($order));
+
+
                 $resultDelete = ProductCart::where('id', $cart_item['id'])->delete();
                 if ($resultDelete == 1) {
                     $cartInsertDeleteResult = 1;
@@ -159,6 +167,7 @@ class ProductCartController extends Controller
                 }
             }
         }
+
 
         return $cartInsertDeleteResult;
     }

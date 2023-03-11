@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Backend\OrderController;
 use App\Http\Controllers\Admin\Backend\SliderController as BackendSliderController;
 use App\Http\Controllers\Admin\Backend\SubCategoryController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\SiteInfoController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('/', fn () => redirect('/dashboard'));
+Route::get('/notify', [NotificationController::class, 'notifyAll']);
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {

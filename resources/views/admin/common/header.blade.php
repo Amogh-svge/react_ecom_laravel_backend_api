@@ -81,13 +81,6 @@
                     <p class="az-notification-text">You have 2 unread notification</p>
                     <div class="az-notification-list">
                         <div class="media new">
-                            <div class="az-img-user"><img src="#" alt=""></div>
-                            <div class="media-body">
-                                <p>Congratulate <strong>Socrates Itumay</strong> for work anniversaries</p>
-                                <span>Mar 15 12:32pm</span>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                        <div class="media new">
                             <div class="az-img-user online"><img src="#" alt="">
                             </div>
                             <div class="media-body">
@@ -102,13 +95,7 @@
                                 <span>Mar 13 02:56am</span>
                             </div><!-- media-body -->
                         </div><!-- media -->
-                        <div class="media">
-                            <div class="az-img-user"><img src="#" alt=""></div>
-                            <div class="media-body">
-                                <p><strong>Adrian Monino</strong> added new comment on your photo</p>
-                                <span>Mar 12 10:40pm</span>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
+
                     </div><!-- az-notification-list -->
                     <div class="dropdown-footer"><a href="">View All Notifications</a></div>
                 </div><!-- dropdown-menu -->

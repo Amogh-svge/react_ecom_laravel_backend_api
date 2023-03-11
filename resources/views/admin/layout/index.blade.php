@@ -1,7 +1,7 @@
 @extends('admin.layout.admin_layout')
 
 @section('main_content')
-    <div>
+    <div class="box-height">
         <div class="az-dashboard-one-title">
             <div>
                 <h2 class="az-dashboard-title">Hi, welcome back!</h2>

@@ -23,7 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', fn () => redirect('/dashboard'));
-Route::get('/notify', [NotificationController::class, 'notifyAll']);
+
+Route::controller(NotificationController::class)->group(function () {
+    Route::get('/notify',  'notifyAll');
+    Route::get('/readnotification/{id}',  'markAsRead')->name('markread');
+});
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {

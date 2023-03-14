@@ -71,33 +71,57 @@
             <div class="az-header-message">
                 <a href="#"><i class="typcn typcn-messages"></i></a>
             </div><!-- az-header-message -->
+
+
             <div class="dropdown az-header-notification">
+                {{-- .az-img-user::after -- commented in css --}}
                 <a href="" class="new"><i class="typcn typcn-bell"></i></a>
                 <div class="dropdown-menu">
                     <div class="az-dropdown-header mg-b-20 d-sm-none">
                         <a href="" class="az-header-arrow"><i class="icon ion-md-arrow-back"></i></a>
                     </div>
                     <h6 class="az-notification-title">Notifications</h6>
-                    <p class="az-notification-text">You have 2 unread notification</p>
-                    <div class="az-notification-list">
-                        <div class="media new">
-                            <div class="az-img-user online"><img src="#" alt="">
-                            </div>
-                            <div class="media-body">
-                                <p><strong>Joyce Chua</strong> just created a new blog post</p>
-                                <span>Mar 13 04:16am</span>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
-                        <div class="media">
-                            <div class="az-img-user"><img src="#" alt=""></div>
-                            <div class="media-body">
-                                <p><strong>Althea Cabardo</strong> just created a new blog post</p>
-                                <span>Mar 13 02:56am</span>
-                            </div><!-- media-body -->
-                        </div><!-- media -->
+                    @if (count(auth()->user()->unreadnotifications) == 0)
+                        <div class="az-notification-list">
+                            <p class="text-center">Empty</p>
+                        </div>
+                    @else
+                        <div>
+                            {{-- <p class="az-notification-text">You have 2 unread notification</p> --}}
+                            <div class="az-notification-list">
+                                @foreach (auth()->user()->unreadnotifications as $notification)
+                                    <div class="media">
+                                        <div class="az-img-user d-flex align-items-center text-center "><i
+                                                class="far fa-clock fa-2x text-success"></i>
+                                        </div>
+                                        <div class="media-body d-flex align-items-center">
+                                            <div>
+                                                <p>{{ $notification->data['message'] }}
+                                                    {{ $notification->data['status'] }} of
+                                                    <strong>{{ $notification->data['name'] }}</strong>
+                                                </p>
+                                                <span>Mar 13 04:16am</span>
+                                            </div>
+                                            @if ($notification->read_at)
+                                                <span>
+                                                    <ion-icon for="read" size="large" class="text-danger"
+                                                        name="done-all">
+                                                    </ion-icon>
+                                                </span>
+                                            @else
+                                                <a href="{{ route('markread', $notification->id) }}">
+                                                    <ion-icon for="read" class="text-primary" size="small"
+                                                        name="book"></ion-icon>
+                                                </a>
+                                            @endif
+                                        </div><!-- media-body -->
+                                    </div><!-- media -->
+                                @endforeach
 
-                    </div><!-- az-notification-list -->
-                    <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+                            </div><!-- az-notification-list -->
+                            <div class="dropdown-footer"><a href="">View All Notifications</a></div>
+                        </div>
+                    @endif
                 </div><!-- dropdown-menu -->
             </div><!-- az-header-notification -->
             <div class="dropdown az-profile-menu">

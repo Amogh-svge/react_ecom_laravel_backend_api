@@ -10,6 +10,8 @@ use App\Models\ProductList;
 use App\Notifications\PendingOrder;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class ProductCartController extends Controller
 {
@@ -151,13 +153,14 @@ class ProductCartController extends Controller
 
 
             if ($result == 1) {
-                //notify the order to vendor
-                $order = CartOrder::where('email', auth()->user()->email)
-                    ->where('order_date', date("d-m-y"))
+                $orders = CartOrder::where('email', $request->email)
+                    ->where('order_date', $request_date)
                     ->where('order_status', 'Pending')->get();
 
-                auth()->user()->notify(new PendingOrder($order));
+                $order = Arr::add($orders[0], 'order_items', count($orders));
 
+                // //notify the order to vendor
+                Auth::user()->notify(new PendingOrder($order));
 
                 $resultDelete = ProductCart::where('id', $cart_item['id'])->delete();
                 if ($resultDelete == 1) {
@@ -167,7 +170,6 @@ class ProductCartController extends Controller
                 }
             }
         }
-
 
         return $cartInsertDeleteResult;
     }

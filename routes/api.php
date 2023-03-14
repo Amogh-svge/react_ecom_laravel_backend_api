@@ -33,9 +33,13 @@ Route::post("/forgetpassword", [ForgetController::class, "forgetPassword"]);
 Route::post("/resetpassword", [ResetController::class, "resetPassword"]);
 //manage reset data
 Route::get("/resetInfo/{token}", [ResetController::class, "getResetInfo"]);
-//manage user
-Route::get("/user", [UserController::class, "user"])->middleware('auth:api');
 
+Route::middleware(['auth:api'])->group(function () {
+    //manage user
+    Route::get("/user", [UserController::class, "user"]);
+    //cart Order route
+    Route::post("/cartorder", [ProductCartController::class, "cartOrder"]);
+});
 ////// End of User Login Api ///////
 
 
@@ -90,11 +94,7 @@ Route::get("/cartitemplus/{id}/{quantity}/{price}", [ProductCartController::clas
 //cart item decrease route
 Route::get("/cartitemminus/{id}/{quantity}/{price}", [ProductCartController::class, "cartItemMinus"]);
 
-//cart Order route
-Route::post("/cartorder", [ProductCartController::class, "cartOrder"]);
+
 
 //cart Order History route
 Route::get("/orderlistbyuser/{email}", [ProductCartController::class, "orderListByUser"]);
-
-//cart item decrease route
-// Route::get("/cartitemminus/{id}/{quantity}/{price}", [ProductCartController::class, "cartItemMinus"]);

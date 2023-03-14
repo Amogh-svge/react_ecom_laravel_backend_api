@@ -49,7 +49,8 @@ class PendingOrder extends Notification
             'email' =>  $this->orders['email'],
             'status' =>  $this->orders['order_status'],
             'name' => User::where('email', $this->orders['email'])->pluck('name')->first(),
-            'message' => 'You have orders pending of ' . $this->orders['email'],
+            'message' => 'You have' . $this->orders['order_items'] . 'orders',
+            'order_items' => $this->orders['order_items']
         ];
     }
 }

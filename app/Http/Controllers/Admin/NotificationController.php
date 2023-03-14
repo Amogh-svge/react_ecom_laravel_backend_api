@@ -8,6 +8,8 @@ use App\Models\Notification;
 
 use App\Notifications\PendingOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -25,11 +27,16 @@ class NotificationController extends Controller
 
     public function notifyAll()
     {
-        // $order = CartOrder::where('email', auth()->user()->email)
-        //     ->where('order_date', date("d-m-y"))
-        //     ->where('order_status', 'Pending')->first();
-        // return auth()->user()->notify(new PendingOrder($order));
+        $order = CartOrder::where('email', 'jakeshrestha@yahoo.com')
+            ->where('order_date', date("d-m-y"))
+            ->where('order_status', 'Pending')->get();
 
-        return Notification::all();
+        return $prepended = Arr::add($order[0], 'count_orders', 2);
+    }
+
+    public function markAsRead($id)
+    {
+        if ($id) Auth::user()->notifications->where('id', $id)->markAsRead();
+        return back();
     }
 }

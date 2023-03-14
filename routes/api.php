@@ -25,76 +25,71 @@ use Illuminate\Support\Facades\Route;
 
 ////// User Login Api ///////
 
-Route::post("/login", [AuthController::class, "login"]); //manage login
-Route::post("/register", [AuthController::class, "register"]); //manage register
+Route::controller(AuthController::class)->group(function () {
+    Route::post("/login", "login"); //manage login
+    Route::post("/register", "register"); //manage register
+});
+
+Route::controller(ResetController::class)->group(function () {
+    Route::post("/resetpassword",  "resetPassword"); //manage reset password
+    Route::get("/resetInfo/{token}",  "getResetInfo"); //manage reset data
+});
+
 //manage forget password
 Route::post("/forgetpassword", [ForgetController::class, "forgetPassword"]);
-//manage reset password
-Route::post("/resetpassword", [ResetController::class, "resetPassword"]);
-//manage reset data
-Route::get("/resetInfo/{token}", [ResetController::class, "getResetInfo"]);
 
 Route::middleware(['auth:api'])->group(function () {
-    //manage user
-    Route::get("/user", [UserController::class, "user"]);
-    //cart Order route
-    Route::post("/cartorder", [ProductCartController::class, "cartOrder"]);
+    Route::get("/user", [UserController::class, "user"]); //manage user
+
 });
 ////// End of User Login Api ///////
 
 
 
+Route::controller(ProductListController::class)->group(function () {
+    Route::get("/productlistbyremark/{remark}", "productListByRemark");  //manage productlist by remark
+    Route::get("/productlistbycategory/{category}", "productListByCategory");  //manage productlist by category
+    Route::get("/productlistbysubcategory/{category}/{subcategory}", "productListBySubCategory");   //manage productlist by sub-category
+    Route::get("/search/{keyword}", "searchProducts"); //manage search results
+    Route::get("/related/{subcategory}/{id}", "relatedProducts"); //related product route
+});
 
 
+Route::controller(ProductReviewController::class)->group(function () {
+    Route::get("/reviewlist/{code}", "reviewList"); //review product route
+    Route::post("/postreview", "postReview"); //post product review  route
+});
+
+Route::controller(FavouriteController::class)->group(function () {
+    Route::get("/favourite/{product_code}/{email}", "addFavourite"); //favourite route
+    Route::get("/favouritelist/{email}", "favouriteList"); //favourite Items route
+    Route::get("/favouriteremove/{product_code}/{email}", "favouriteRemove"); //favourite Items remove route
+});
 
 
+Route::controller(ProductCartController::class)->group(function () {
+    Route::post("/addtocart", "addToCart");  //product cart route
+    Route::get("/cartcount/{email}", "cartCount"); //cart count route
+    Route::get("/cartlist/{email}", "cartList"); //cart list route
+    Route::get("/removecartlist/{id}", "removeCartList"); //remove cart list route
+    Route::get("/cartitemplus/{id}/{quantity}/{price}", "cartItemPlus"); //cart item increase route
+    Route::get("/cartitemminus/{id}/{quantity}/{price}", "cartItemMinus"); //cart item decrease route
+    Route::get("/orderlistbyuser/{email}", "orderListByUser");  //cart Order History route
+    Route::post("/cartorder", "cartOrder")->middleware('auth:api');  //cart Order route
+});
 
-Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]); //get visitor
-Route::post("/postcontact", [ContactController::class, "postContactDetails"]); //contact page
-Route::get("/allsiteinfo", [SiteInfoController::class, "allSiteInfo"]); //siteInfo manage
-Route::get("/allcategory", [CategoryController::class, "allCategory"]); //manage category
-//manage productlist by remark
-Route::get("/productlistbyremark/{remark}", [ProductListController::class, "productListByRemark"]);
-//manage productlist by category
-Route::get("/productlistbycategory/{category}", [ProductListController::class, "productListByCategory"]);
-//manage productlist by sub-category
-Route::get("/productlistbysubcategory/{category}/{subcategory}", [ProductListController::class, "productListBySubCategory"]);
+
+//get visitor
+Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]);
+//contact page
+Route::post("/postcontact", [ContactController::class, "postContactDetails"]);
+//siteInfo manage
+Route::get("/allsiteinfo", [SiteInfoController::class, "allSiteInfo"]);
+//manage category
+Route::get("/allcategory", [CategoryController::class, "allCategory"]);
 //manage home slider
 Route::get("/allSlider", [SliderController::class, "allSlider"]);
 //manage product details
 Route::get("/productdetails/{id}", [ProductDetailsController::class, "productDetails"]);
 //manage notification details
 Route::get("/notification/{id?}", [NotificationController::class, "notificationDetail"]);
-
-//manage search results
-Route::get("/search/{keyword}", [ProductListController::class, "searchProducts"]);
-//related product route
-Route::get("/related/{subcategory}/{id}", [ProductListController::class, "relatedProducts"]);
-//review product route
-Route::get("/reviewlist/{code}", [ProductReviewController::class, "reviewList"]);
-
-//post product review  route
-Route::post("/postreview", [ProductReviewController::class, "postReview"]);
-//product cart route
-Route::post("/addtocart", [ProductCartController::class, "addToCart"]);
-//cart count route
-Route::get("/cartcount/{email}", [ProductCartController::class, "cartCount"]);
-//favourite route
-Route::get("/favourite/{product_code}/{email}", [FavouriteController::class, "addFavourite"]);
-//favourite Items route
-Route::get("/favouritelist/{email}", [FavouriteController::class, "favouriteList"]);
-//favourite Items remove route
-Route::get("/favouriteremove/{product_code}/{email}", [FavouriteController::class, "favouriteRemove"]);
-//cart list route
-Route::get("/cartlist/{email}", [ProductCartController::class, "cartList"]);
-//cart list route
-Route::get("/removecartlist/{id}", [ProductCartController::class, "removeCartList"]);
-//cart item increase route
-Route::get("/cartitemplus/{id}/{quantity}/{price}", [ProductCartController::class, "cartItemPlus"]);
-//cart item decrease route
-Route::get("/cartitemminus/{id}/{quantity}/{price}", [ProductCartController::class, "cartItemMinus"]);
-
-
-
-//cart Order History route
-Route::get("/orderlistbyuser/{email}", [ProductCartController::class, "orderListByUser"]);

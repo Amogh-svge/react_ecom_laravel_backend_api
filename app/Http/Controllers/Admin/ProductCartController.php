@@ -36,7 +36,7 @@ class ProductCartController extends Controller
             $price = $Product_details->price;
             $special_price = $Product_details->special_price;
 
-            if ($special_price != 'null') {
+            if ($special_price != null) {
                 $total_price =  $special_price * $quantity;
                 $unit_price =  $special_price;
             } else {

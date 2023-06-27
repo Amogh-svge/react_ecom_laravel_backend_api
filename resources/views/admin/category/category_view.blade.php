@@ -1,7 +1,7 @@
 @extends('admin.layout.admin_layout')
 
 @section('main_content')
-    <div>
+    <div class="box-height">
         <h2 class="az-content-title">Category List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>
@@ -37,8 +37,8 @@
                                         <a class="btn btn-primary mx-2"
                                             href={{ route('category.edit', $item->id) }}>Edit</a>
                                     </span>
-                                    <form action="{{ route('category.delete', $item->id) }}" id="category_form_delete"
-                                        method="POST">
+                                    <form action="{{ route('category.delete', $item->id) }}" class="category_form_delete"
+                                        data-id="{{ $item->id }}" method="POST">
                                         @method('DELETE') @csrf
                                         <button class="btn btn-danger" onclick="confirmDelete(this)">Remove</button>
                                     </form>

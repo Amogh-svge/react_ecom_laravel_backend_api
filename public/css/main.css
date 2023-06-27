@@ -2,6 +2,9 @@ body {
     overflow-x: hidden;
 }
 
+.text-purple {
+    color: #5b47fb;
+}
 .box-height {
     min-height: 761px;
 }
@@ -31,6 +34,30 @@ body {
     border-radius: 6px;
 }
 
+.sub_images {
+    margin-top: 10px;
+    display: flex;
+    padding: 5px;
+}
+
+.product-subimage {
+    cursor: pointer;
+    width: 25%;
+    aspect-ratio: 2.5/3;
+    object-fit: contain;
+    /* margin: 2px; */
+    margin: 1px;
+}
+
+.product-subimage:hover {
+    border: 3px solid #e7e1e1c9;
+}
+#thumnail_subimage {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: contain;
+}
+
 /*Toast End*/
 .toast_container {
     position: absolute;
@@ -42,6 +69,7 @@ body {
 }
 
 .toaster {
+    display: none;
     opacity: 0;
     background: rgb(247, 244, 244);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -95,6 +123,7 @@ body {
     padding: 10px;
 }
 /* sidedrop down end*/
+
 /* slide */
 .slideImageView {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -17,8 +17,8 @@
                 <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-document"></i> Products</a>
                     <nav class="az-menu-sub">
-                        <a href="page-signin.html" class="nav-link">Add Products</a>
-                        <a href="page-signup.html" class="nav-link">List Products</a>
+                        <a href="{{ route('product.create') }}" class="nav-link">Add Products</a>
+                        <a href="{{ route('product.index') }}" class="nav-link">List Products</a>
                     </nav>
                 </li>
                 <li class="nav-item">

@@ -7,6 +7,7 @@ use App\Http\Requests\AddCategoryRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -34,7 +35,6 @@ class CategoryController extends Controller
             array_push($categoryDetailsArray, $item);
         }
         return $categoryDetailsArray;
-        // return $result ? "successfully retrieved" : "retriving failed";
     }
 
 
@@ -75,11 +75,15 @@ class CategoryController extends Controller
     }
 
 
+
+
     public function editCategory(Category $categ_id)
     {
         $category = $categ_id;
         return view("admin.category.category_edit", compact('category'));
     }
+
+
 
 
     public function updateCategory(AddCategoryRequest $request, Category $categ_id)
@@ -92,9 +96,7 @@ class CategoryController extends Controller
                 ->save(public_path('storage/images/') . $image_name);
 
             //Seperate image name from the url
-            $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $categ_id->category_image);
-            $stored_image_name = $existing_image_path[1];
-            unlink(public_path('storage/slider_image/') . $stored_image_name);
+            seperate_image_name_and_remove($categ_id->category_image);
         }
         //storing image url in DB
         $image_url = "http://localhost:8000/storage/images/" . $image_name;
@@ -112,15 +114,14 @@ class CategoryController extends Controller
     }
 
 
+
+
     public function deleteCategory(Category $categ_id)
     {
-        $existing_image_path = explode("http://localhost:8000/storage/slider_image/", $categ_id->category_image);
-        $stored_image_name = $existing_image_path[1];
-
+        //Seperate image name from the url
+        seperate_image_name_and_remove($categ_id->category_image);
         $deleted = $categ_id->delete();
-        if ($deleted) {
-            unlink(public_path('storage/slider_image/') . $stored_image_name);
-        }
+
         $notification = [
             'alert' => $deleted ? 'success' : 'failed',
             'message' => $deleted ?  'Category Successfully Deleted' : 'Failed To Delete Category',

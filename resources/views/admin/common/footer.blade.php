@@ -8,20 +8,18 @@
     </div><!-- container -->
 </div>
 
-
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script> --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
 
 <script src="/../lib/jquery/jquery.min.js"></script>
 {{-- datatables  --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.js"></script>
 {{-- datatables  --}}
 <script src="/../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/../lib/ionicons/ionicons.js"></script>
 <script src="/../js/azia.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
-
-
-
 @yield('script')
 {{-- Toast Starts --}}
 <script>
@@ -44,11 +42,13 @@
             toastBody.classList.add('failed');
         }
         toastDisplay.style.opacity = 1;
+        toastDisplay.style.display = 'inline-block';
         toastBody.innerHTML = (toast_alert === 'success' ? success_icon : failure_icon) + " " + toastBody.dataset
             .message;
     } else toastDisplay.style.opacity = 0;
 </script>
 {{-- Toast Ends --}}
+
 <script>
     //DataTables starts
     $(document).ready(function() {
@@ -67,9 +67,9 @@
     }
     // Ckeditor ends
 
+    // display image when file is selected
 
-    let show_image = document.getElementById("showImage"); //displays image
-
+    let show_image = document.getElementById("showImage"); //image id
     let file_path = document.getElementById("customFile");
     let slider_path = document.getElementById("slider");
 
@@ -92,8 +92,11 @@
     file_path && file_path.addEventListener('change', getPath);
     slider_path && slider_path.addEventListener('change', getPath);
 
+    // display image when file is selected ends
 
-    // side drop down
+
+
+    // side drop down starts
     const showMenuOnOver = (event) => {
         // console.log(event.nextElementSibling);
         event.nextElementSibling.classList.add('show_menu');
@@ -102,21 +105,28 @@
     const hideMenuOnOver = (event) => {
         event.childNodes[3].classList.remove('show_menu');
     }
-    // side drop down
+    // side drop down ends
+
 
 
     // confirmDelete Starts
-    //confirms before deleting and cancels event if clicked cancel 
+
     const confirmDelete = (info) => {
         event.preventDefault();
-        //parent id of current node taken 
-        var parentNode_id = info.parentNode.id;
-        var element = document.getElementById(parentNode_id);
+        //parent class of current node taken 
+        var parentNode_class = info.parentNode.className;
+        var element = document.querySelectorAll('.' + parentNode_class);
+        let data_id = (info.parentNode.dataset.id);
 
-        //submit the element if delete is true
-        this.window.confirm('Do you want to delete?') === true && element.submit();
-        // this.window.confirm('Do you want to delete?') === true && document.form.submit();
+        element.forEach(item => {
+            //if the items id matches the info's id
+            if (item.dataset.id.match(data_id)) {
+                //submit the element if delete is true
+                this.confirm('Do you want to delete?') === true && item.submit();
+            }
+        });
     }
+
     // ConfirmDelete Ends
 </script>
 

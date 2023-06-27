@@ -109,9 +109,9 @@
 
                                         <option>Select Category</option>
                                         @foreach ($category as $item)
-                                            <option value="{{ $item->category_name }}"
-                                                {{ $item->category_name == $product_info['category'] ? 'selected' : '' }}>
-                                                {{ $item->category_name }}
+                                            <option value="{{ $item }}"
+                                                {{ $item == $product_info['category'] ? 'selected' : '' }}>
+                                                {{ $item }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -125,9 +125,9 @@
 
                                         <option selected="">Select SubCategory</option>
                                         @foreach ($subcategory as $item)
-                                            <option value="{{ $item->subcategory_name }}"
-                                                {{ $product_info['sub_category'] == $item->subcategory_name ? 'selected' : '' }}>
-                                                {{ $item->subcategory_name }}
+                                            <option value="{{ $item }}"
+                                                {{ $product_info['sub_category'] == $item ? 'selected' : '' }}>
+                                                {{ $item }}
                                             </option>
                                         @endforeach
                                     </select>

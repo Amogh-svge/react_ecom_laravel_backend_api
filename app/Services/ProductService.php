@@ -76,4 +76,19 @@ class ProductService
             return $productDetails;
         }
     }
+
+    public function edit(object $product): array
+    {
+        $product_details = ProductDetails::where('product_id', $product->id)->first();
+        $productDetails = $product_details->only(['color', 'size', 'long_description', 'short_description']);
+        $product_info = $product->toArray() + $productDetails;
+        $product_info += [
+            'product_details_id' => $product_details->id,
+            'image_one' =>  $product_details->image_one ? $product_details->image_one : null,
+            'image_two' =>  $product_details->image_two ? $product_details->image_two : null,
+            'image_three' =>  $product_details->image_three ? $product_details->image_three : null,
+            'image_four' =>  $product_details->image_four ? $product_details->image_four : null,
+        ];
+        return $product_info;
+    }
 }

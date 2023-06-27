@@ -74,31 +74,9 @@ class ProductController extends Controller
 
     public function edit(ProductList $product)
     {
-        $category = $this->categoryModel->latest()->select(['category_name'])->get();
-        $subcategory = $this->subcategoryModel->latest()->select(['subcategory_name'])->get();
-        $product_details = ProductDetails::where('product_id', $product->id)->first();
-        $product_info = [
-            'id' => $product->id,
-            'product_details_id' => $product_details->id,
-            'title' => $product->title,
-            'price' => $product->price,
-            'special_price' => $product->special_price,
-            'category' => $product->category,
-            'sub_category' => $product->sub_category,
-            'remark' => $product->remark,
-            'brand' => $product->brand,
-            'rating' => $product->rating,
-            'product_code' => $product->product_code,
-            'image_one' =>  $product_details->image_one ? $product_details->image_one : null,
-            'image_two' =>  $product_details->image_two ? $product_details->image_two : null,
-            'image_three' =>  $product_details->image_three ? $product_details->image_three : null,
-            'image_four' =>  $product_details->image_four ? $product_details->image_four : null,
-            'short_description' =>  $product_details->short_description,
-            'long_description' =>  $product_details->long_description,
-            'color' =>  $product_details->color,
-            'size' =>  $product_details->size,
-        ];
-
+        $category = $this->categoryModel->pluck('category_name');
+        $subcategory = $this->subcategoryModel->pluck('subcategory_name');
+        $product_info = $this->productService->edit($product);
         return view('admin.product.product_edit', compact(['product_info', 'subcategory', 'category']));
     }
 

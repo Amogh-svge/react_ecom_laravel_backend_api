@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class ProductReviewController extends Controller
 {
+    protected ProductReview $productReviewModel;
+
+    public function __construct(ProductReview $productReviewModel)
+    {
+        $this->productReviewModel = $productReviewModel;
+    }
+
     public function reviewList(Request $request)
     {
         $product_code = $request->code;
-        $review_list = ProductReview::where('product_code', $product_code)
+        $review_list = $this->productReviewModel->where('product_code', $product_code)
             ->orderBy('id', 'desc')->limit(4)->get();
         return $review_list;
     }
@@ -25,7 +32,7 @@ class ProductReviewController extends Controller
         $reviewer_rating = $request->reviewer_rating;
         $reviewer_comment = $request->reviewer_comment;
 
-        $review_list = ProductReview::insert([
+        $review_list = $this->productReviewModel->insert([
             'product_code' =>  $product_code,
             'product_name' =>  $product_name,
             'reviewer_name' =>  $reviewer_name,

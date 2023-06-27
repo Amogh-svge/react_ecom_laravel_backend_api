@@ -3,35 +3,45 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Models\ProductList;
 use Illuminate\Http\Request;
 
 class ProductListController extends Controller
 {
+    protected ProductList $ProductListModel;
+
+    public function __construct(ProductList $ProductListModel)
+    {
+        $this->ProductListModel = $ProductListModel;
+    }
+
     public function productListByRemark(Request $request)
     {
         $Remark = $request->remark;
-        return $Product_list = ProductList::where('remark', $Remark)->get();
+        return $Product_list = $this->ProductListModel->where('remark', $Remark)->get();
     }
 
     public function productListByCategory(Request $request)
     {
         $Category = $request->category;
-        return $Product_list = ProductList::where('category', $Category)->get();
+        $Product_list = $this->ProductListModel->where('category', $Category)->get();
+        return $this->successResponse(ProductResource::collection($Product_list), "Successfully Retrived");
     }
 
     public function productListBySubCategory(Request $request)
     {
         $Category = $request->category;
         $Sub_category = $request->subcategory;
-        return $Product_list = ProductList::where('category', $Category)->where('sub_category', $Sub_category)->get();
+        return $Product_list = $this->ProductListModel->where('category', $Category)->where('sub_category', $Sub_category)->get();
     }
 
     public function searchProducts(Request $request)
     {
 
         $SearchQuery = $request->keyword;
-        return $Product_list = ProductList::where('title', 'LIKE', "%{$SearchQuery}%")
+        return $Product_list = $this->ProductListModel
+            ->where('title', 'LIKE', "%{$SearchQuery}%")
             ->orWhere('brand', 'LIKE', "%{$SearchQuery}%")
             ->orWhere('category', 'LIKE', "%{$SearchQuery}%")->get();
     }
@@ -39,8 +49,8 @@ class ProductListController extends Controller
     {
         $product_id = $request->id;
         $relatedProduct = $request->subcategory;
-        return $Product_list = ProductList::where('sub_category', $relatedProduct)
+        return $Product_list = $this->ProductListModel->where('sub_category', $relatedProduct)
             ->whereNot('id', $product_id)
-            ->orderBy('id', 'desc')->limit(6)->get();
+            ->latest()->limit(6)->get();
     }
 }

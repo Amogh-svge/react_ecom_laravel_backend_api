@@ -6,17 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AddCategoryRequest;
 use App\Models\Category;
 use App\Models\Subcategory;
-use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
 class CategoryController extends Controller
 {
+    protected Category $categoryModel;
+    protected Subcategory $subcategoryModel;
+
+    public function __construct(Category $categoryModel, Subcategory $subcategoryModel)
+    {
+        $this->categoryModel = $categoryModel;
+        $this->subcategoryModel = $subcategoryModel;
+    }
+
     public function allCategory()
     {
-        $categories = Category::all();
+        $categories = $this->categoryModel->all();
         $categoryDetailsArray = [];
         foreach ($categories as $category) {
-            $Sub_category = Subcategory::where('category_name', $category->category_name)->get();
+            $Sub_category = $this->subcategoryModel->where('category_name', $category->category_name)->get();
             $item = [
                 'category_name' => $category->category_name,
                 'category_image' => $category->category_image,
@@ -32,7 +40,7 @@ class CategoryController extends Controller
 
     public function getAllCategory()
     {
-        $category = Category::latest()->get();
+        $category = $this->categoryModel->latest()->get();
         return view("admin.category.category_view", compact('category'));
     }
 
@@ -53,7 +61,7 @@ class CategoryController extends Controller
                 ->save(public_path('storage/images/') . $image_name);
         }
         $image_url = "http://localhost:8000/storage/images/" . $image_name;
-        $Category_create = Category::create([
+        $Category_create = $this->categoryModel->create([
             'category_name' => $category_name,
             'category_image' => $image_url,
         ]);

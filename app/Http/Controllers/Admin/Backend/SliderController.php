@@ -9,6 +9,16 @@ use Intervention\Image\Facades\Image;
 
 class SliderController extends Controller
 {
+    protected HomeSlider $homeSliderModel;
+
+    /**
+     * @param HomeSlider $homeSliderModel
+     */
+    public function __construct(HomeSlider $homeSliderModel)
+    {
+        $this->homeSliderModel = $homeSliderModel;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +28,7 @@ class SliderController extends Controller
 
     public function index()
     {
-        $slides = HomeSlider::latest()->paginate(7);
+        $slides =  $this->homeSliderModel->latest()->paginate(7);
         return view('admin.slider.slide_view', compact('slides'));
     }
 
@@ -50,7 +60,7 @@ class SliderController extends Controller
             Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
         }
         $img_url = "http://localhost:8000/storage/slider_image/" . $image_name;
-        $addSlide = HomeSlider::create(['slider_image' => $img_url]);
+        $addSlide =  $this->homeSliderModel->create(['slider_image' => $img_url]);
 
         $notification = [
             'alert' => $addSlide ? 'success' : 'failed',
@@ -60,30 +70,6 @@ class SliderController extends Controller
         return  redirect(route("slider.index"))->with('notification', $notification);
     }
 
-
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'slider_image' => 'required|mimes:png,jpg,jpeg'
-    //     ]);
-
-    //     $files = $request->file('slider_image');
-    //     if ($files) {
-    //         foreach ($files as $key => $file) {
-    //             $image_name[] = 'slider' . date('YmdHi') . $file->getClientOriginalName();
-    //             Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name[$key]);
-    //             $img_url = "http://localhost:8000/storage/slider_image/" . $image_name[$key];
-    //             $addSlide = HomeSlider::create(['slider_image' => $img_url]);
-    //         }
-    //     }
-
-    //     $notification = [
-    //         'alert' => $addSlide ? 'success' : 'failed',
-    //         'message' => $addSlide ?  'Slide Succesfully Added' : 'Failed To Add Slide',
-    //     ];
-
-    //     return  redirect(route("slider.index"))->with('notification', $notification);
-    // }
 
     /**
      * Display the specified resource.

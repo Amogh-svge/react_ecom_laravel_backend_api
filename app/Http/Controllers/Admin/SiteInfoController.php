@@ -9,14 +9,21 @@ use Illuminate\Http\Request;
 
 class SiteInfoController extends Controller
 {
+    protected SiteInfo $siteInfoModel;
+
+    public function __construct(SiteInfo $siteInfoModel)
+    {
+        $this->siteInfoModel = $siteInfoModel;
+    }
+
     public function allSiteInfo()
     {
-        return SiteInfo::all();
+        return $this->siteInfoModel->all();
     }
 
     public function manageSiteInfo()
     {
-        $site_info = SiteInfo::first();
+        $site_info = $this->siteInfoModel->first();
         return view('admin.siteInfo.manage_site', compact('site_info'));
     }
 
@@ -36,7 +43,7 @@ class SiteInfoController extends Controller
             'copyright_link' => $request->copyright_link,
         ];
 
-        $update = SiteInfo::find(1)->first()->update($update_data);
+        $update = $this->siteInfoModel->find(1)->first()->update($update_data);
 
         $notification = [
             'alert' => $update ? 'success' : 'failed',

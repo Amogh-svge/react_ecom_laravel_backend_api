@@ -36,6 +36,7 @@
     <link href="/../lib/typicons.font/typicons.css" rel="stylesheet">
     {{-- <link href="/../lib/flag-icon-css/css/flag-icon.min.css" rel="stylesheet"> --}}
 
+
     <!-- azia CSS -->
     <link rel="stylesheet" href="/../css/azia.css">
     <!-- main CSS -->
@@ -44,7 +45,6 @@
 
     <!-- datatables plugin -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.css">
-
     <!--end datatables-->
 
 

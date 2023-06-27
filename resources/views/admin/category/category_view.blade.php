@@ -43,7 +43,6 @@
                                         <button class="btn btn-danger" onclick="confirmDelete(this)">Remove</button>
                                     </form>
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>

@@ -36,6 +36,8 @@ class AddProductRequest extends FormRequest
             'sub_category' => 'required|alpha',
             'size' => 'required',
             'color' => 'required',
+            'remark' => 'required',
+            'brand' => 'required',
         ];
     }
 }

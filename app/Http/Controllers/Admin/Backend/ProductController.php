@@ -8,81 +8,58 @@ use App\Models\Category;
 use App\Models\ProductList;
 use App\Models\ProductDetails;
 use App\Models\Subcategory;
+use App\Services\ProductService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    protected ProductList $ProductListModel;
+    protected Category $categoryModel;
+    protected Subcategory $subcategoryModel;
+    protected ProductService $productService;
+
+    public function __construct(ProductList $ProductListModel, Category $categoryModel, Subcategory $subcategoryModel, ProductService $productService)
+    {
+        $this->ProductListModel = $ProductListModel;
+        $this->categoryModel = $categoryModel;
+        $this->subcategoryModel = $subcategoryModel;
+        $this->productService = $productService;
+    }
+
     public function index()
     {
-        $products = ProductList::latest()->get();
+        $products = $this->ProductListModel->latest()->get();
         return view("admin.product.product_view", compact('products'));
     }
 
 
     public function create()
     {
-        $category = Category::latest()->get();
-        $subcategory = Subcategory::latest()->get();
+        $category = $this->categoryModel->latest()->get();
+        $subcategory = $this->subcategoryModel->latest()->get();
         return view("admin.product.product_create", compact(['category', 'subcategory']));
     }
 
 
     public function store(AddProductRequest $request)
     {
-        if ($request->hasFile('image')) {
-            $image_name = date('YmdHi') . uniqid() . $request->file('image')->getClientOriginalName();
-            $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/' . $image_name;
-            Image::make($request->file('image'))->resize(350, 250)
-                ->save(public_path('storage/product_thumbnails/') . $image_name);
-        }
-        if ($request->hasFile('sub_images')) {
-            foreach ($request->file('sub_images') as $key => $file) {
-                $image_name = date('YmdHi') . uniqid() . $file->getClientOriginalName();
-                $url[] = 'http://localhost:8000/storage/images/' . $image_name;
-                Image::make($file)->resize(280, 230)
-                    ->save(public_path('storage/images/') . $image_name);
-            }
-        }
+        $validated = $request->validated();
+        $thumbnail_url = $this->productService->getThumbnailUrl($request);
+        $url = $this->productService->getSubImageUrl($request);
 
-        $product_list = [
-            'title' => $request->title,
-            'price' => $request->price,
-            'special_price' => $request->special_price,
-            'image' => $thumbnail_url,
-            'category' => $request->category,
-            'sub_category' => $request->sub_category,
-            'remark' => $request->remark,
-            'brand' => $request->brand,
-            'product_code' => $request->product_code,
-        ];
-
-        //add product list
-        $add_product_list = ProductList::create($product_list);
-
-        if ($add_product_list) {
-            $product_details = [
-                'product_id' => $add_product_list->id,
-                'image_one' => array_key_exists(0, $url) ? $url[0] : null, //checks if array index exists
-                'image_two' => array_key_exists(1, $url) ? $url[1] : null,
-                'image_three' =>  array_key_exists(2, $url) ? $url[2] : null,
-                'image_four' => array_key_exists(3, $url) ? $url[3] : null,
-                'short_description' => $request->short_description,
-                'long_description' => $request->long_description,
-                'color' => $request->color,
-                'size' => $request->size,
-            ];
-
-            //add product details
-            $add_product_details = ProductDetails::create($product_details);
-        }
+        DB::beginTransaction();
+        $productList = $this->productService->createProductList($validated, $thumbnail_url);
+        $productDetails = $this->productService->createProductDetails($productList, $validated, $url);
+        $productList && $productDetails ? DB::commit() : DB::rollback();
 
         $notification = [
-            'alert' => $add_product_list && $add_product_details ? 'success' : 'failed',
-            'message' => $add_product_list && $add_product_details ?  'Product Succesfully Added' : 'Failed To Add Product',
+            'alert' => $productList && $productDetails ? 'success' : 'failed',
+            'message' => $productList && $productDetails ?  'Product Succesfully Added' : 'Failed To Add Product',
         ];
-
         return  redirect(route("product.index"))->with('notification', $notification);
     }
 
@@ -97,8 +74,8 @@ class ProductController extends Controller
 
     public function edit(ProductList $product)
     {
-        $category = Category::latest()->select(['category_name'])->get();
-        $subcategory = Subcategory::latest()->select(['subcategory_name'])->get();
+        $category = $this->categoryModel->latest()->select(['category_name'])->get();
+        $subcategory = $this->subcategoryModel->latest()->select(['subcategory_name'])->get();
         $product_details = ProductDetails::where('product_id', $product->id)->first();
         $product_info = [
             'id' => $product->id,

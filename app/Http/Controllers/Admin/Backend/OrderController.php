@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Backend;
 
+use App\Enum\OrderStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\CartOrder;
 
@@ -19,19 +20,19 @@ class OrderController extends Controller
 
     public function pendingList()
     {
-        $pending_orders =  $this->cartOrderModel->where('order_status', 'pending')->get();
+        $pending_orders =  $this->cartOrderModel->where('order_status', OrderStatusEnum::PENDING)->get();
         return view('admin.order.order_pending', compact('pending_orders'));
     }
 
     public function processingList()
     {
-        $processing_orders =  $this->cartOrderModel->where('order_status', 'processing')->get();
+        $processing_orders =  $this->cartOrderModel->where('order_status', OrderStatusEnum::PROCESSING)->get();
         return view('admin.order.order_processing', compact('processing_orders'));
     }
 
     public function purchasedList()
     {
-        $purchased_orders =  $this->cartOrderModel->where('order_status', 'purchased')->get();
+        $purchased_orders =  $this->cartOrderModel->where('order_status', OrderStatusEnum::PURCHASED)->get();
         return view('admin.order.order_purchase', compact('purchased_orders'));
     }
 
@@ -44,9 +45,7 @@ class OrderController extends Controller
     //processes pending order
     public function processing(CartOrder $process)
     {
-        $processed = $process->update([
-            'order_status' => 'Processing'
-        ]);
+        $processed = $process->update(['order_status' => OrderStatusEnum::PROCESSING]);
 
         $notification = [
             'alert' => $processed ? 'success' : 'failed',
@@ -59,9 +58,8 @@ class OrderController extends Controller
     //completes processing order
     public function purchasing(CartOrder $purchase)
     {
-        $purchased = $purchase->update([
-            'order_status' => 'Purchased'
-        ]);
+        $purchased = $purchase->update(['order_status' => OrderStatusEnum::PURCHASED]);
+
         $notification = [
             'alert' => $purchased ? 'success' : 'failed',
             'message' => $purchased ?  'Order Succesfully Purchased' : 'Failed To Purchase Order',

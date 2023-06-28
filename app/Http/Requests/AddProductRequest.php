@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddProductRequest extends FormRequest
@@ -24,7 +25,7 @@ class AddProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:product_lists',
+            'title' => ['required', Rule::unique('product_lists')->ignore($this->product->id ?? 0)],
             'image' => 'required|mimes:png,jpg,jpeg',
             'sub_images.*' => 'mimes:png,jpg,jpeg',
             'short_description' => 'required|max:255',

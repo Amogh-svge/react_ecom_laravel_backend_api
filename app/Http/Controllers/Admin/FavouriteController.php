@@ -22,7 +22,7 @@ class FavouriteController extends Controller
     {
         $product_code = $request->product_code;
         $email = $request->email;
-        $Product_details = $this->productList->where('product_code', $product_code)->first();
+        $Product_details = $this->productList->productCode($product_code)->first();
 
         $result = $this->favourite->create([
             'email' => $email,
@@ -47,7 +47,7 @@ class FavouriteController extends Controller
         $email = $request->email;
         $product_code = $request->product_code;
 
-        $remove_product = $this->favourite->where('product_code', $product_code)->where('email', $email)->delete();
+        $remove_product = $this->favourite->productCode($product_code)->where('email', $email)->delete();
         return $remove_product;
     }
 }

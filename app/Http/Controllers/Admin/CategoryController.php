@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $categories = $this->categoryModel->all();
         $categoryDetailsArray = [];
         foreach ($categories as $category) {
-            $Sub_category = $this->subcategoryModel->where('category_name', $category->category_name)->get();
+            $Sub_category = $this->subcategoryModel->category($category->category_name)->get();
             $item = [
                 'category_name' => $category->category_name,
                 'category_image' => $category->category_image,

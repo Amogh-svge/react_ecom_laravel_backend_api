@@ -32,7 +32,7 @@ class ProductCartController extends Controller
             $quantity = $request->quantity;
             $product_code = $request->product_code;
 
-            $Product_details = $this->productListModel->where('product_code', $product_code)->first();
+            $Product_details = $this->productListModel->productCode($product_code)->first();
             $price = $Product_details->price;
             $special_price = $Product_details->special_price;
 
@@ -67,20 +67,20 @@ class ProductCartController extends Controller
     public function cartCount(Request $request)
     {
         $email = $request->email;
-        $result = $this->productCartModel->where('email', $email)->count();
+        $result = $this->productCartModel->email($email)->count();
         return $result;
     } //End Method
 
     public function cartList(Request $request)
     {
         $email = $request->email;
-        return $cart_list = $this->productCartModel->where('email', $email)->get();
+        return $cart_list = $this->productCartModel->email($email)->get();
     }
 
     public function removeCartList(Request $request)
     {
         $id = $request->id;
-        $result = $this->productCartModel->where('id', $id)->delete();
+        $result = $this->productCartModel->getById($id)->delete();
         return $result ? response("Item Successfully Removed", 200) : response("Failed To Remove Item", 400);
     }
 
@@ -91,7 +91,7 @@ class ProductCartController extends Controller
         $price = $request->price;
         $newQuantity = $quantity + 1;
         $total_price = $newQuantity * $price;
-        $result  = $this->productCartModel->where('id', $id)->update([
+        $result  = $this->productCartModel->getById($id)->update([
             'quantity' => $newQuantity,
             'total_price' => $total_price,
         ]);
@@ -106,7 +106,7 @@ class ProductCartController extends Controller
         $price = $request->price;
         ($quantity > 0) ? $newQuantity = $quantity - 1 : $newQuantity = 0;
         $total_price = $newQuantity * $price;
-        $result  = $this->productCartModel->where('id', $id)->update([
+        $result  = $this->productCartModel->getById($id)->update([
             'quantity' => $newQuantity,
             'total_price' => $total_price,
         ]);
@@ -136,7 +136,7 @@ class ProductCartController extends Controller
         $request_time = date("h:i:sa");
         $request_date = date("d-m-y");
 
-        $cart_list = $this->productCartModel->where('email', $email)->get();
+        $cart_list = $this->productCartModel->email($email)->get();
 
         foreach ($cart_list as $cart_item) {
             $cartInsertDeleteResult = "";
@@ -162,7 +162,7 @@ class ProductCartController extends Controller
             ]);
 
             if ($result == 1) {
-                $resultDelete = $this->productCartModel->where('id', $cart_item['id'])->delete();
+                $resultDelete = $this->productCartModel->getById($cart_item['id'])->delete();
                 if ($resultDelete == 1) {
                     $cartInsertDeleteResult = 1;
                 } else {
@@ -177,7 +177,7 @@ class ProductCartController extends Controller
     public function orderListByUser(Request $request)
     {
         $email = $request->email;
-        $result =  $this->cartOrderModel->where('email', $email)->orderBy('id', 'DESC')->get();
+        $result =  $this->cartOrderModel->email($email)->orderBy('id', 'DESC')->get();
         return $result;
     }
 }

@@ -19,13 +19,13 @@ class ProductListController extends Controller
     public function productListByRemark(Request $request)
     {
         $Remark = $request->remark;
-        return $Product_list = $this->ProductListModel->where('remark', $Remark)->get();
+        return $this->ProductListModel->where('remark', $Remark)->get();
     }
 
     public function productListByCategory(Request $request)
     {
         $Category = $request->category;
-        $Product_list = $this->ProductListModel->where('category', $Category)->get();
+        $Product_list = $this->ProductListModel->category($Category)->get();
         return $this->successResponse(ProductResource::collection($Product_list), "Successfully Retrived");
     }
 
@@ -33,7 +33,7 @@ class ProductListController extends Controller
     {
         $Category = $request->category;
         $Sub_category = $request->subcategory;
-        return $Product_list = $this->ProductListModel->where('category', $Category)->where('sub_category', $Sub_category)->get();
+        return  $this->ProductListModel->category($Category)->subCategory($Sub_category)->get();
     }
 
     public function searchProducts(Request $request)
@@ -45,11 +45,12 @@ class ProductListController extends Controller
             ->orWhere('brand', 'LIKE', "%{$SearchQuery}%")
             ->orWhere('category', 'LIKE', "%{$SearchQuery}%")->get();
     }
+
     public function relatedProducts(Request $request)
     {
         $product_id = $request->id;
         $relatedProduct = $request->subcategory;
-        return $Product_list = $this->ProductListModel->where('sub_category', $relatedProduct)
+        return $this->ProductListModel->subCategory($relatedProduct)
             ->whereNot('id', $product_id)
             ->latest()->limit(6)->get();
     }

@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Str;
 
-// unlinks named images from storage
+
 if (!function_exists('unlink_image_names')) {
+    /**
+     * unlinks named images from storage
+     */
     function unlink_image_names(array $array)
     {
         foreach ($array as $key => $existing_image_path) {
@@ -12,8 +15,11 @@ if (!function_exists('unlink_image_names')) {
     }
 }
 
-// seperates thumbnail image name and then unlinks from storage
+
 if (!function_exists('seperate_thumbnail_image_name_and_remove')) {
+    /**
+     * seperates thumbnail image name and then unlinks from storage
+     */
     function seperate_thumbnail_image_name_and_remove($ImageName)
     {
         $stored_image_name = Str::after($ImageName, "http://localhost:8000/storage/product_thumbnails/");
@@ -21,8 +27,10 @@ if (!function_exists('seperate_thumbnail_image_name_and_remove')) {
     }
 }
 
-// seperates image name and then unlinks from storage
 if (!function_exists('seperate_image_name_and_remove')) {
+    /**
+     * seperates image name and then unlinks from storage
+     */
     function seperate_image_name_and_remove($ImageName)
     {
         $stored_image_name = Str::after($ImageName, "http://localhost:8000/storage/images/");

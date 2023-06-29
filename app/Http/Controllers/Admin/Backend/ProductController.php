@@ -45,12 +45,9 @@ class ProductController extends Controller
 
     public function store(AddProductRequest $request): RedirectResponse
     {
-        $deleted = $this->productService->store($request);
+        $stored = $this->productService->store($request);
 
-        $notification = [
-            'alert' => $deleted ? 'success' : 'failed',
-            'message' => $deleted ?  'Product Succesfully Added' : 'Failed To Add Product',
-        ];
+        $notification = $this->notification($stored, 'Product Succesfully Added', 'Failed To Add Product');
         return  redirect(route("product.index"))->with('notification', $notification);
     }
 
@@ -76,10 +73,7 @@ class ProductController extends Controller
     {
         $updated = $this->productService->update($request, $product);
 
-        $notification = [
-            'alert' => $updated ? 'success' : 'failed',
-            'message' => $updated ?  'Product Succesfully Updated' : 'Failed To Update Product',
-        ];
+        $notification = $this->notification($updated, 'Product Succesfully Updated', 'Failed To Update Product');
         return  redirect(route("product.index"))->with('notification', $notification);
     }
 
@@ -88,10 +82,7 @@ class ProductController extends Controller
     {
         $deleted = $this->productService->delete($product);
 
-        $notification = [
-            'alert' => $deleted  ? 'success' : 'failed',
-            'message' => $deleted  ?  'Product Succesfully Deleted' : 'Failed To Delete Product',
-        ];
+        $notification = $this->notification($deleted, 'Product Succesfully Deleted', 'Failed To Delete Product');
         return  redirect(route("product.index"))->with('notification', $notification);
     }
 }

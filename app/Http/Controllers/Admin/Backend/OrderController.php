@@ -49,11 +49,7 @@ class OrderController extends Controller
     {
         $processed = $process->update(['order_status' => OrderStatusEnum::PROCESSING]);
 
-        $notification = [
-            'alert' => $processed ? 'success' : 'failed',
-            'message' => $processed ?  'Order Succesfully Processed' : 'Failed To Process Order',
-        ];
-
+        $notification = $this->notification($processed, 'Order Succesfully Processed', 'Failed To Process Order');
         return  redirect(route("pending.list"))->with('notification', $notification);
     }
 
@@ -62,10 +58,7 @@ class OrderController extends Controller
     {
         $purchased = $purchase->update(['order_status' => OrderStatusEnum::PURCHASED]);
 
-        $notification = [
-            'alert' => $purchased ? 'success' : 'failed',
-            'message' => $purchased ?  'Order Succesfully Purchased' : 'Failed To Purchase Order',
-        ];
+        $notification = $this->notification($purchased, 'Order Succesfully Purchased', 'Failed To Purchase Order');
         return  redirect(route("processing.list"))->with('notification', $notification);
     }
 
@@ -73,10 +66,8 @@ class OrderController extends Controller
     public function statementDelete(CartOrder $delete): RedirectResponse
     {
         $deleted = $delete->delete();
-        $notification = [
-            'alert' => $deleted ? 'success' : 'failed',
-            'message' => $deleted ?  'Order Statement Succesfully Deleted' : 'Failed To Delete Order Statement',
-        ];
+
+        $notification = $this->notification($deleted, 'Order Statement Succesfully Deleted', 'Failed To Delete Order Statement');
         return  redirect(route("purchased.list"))->with('notification', $notification);
     }
 }

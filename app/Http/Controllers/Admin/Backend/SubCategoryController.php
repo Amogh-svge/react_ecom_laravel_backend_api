@@ -81,7 +81,7 @@ class SubCategoryController extends Controller
     public function edit($id)
     {
         $categories = $this->categoryModel->all();
-        $subcategory = $this->subcategoryModel->find($id);
+        $subcategory = $this->subcategoryModel->findOrFail($id);
         return view('admin.subcategory.subcategory_edit', compact(['subcategory', 'categories']));
     }
 
@@ -99,7 +99,7 @@ class SubCategoryController extends Controller
             'subcategory_name' => $request->subcategory_name,
         ];
 
-        $subcategory = $this->subcategoryModel->find($id);
+        $subcategory = $this->subcategoryModel->findOrFail($id);
         $subcategory_update = $subcategory->update($inputs);
 
         $notification = [
@@ -117,7 +117,7 @@ class SubCategoryController extends Controller
      */
     public function destroy(int $id)
     {
-        $subcategory = $this->subcategoryModel->find($id);
+        $subcategory = $this->subcategoryModel->findOrFail($id);
         $deleted = $subcategory->delete();
 
         $notification = [

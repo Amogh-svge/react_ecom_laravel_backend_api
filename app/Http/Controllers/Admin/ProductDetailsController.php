@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class ProductDetailsController extends Controller
 {
-    public function productDetails(Request $request)
+    public function productDetails(Request $request, ProductDetails $ProductDetails, ProductList $ProductList)
     {
-        $productDetail = ProductDetails::where('product_id', $request->id)->first();
-        $productList = ProductList::where('id', $request->id)->first();
+        $productDetail = $ProductDetails->where('product_id', $request->id)->firstOrFail();
+        $productList = $ProductList->getById($request->id)->firstOrFail();
         $details = [
             "productDetail" => $productDetail,
             "productList" => $productList,

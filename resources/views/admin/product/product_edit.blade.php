@@ -50,7 +50,7 @@
                             <div class="mb-3 ">
                                 <label for="formFile" class="az-content-label mb-3">Sub-Images</label>
                                 <div class="sub_image custom-file my-1" id="subImageId">
-                                    <input name="sub_images" type="file" class="custom-file-input" id="customFile"
+                                    <input name="sub_images[]" type="file" class="custom-file-input" id="customFile"
                                         multiple>
                                     <label class="custom-file-label" for="customFile">Choose File</label>
                                 </div>
@@ -104,7 +104,6 @@
 
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
-                                    {{ $product_info['category'] }}
                                     <select name="category" class="form-select w-100 border-0" id="inputProductType">
 
                                         <option>Select Category</option>

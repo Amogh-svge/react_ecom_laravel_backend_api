@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum OrderStatusEnum
+enum OrderStatusEnum: string
 {
     const PROCESSING = 'processing';
 

@@ -46,6 +46,7 @@ Route::controller(ProductListController::class)->group(function () {
     Route::get("/productlistbyremark/{remark}",  "productListByRemark");    //manage productlist by remark
     Route::get("/productlistbycategory/{category}",  "productListByCategory");    //manage productlist by category
     Route::get("/productlistbysubcategory/{category}/{subcategory}",  "productListBySubCategory");    //manage productlist by sub-category
+    Route::get("/productlist",  "productList");    //manage productlist by sub-category
     Route::get("/search/{keyword}",  "searchProducts");    //manage search results
     Route::get("/related/{subcategory}/{id}",  "relatedProducts");    //related product route
 });

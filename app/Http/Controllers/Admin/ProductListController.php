@@ -16,6 +16,12 @@ class ProductListController extends Controller
         $this->ProductListModel = $ProductListModel;
     }
 
+    public function productList()
+    {
+        $product = $this->ProductListModel->all();
+        return $this->successResponse($product, "Successfully Retrieved");
+    }
+
     public function productListByRemark(Request $request)
     {
         $Remark = $request->remark;

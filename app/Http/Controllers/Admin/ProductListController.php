@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\ProductList;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductListController extends Controller
@@ -16,10 +17,17 @@ class ProductListController extends Controller
         $this->ProductListModel = $ProductListModel;
     }
 
-    public function productList()
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function productList(): JsonResponse
     {
-        $product = $this->ProductListModel->all();
-        return $this->successResponse($product, "Successfully Retrieved");
+        $product = request('viewAll', true) == false ?
+            $this->ProductListModel->latest()->limit(10)->get() :
+            $this->ProductListModel->paginate(10);
+
+        return $this->successResponse(['products' => ProductResource::collection($product)], "Successfully Retrieved");
     }
 
     public function productListByRemark(Request $request)
@@ -32,7 +40,7 @@ class ProductListController extends Controller
     {
         $Category = $request->category;
         $Product_list = $this->ProductListModel->category($Category)->get();
-        return $this->successResponse(ProductResource::collection($Product_list), "Successfully Retrived");
+        return $this->successResponse([ProductResource::collection($Product_list)], "Successfully Retrived");
     }
 
     public function productListBySubCategory(Request $request)

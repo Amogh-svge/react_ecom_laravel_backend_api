@@ -37,3 +37,17 @@ if (!function_exists('seperate_image_name_and_remove')) {
         unlink(public_path('storage/images/') . $stored_image_name);
     }
 }
+
+
+if (!function_exists('getVariableName')) {
+    function getVariableName($value)
+    {
+        foreach (get_defined_vars() as $varName => $varValue) {
+            if ($varValue === $value) {
+                return $varName;
+            }
+        }
+
+        return null; // If the variable name is not found
+    }
+}

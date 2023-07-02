@@ -14,12 +14,12 @@ trait HttpResponse
      * @return JsonResponse
      */
 
-    public function successResponse($data, string $message = null, int $code = Response::HTTP_OK): JsonResponse
+    public function successResponse(array $data, string $message = null, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
             'status' => 'Success',
             'message' => $message,
-            'data' => $data
+            key($data) ?: 'data' => reset($data)
         ], $code);
     }
 

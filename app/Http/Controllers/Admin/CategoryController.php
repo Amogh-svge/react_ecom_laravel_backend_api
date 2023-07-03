@@ -23,7 +23,7 @@ class CategoryController extends Controller
 
     public function allCategory()
     {
-        $categories = $this->categoryModel->all();
+        $categories = $this->categoryModel->select(['category_name', 'category_image'])->get();
         $categoryDetailsArray = [];
         foreach ($categories as $category) {
             $Sub_category = $this->subcategoryModel->category($category->category_name)->get();
@@ -35,7 +35,8 @@ class CategoryController extends Controller
 
             array_push($categoryDetailsArray, $item);
         }
-        return $categoryDetailsArray;
+
+        return $this->successResponse(['category' => $categoryDetailsArray], "Successfully Retrieved");
     }
 
 

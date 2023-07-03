@@ -17,10 +17,7 @@ class ProductListController extends Controller
         $this->ProductListModel = $ProductListModel;
     }
 
-    /**
-     * @param Request $request
-     * @return void
-     */
+
     public function productList(): JsonResponse
     {
         $product = request('viewAll', true) == false ?
@@ -40,7 +37,7 @@ class ProductListController extends Controller
     {
         $Category = $request->category;
         $Product_list = $this->ProductListModel->category($Category)->get();
-        return $this->successResponse([ProductResource::collection($Product_list)], "Successfully Retrived");
+        return $this->successResponse(['products' => ProductResource::collection($Product_list)], "Successfully Retrived");
     }
 
     public function productListBySubCategory(Request $request)

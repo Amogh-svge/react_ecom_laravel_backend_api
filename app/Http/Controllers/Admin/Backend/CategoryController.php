@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Admin\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddCategoryRequest;
-use App\Models\Category;
-use App\Models\Subcategory;
+use App\Models\{Category, Subcategory};
 use App\Services\CategoryService;
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
+use Illuminate\Http\{RedirectResponse};
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
@@ -23,34 +22,30 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
+
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $category = $this->categoryModel->latest()->get();
         return view("admin.category.index", compact('category'));
     }
 
+
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view("admin.category.create");
     }
 
+
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddCategoryRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $file = $request->file('category_image');
@@ -58,6 +53,7 @@ class CategoryController extends Controller
         $notification = $this->notification($category, 'Category Succesfully Created', 'Failed To Create Category');
         return  redirect(route("category.index"))->with('notification', $notification);
     }
+
 
     /**
      * Display the specified resource.
@@ -70,53 +66,34 @@ class CategoryController extends Controller
         //
     }
 
+
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Category $category): View
     {
         return view("admin.category.edit", compact('category'));
     }
 
+
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(AddCategoryRequest $request, Category $category)
+    public function update(AddCategoryRequest $request, Category $category): RedirectResponse
     {
-        $category_name = $request->category_name;
+        $validated = $request->validated();
         $file = $request->file('category_image');
-        if ($file) {
-            $image_name = date('YmdHi') . $file->getClientOriginalName();
-            Image::make($file)->resize(128, 128)
-                ->save(public_path('storage/images/') . $image_name);
-
-            seperate_image_name_and_remove($category->category_image);
-        }
-        //storing image url in DB
-        $image_url = "http://localhost:8000/storage/images/" . $image_name;
-        $Category_update = $category->update([
-            'category_name' => $category_name,
-            'category_image' => $image_url,
-        ]);
-
-        $notification = $this->notification($Category_update, 'Successfully Updated Category', 'Failed To Update Category');
+        $category = $this->categoryService->update($file, $validated, $category);
+        $notification = $this->notification($category, 'Successfully Updated Category', 'Failed To Update Category');
         return redirect(route("category.index"))->with('notification', $notification);
     }
 
+
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
         seperate_image_name_and_remove($category->category_image);
         $deleted = $category->delete();

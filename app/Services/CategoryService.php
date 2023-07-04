@@ -53,4 +53,17 @@ class CategoryService
         $category = $this->categoryModel->create($validated);
         return $category;
     }
+
+
+    public function update($file, array $validated, object $category): object
+    {
+        if ($file)
+            $image_name = $this->saveCategoryImage($file);
+
+        seperate_image_name_and_remove($category->category_image);
+        $image_url = "http://localhost:8000/storage/images/" . $image_name;
+        $validated['category_image'] = $image_url;
+        $this->categoryModel->update($validated);
+        return $category;
+    }
 }

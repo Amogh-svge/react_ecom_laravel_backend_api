@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\HomeSlider;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class SliderController extends Controller
 {
-    public function allSlider()
+    public function allSlider(): JsonResponse
     {
-        return $result = HomeSlider::all();
+        $result = HomeSlider::all();
+        return $this->successResponse([$result], "Successfully Retrieved");
     }
 }

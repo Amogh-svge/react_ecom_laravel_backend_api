@@ -95,7 +95,7 @@ class ProductService
     {
         $product_list = Arr::except($validated, ['short_description', 'long_description', 'image', 'size', 'color', 'sub_images']);
         $product_list += ['image' => $thumbnail_url];
-        $productList = $product->update($product_list);
+        $product->update($product_list);
         return $product;
     }
 

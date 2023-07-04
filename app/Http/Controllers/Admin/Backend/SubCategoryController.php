@@ -27,7 +27,7 @@ class SubCategoryController extends Controller
     public function index(): View
     {
         $sub_categories = $this->subcategoryModel->latest()->get();
-        return view('admin.subcategory.subcategory_view', compact('sub_categories'));
+        return view('admin.subcategory.index', compact('sub_categories'));
     }
 
 
@@ -37,7 +37,7 @@ class SubCategoryController extends Controller
     public function create(): View
     {
         $categories = $this->categoryModel->all();
-        return view('admin.subcategory.subcategory_create', compact('categories'));
+        return view('admin.subcategory.create', compact('categories'));
     }
 
 
@@ -81,7 +81,7 @@ class SubCategoryController extends Controller
     {
         $categories = $this->categoryModel->all();
         $subcategory = $this->subcategoryModel->findOrFail($id);
-        return view('admin.subcategory.subcategory_edit', compact(['subcategory', 'categories']));
+        return view('admin.subcategory.edit', compact(['subcategory', 'categories']));
     }
 
 

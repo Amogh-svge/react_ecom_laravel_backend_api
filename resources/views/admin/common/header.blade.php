@@ -26,7 +26,7 @@
                         Category</a>
                     <nav class="az-menu-sub">
                         <a href={{ route('category.create') }} class="nav-link">Add Category</a>
-                        <a href={{ route('category.list') }} class="nav-link">List Category</a>
+                        <a href={{ route('category.index') }} class="nav-link">List Category</a>
                     </nav>
                 </li>
                 <li class="nav-item">

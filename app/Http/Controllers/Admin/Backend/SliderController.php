@@ -29,7 +29,7 @@ class SliderController extends Controller
     public function index()
     {
         $slides =  $this->homeSliderModel->latest()->paginate(7);
-        return view('admin.slider.slide_view', compact('slides'));
+        return view('admin.slider.index', compact('slides'));
     }
 
     /**
@@ -39,7 +39,7 @@ class SliderController extends Controller
      */
     public function create()
     {
-        return view('admin.slider.slide_create');
+        return view('admin.slider.create');
     }
 
     /**
@@ -90,7 +90,7 @@ class SliderController extends Controller
      */
     public function edit(HomeSlider $slider)
     {
-        return view('admin.slider.slide_edit', compact('slider'));
+        return view('admin.slider.edit', compact('slider'));
     }
 
     /**

@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\Backend\CategoryController;
 use App\Http\Controllers\Admin\Backend\OrderController;
 use App\Http\Controllers\Admin\Backend\ProductController;
-use App\Http\Controllers\Admin\Backend\SliderController as BackendSliderController;
+use App\Http\Controllers\Admin\Backend\SliderController;
 use App\Http\Controllers\Admin\Backend\SubCategoryController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SiteInfoController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
@@ -32,15 +32,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::get('/user/profile', [AdminController::class, 'userProfile'])->name('user.profile');
     });
 
-    Route::controller(CategoryController::class)->prefix('category')->group(function () {
-        Route::get('/list', 'getAllCategory')->name('category.list');
-        Route::get('/create', 'createCategory')->name('category.create');
-        Route::post('/store', 'storeCategory')->name('category.store');
-        Route::get('/edit/{categ_id}', 'editCategory')->name('category.edit');
-        Route::put('/update/{categ_id}', 'updateCategory')->name('category.update');
-        Route::delete('/delete/{categ_id}',  'deleteCategory')->name('category.delete');
-    });
-
     Route::controller(SiteInfoController::class)->prefix('siteinfo')->group(function () {
         Route::get('/', 'manageSiteInfo')->name('siteInfo.manage');
         Route::put('/update', 'updateSiteInfo')->name('siteInfo.update');
@@ -56,7 +47,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/statement_delete/{delete}', 'statementDelete')->name('order_statement.delete');
     });
 
-    Route::resource('slider', BackendSliderController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('slider', SliderController::class);
     Route::resource('product', ProductController::class);
     Route::resource('subcategory', SubCategoryController::class);
 });

@@ -31,7 +31,7 @@ class ProductController extends Controller
     public function index(): View
     {
         $products = $this->ProductListModel->latest()->get();
-        return view("admin.product.product_view", compact('products'));
+        return view("admin.product.index", compact('products'));
     }
 
 
@@ -39,7 +39,7 @@ class ProductController extends Controller
     {
         $category = $this->categoryModel->latest()->get();
         $subcategory = $this->subcategoryModel->latest()->get();
-        return view("admin.product.product_create", compact(['category', 'subcategory']));
+        return view("admin.product.create", compact(['category', 'subcategory']));
     }
 
 
@@ -56,7 +56,7 @@ class ProductController extends Controller
     {
         $product_details = ProductDetails::where('product_id', $product->id)->first();
         $product_info = collect($product)->merge($product_details);
-        return view('admin.product.product_details', compact('product_info'));
+        return view('admin.product.show', compact('product_info'));
     }
 
 
@@ -65,7 +65,7 @@ class ProductController extends Controller
         $category = $this->categoryModel->pluck('category_name');
         $subcategory = $this->subcategoryModel->pluck('subcategory_name');
         $product_info = $this->productService->edit($product);
-        return view('admin.product.product_edit', compact(['product_info', 'subcategory', 'category']));
+        return view('admin.product.edit', compact(['product_info', 'subcategory', 'category']));
     }
 
 

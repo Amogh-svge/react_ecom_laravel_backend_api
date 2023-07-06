@@ -57,7 +57,7 @@
                                     <ion-icon class="mr-3" size="large" name="menu"></ion-icon>
                                     <span>
                                         <p class="font-weight-bold m-0">Category</p>
-                                        <p class=" m-0">{{ $product_info['category'] }}</p>
+                                        <p class=" m-0">{{ $product_info['category_id'] }}</p>
                                     </span>
                                 </li>
 
@@ -65,7 +65,7 @@
                                     <ion-icon class="mr-3" size="large" name="grid"></ion-icon>
                                     <span>
                                         <p class="font-weight-bold m-0">Sub-Category</p>
-                                        <p class=" m-0">{{ $product_info['sub_category'] }}</p>
+                                        <p class=" m-0">{{ $product_info['subcategory_id'] }}</p>
                                     </span>
                                 </li>
                             </div>

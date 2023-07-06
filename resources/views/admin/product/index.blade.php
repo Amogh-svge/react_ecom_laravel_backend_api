@@ -34,8 +34,8 @@
                                     </div>
                                 </td>
                                 <td>{{ $product->title }}</td>
-                                <td>{{ $product->product_code }}</td>
-                                <td>{{ $product->category }}</td>
+                                <td class="text-danger">{{ $product->product_code }}</td>
+                                <td>{{ $product->category->category_name }}</td>
                                 <td class="d-flex">
                                     <span>
                                         <a class="btn btn-info mx-1"

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\ProductList;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -13,11 +15,15 @@ class ProductListController extends Controller
 {
     protected ProductList $ProductListModel;
     protected Category $CategoryModel;
+    protected ProductRepository $productRepository;
+    protected CategoryRepository $categoryRepository;
 
-    public function __construct(ProductList $ProductListModel, Category $CategoryModel)
+    public function __construct(ProductList $ProductListModel, Category $CategoryModel, ProductRepository $productRepository, CategoryRepository $categoryRepository)
     {
         $this->ProductListModel = $ProductListModel;
         $this->CategoryModel = $CategoryModel;
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
 
@@ -33,15 +39,16 @@ class ProductListController extends Controller
 
     public function productListByRemark(Request $request)
     {
-        $Remark = $request->remark;
-        return $this->ProductListModel->where('remark', $Remark)->get();
+        $product =  $this->productRepository->getByRemark($request->remark);
+        return $this->successResponse(['products' => ProductResource::collection($product)], "Successfully Retrieved");
     }
 
 
     public function productListByCategory(Request $request)
     {
         $category_name = $request->category;
-        $category = $this->CategoryModel->firstCategoryByName($category_name);
+        $category = $this->categoryRepository->firstCategoryByName($category_name);
+        dd($category);
         $Product_list = $this->ProductListModel->getByCategory($category->id)->get();
         return $this->successResponse(['products' => ProductResource::collection($Product_list)], "Successfully Retrived");
     }

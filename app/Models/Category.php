@@ -23,8 +23,8 @@ class Category extends Model
         return $this->belongsToMany(Subcategory::class, 'category_subcategories', 'category_id', 'subcategory_id');
     }
 
-    public function firstCategoryByName($category_name): object
-    {
-        return  $this->where('category_name', $category_name)->firstOrFail();
-    }
+    // public function firstCategoryByName($category_name): object
+    // {
+    //     return  $this->where('category_name', $category_name)->firstOrFail();
+    // }
 }

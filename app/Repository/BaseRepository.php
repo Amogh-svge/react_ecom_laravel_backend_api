@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRespository
+class BaseRepository
 {
     protected $model;
 
@@ -25,7 +25,7 @@ class BaseRespository
      */
     public function first()
     {
-        return $this->getQuery()->first();
+        return $this->getQuery()->firstOrFail();
     }
 
     /**
@@ -58,20 +58,20 @@ class BaseRespository
     public function find($id, $withTrash = false)
     {
         if ($withTrash) {
-            return $this->getQuery()->withTrashed()->find($id);
+            return $this->getQuery()->withTrashed()->findOrFail($id);
         }
 
-        return $this->getQuery()->find($id);
+        return $this->getQuery()->findOrFail($id);
     }
 
     /**
      * query builder to filter results
      */
-    public function where($column, $id, $first = false)
+    public function where($column, $filter, bool $first = false)
     {
-        $query = $this->getQuery()->where($column, $id);
+        $query = $this->getQuery()->where($column, $filter);
 
-        return ($first) ? $query->first() : $query->get();
+        return ($first) ? $query->firstOrFail() : $query->get();
     }
 
     /**
@@ -96,9 +96,9 @@ class BaseRespository
     public function update($id, array $request, $withTrash = false)
     {
         if ($withTrash) {
-            $app = $this->getQuery()->withTrashed()->find($id);
+            $app = $this->getQuery()->withTrashed()->findOrFail($id);
         } else {
-            $app = $this->getQuery()->find($id);
+            $app = $this->getQuery()->findOrFail($id);
         }
 
         $app->update($request);
@@ -111,6 +111,6 @@ class BaseRespository
      */
     public function delete($id): bool
     {
-        return $this->getQuery()->find($id)->delete();
+        return $this->getQuery()->findOrFail($id)->delete();
     }
 }

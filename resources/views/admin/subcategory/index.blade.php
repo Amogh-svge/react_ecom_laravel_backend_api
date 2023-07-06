@@ -22,9 +22,13 @@
                     </thead>
                     <tbody>
                         @foreach ($sub_categories as $key => $sub_category)
+                            {{-- @dd($sub_category->category[0]['category_name']) --}}
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>1</td>
+                                <td>
+                                    1
+                                </td>
+
                                 <td>{{ $sub_category->subcategory_name }}</td>
                                 <td class="d-flex">
                                     <span>

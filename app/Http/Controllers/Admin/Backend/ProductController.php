@@ -30,7 +30,7 @@ class ProductController extends Controller
 
     public function index(): View
     {
-        $products = $this->ProductListModel->with('category')->latest()->get();
+        $products = $this->ProductListModel->with(['category'])->latest()->get();
         return view("admin.product.index", compact('products'));
     }
 

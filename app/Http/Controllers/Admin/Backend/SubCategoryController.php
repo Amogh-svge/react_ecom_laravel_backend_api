@@ -26,7 +26,7 @@ class SubCategoryController extends Controller
      */
     public function index(): View
     {
-        $sub_categories = $this->subcategoryModel->latest()->get();
+        $sub_categories = $this->subcategoryModel->with('category:category_name')->get();
         return view('admin.subcategory.index', compact('sub_categories'));
     }
 

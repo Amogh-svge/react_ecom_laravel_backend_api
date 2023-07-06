@@ -13,14 +13,14 @@ class ProductList extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function scopeCategory(Builder $query, string $category): Builder
+    public function scopegetByCategory(Builder $query, int $category): Builder
     {
-        return $query->where('category', $category);
+        return $query->where('category_id', $category);
     }
 
     public function scopeSubCategory(Builder $query, string $subCategory): Builder
     {
-        return $query->where('sub_category', $subCategory);
+        return $query->where('subcategory_id', $subCategory);
     }
 
     public function scopeProductCode(Builder $query, string $product_code): Builder
@@ -32,6 +32,7 @@ class ProductList extends Model
     {
         return $query->where('id', $id);
     }
+
 
     public function category(): BelongsTo
     {

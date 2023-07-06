@@ -105,12 +105,11 @@
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
                                     <select name="category" class="form-select w-100 border-0" id="inputProductType">
-
                                         <option>Select Category</option>
                                         @foreach ($category as $item)
                                             <option value="{{ $item }}"
-                                                {{ $item == $product_info['category'] ? 'selected' : '' }}>
-                                                {{ $item }}
+                                                {{ $item['id'] == $product_info['category_id'] ? 'selected' : '' }}>
+                                                {{ $item['category_name'] }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -124,9 +123,9 @@
 
                                         <option selected="">Select SubCategory</option>
                                         @foreach ($subcategory as $item)
-                                            <option value="{{ $item }}"
-                                                {{ $product_info['sub_category'] == $item ? 'selected' : '' }}>
-                                                {{ $item }}
+                                            <option value="{{ $item['id'] }}"
+                                                {{ $product_info['subcategory_id'] == $item['id'] ? 'selected' : '' }}>
+                                                {{ $item['subcategory_name'] }}
                                             </option>
                                         @endforeach
                                     </select>

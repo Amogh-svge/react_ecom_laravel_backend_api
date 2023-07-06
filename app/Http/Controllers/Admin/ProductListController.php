@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\ProductList;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,10 +12,12 @@ use Illuminate\Http\Request;
 class ProductListController extends Controller
 {
     protected ProductList $ProductListModel;
+    protected Category $CategoryModel;
 
-    public function __construct(ProductList $ProductListModel)
+    public function __construct(ProductList $ProductListModel, Category $CategoryModel)
     {
         $this->ProductListModel = $ProductListModel;
+        $this->CategoryModel = $CategoryModel;
     }
 
 
@@ -27,25 +30,30 @@ class ProductListController extends Controller
         return $this->successResponse(['products' => ProductResource::collection($product)], "Successfully Retrieved");
     }
 
+
     public function productListByRemark(Request $request)
     {
         $Remark = $request->remark;
         return $this->ProductListModel->where('remark', $Remark)->get();
     }
 
+
     public function productListByCategory(Request $request)
     {
-        $Category = $request->category;
-        $Product_list = $this->ProductListModel->category($Category)->get();
+        $category_name = $request->category;
+        $category = $this->CategoryModel->firstCategoryByName($category_name);
+        $Product_list = $this->ProductListModel->getByCategory($category->id)->get();
         return $this->successResponse(['products' => ProductResource::collection($Product_list)], "Successfully Retrived");
     }
+
 
     public function productListBySubCategory(Request $request)
     {
         $Category = $request->category;
         $Sub_category = $request->subcategory;
-        return  $this->ProductListModel->category($Category)->subCategory($Sub_category)->get();
+        return  $this->ProductListModel->getByCategory($Category)->subCategory($Sub_category)->get();
     }
+
 
     public function searchProducts(Request $request)
     {
@@ -56,6 +64,7 @@ class ProductListController extends Controller
             ->orWhere('brand', 'LIKE', "%{$SearchQuery}%")
             ->orWhere('category', 'LIKE', "%{$SearchQuery}%")->get();
     }
+
 
     public function relatedProducts(Request $request)
     {

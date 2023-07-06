@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,5 +21,10 @@ class Category extends Model
     public function subCategory(): BelongsToMany
     {
         return $this->belongsToMany(Subcategory::class, 'category_subcategories', 'category_id', 'subcategory_id');
+    }
+
+    public function firstCategoryByName($category_name): object
+    {
+        return  $this->where('category_name', $category_name)->firstOrFail();
     }
 }

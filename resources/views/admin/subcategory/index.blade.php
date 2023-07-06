@@ -22,7 +22,6 @@
                     </thead>
                     <tbody>
                         @foreach ($sub_categories as $key => $sub_category)
-                            {{-- @dd($sub_category->category[0]['category_name']) --}}
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>

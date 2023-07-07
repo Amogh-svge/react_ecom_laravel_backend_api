@@ -21,4 +21,11 @@ class CategoryRepository extends BaseRepository
     {
         return  $this->where('category_name', $category_name, true);
     }
+
+
+    public function firstSubCategoryByName(string $subcategory_name): object
+    {
+        parent::__construct($this->subCategoryModel);
+        return  $this->where('subcategory_name', $subcategory_name, true);
+    }
 }

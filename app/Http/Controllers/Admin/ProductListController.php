@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\ProductList;
-use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,69 +16,72 @@ class ProductListController extends Controller
     protected ProductList $ProductListModel;
     protected Category $CategoryModel;
     protected ProductRepository $productRepository;
-    protected CategoryRepository $categoryRepository;
+    protected ProductService $productService;
 
-    public function __construct(ProductList $ProductListModel, Category $CategoryModel, ProductRepository $productRepository, CategoryRepository $categoryRepository)
+    public function __construct(ProductList $ProductListModel, Category $CategoryModel, ProductRepository $productRepository, ProductService $productService)
     {
         $this->ProductListModel = $ProductListModel;
         $this->CategoryModel = $CategoryModel;
         $this->productRepository = $productRepository;
-        $this->categoryRepository = $categoryRepository;
+        $this->productService = $productService;
     }
 
 
     public function productList(): JsonResponse
     {
-        $product = request('viewAll', true) == false ?
+        $product_list = request('viewAll', true) == false ?
             $this->ProductListModel->latest()->limit(10)->get() :
             $this->ProductListModel->paginate(10);
 
-        return $this->successResponse(['products' => ProductResource::collection($product)], "Successfully Retrieved");
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 
 
-    public function productListByRemark(Request $request)
+    public function productListByRemark(Request $request): JsonResponse
     {
-        $product =  $this->productRepository->getByRemark($request->remark);
-        return $this->successResponse(['products' => ProductResource::collection($product)], "Successfully Retrieved");
+        $product_list =  $this->productRepository->getByRemark($request->remark);
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 
 
-    public function productListByCategory(Request $request)
+    public function productListByCategory(Request $request): JsonResponse
     {
-        $category_name = $request->category;
-        $category = $this->categoryRepository->firstCategoryByName($category_name);
-        dd($category);
-        $Product_list = $this->ProductListModel->getByCategory($category->id)->get();
-        return $this->successResponse(['products' => ProductResource::collection($Product_list)], "Successfully Retrived");
+        $product_list = $this->productService->getProductByCategory($request->category);
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 
 
-    public function productListBySubCategory(Request $request)
+    public function productListBySubCategory(Request $request): JsonResponse
     {
-        $Category = $request->category;
-        $Sub_category = $request->subcategory;
-        return  $this->ProductListModel->getByCategory($Category)->subCategory($Sub_category)->get();
+        $product_list = $this->productService->getProductBySubCategory($request->category, $request->subcategory);
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 
 
-    public function searchProducts(Request $request)
+    public function searchProducts(Request $request): JsonResponse
     {
 
-        $SearchQuery = $request->keyword;
-        return $Product_list = $this->ProductListModel
-            ->where('title', 'LIKE', "%{$SearchQuery}%")
-            ->orWhere('brand', 'LIKE', "%{$SearchQuery}%")
-            ->orWhere('category', 'LIKE', "%{$SearchQuery}%")->get();
+        $search_query = $request->keyword;
+        $product_list = $this->ProductListModel->search($search_query)->get();
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 
 
-    public function relatedProducts(Request $request)
+    public function relatedProducts(Request $request): JsonResponse
     {
-        $product_id = $request->id;
-        $relatedProduct = $request->subcategory;
-        return $this->ProductListModel->subCategory($relatedProduct)
-            ->whereNot('id', $product_id)
-            ->latest()->limit(6)->get();
+        $product_list = $this->productService->getRelatedProducts($product_id = $request->id,  $relatedProduct = $request->subcategory);
+        return $product_list->isNotEmpty() ?
+            $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
+            $this->successResponse(['products' => []], "No Results Found");
     }
 }

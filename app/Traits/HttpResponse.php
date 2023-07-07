@@ -36,7 +36,7 @@ trait HttpResponse
         return response()->json([
             'status' => 'Error',
             'message' => $message,
-            'data' => $data
+            key($data) ?: 'data' => reset($data)
         ], $code);
     }
 }

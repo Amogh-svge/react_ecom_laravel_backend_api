@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\ProductDetails;
-use App\Models\ProductList;
+use App\Models\{ProductDetails, ProductList};
+use App\Repository\{CategoryRepository, ProductRepository};
 use Illuminate\Support\{Arr, Str};
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
@@ -12,15 +12,16 @@ class ProductService
 {
     protected ProductList $ProductListModel;
     protected ProductDetails $ProductDetailsModel;
+    protected ProductRepository $productRepository;
+    protected CategoryRepository $categoryRepository;
 
-    /**
-     * @param ProductList $ProductListModel
-     * @param ProductDetails $ProductDetailsModel
-     */
-    public function __construct(ProductList $ProductListModel, ProductDetails $ProductDetailsModel)
+
+    public function __construct(ProductList $ProductListModel, ProductDetails $ProductDetailsModel, ProductRepository $productRepository, CategoryRepository $categoryRepository)
     {
         $this->ProductListModel = $ProductListModel;
         $this->ProductDetailsModel = $ProductDetailsModel;
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
 
@@ -211,5 +212,37 @@ class ProductService
         $deleteProductDetails = $productDetail->delete();
         $deleteProduct && $deleteProductDetails ? DB::commit() : DB::rollback();
         return $deleteProduct && $deleteProductDetails ? true : false;
+    }
+
+    /**
+     * get product By category name
+     */
+    public function getProductByCategory(string $category_name): object
+    {
+        $category = $this->categoryRepository->firstCategoryByName($category_name);
+        $product_list = $this->ProductListModel->getByCategory($category->id)->get();
+        return $product_list;
+    }
+
+    /**
+     * get product By subcategory name
+     */
+    public function getProductBySubCategory(string $category_name, string $subcategory_name): object
+    {
+        $category = $this->categoryRepository->firstCategoryByName($category_name);
+        $subcategory = $this->categoryRepository->firstSubCategoryByName($subcategory_name);
+        $product_list =  $this->ProductListModel->getByCategory($category->id)->SubCategory($subcategory->id)->get();
+        return $product_list;
+    }
+
+    /**
+     * get related products
+     */
+    public function getRelatedProducts($product_id, $relatedProduct): object
+    {
+        $subcategory = $this->categoryRepository->firstSubCategoryByName($relatedProduct);
+        return $this->ProductListModel->subCategory($subcategory->id)
+            ->whereNot('id', $product_id)
+            ->latest()->limit(6)->get();
     }
 }

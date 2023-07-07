@@ -18,6 +18,6 @@ class ProductRepository extends BaseRepository
 
     public function getByRemark(string $remark): object
     {
-        return $this->where('remark', $remark);
+        return $this->where('remark', $remark)->with('productDetail');
     }
 }

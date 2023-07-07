@@ -220,7 +220,7 @@ class ProductService
     public function getProductByCategory(string $category_name): object
     {
         $category = $this->categoryRepository->firstCategoryByName($category_name);
-        $product_list = $this->ProductListModel->getByCategory($category->id)->get();
+        $product_list = $this->ProductListModel->getByCategory($category->id)->with('productDetail')->get();
         return $product_list;
     }
 
@@ -231,7 +231,7 @@ class ProductService
     {
         $category = $this->categoryRepository->firstCategoryByName($category_name);
         $subcategory = $this->categoryRepository->firstSubCategoryByName($subcategory_name);
-        $product_list =  $this->ProductListModel->getByCategory($category->id)->SubCategory($subcategory->id)->get();
+        $product_list =  $this->ProductListModel->getByCategory($category->id)->SubCategory($subcategory->id)->with('productDetail')->get();
         return $product_list;
     }
 
@@ -242,7 +242,7 @@ class ProductService
     {
         $subcategory = $this->categoryRepository->firstSubCategoryByName($relatedProduct);
         return $this->ProductListModel->subCategory($subcategory->id)
-            ->whereNot('id', $product_id)
+            ->whereNot('id', $product_id)->with('productDetail')
             ->latest()->limit(6)->get();
     }
 }

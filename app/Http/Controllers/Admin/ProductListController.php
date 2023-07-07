@@ -30,7 +30,7 @@ class ProductListController extends Controller
     public function productList(): JsonResponse
     {
         $product_list = request('viewAll', true) == false ?
-            $this->ProductListModel->latest()->limit(10)->get() :
+            $this->ProductListModel->latest()->limit(10)->with('productDetail')->get() :
             $this->ProductListModel->paginate(10);
 
         return $product_list->isNotEmpty() ?
@@ -70,7 +70,7 @@ class ProductListController extends Controller
     {
 
         $search_query = $request->keyword;
-        $product_list = $this->ProductListModel->search($search_query)->get();
+        $product_list = $this->ProductListModel->search($search_query)->with('productDetail')->get();
         return $product_list->isNotEmpty() ?
             $this->successResponse(['products' => ProductResource::collection($product_list)], "Successfully Retrived") :
             $this->successResponse(['products' => []], "No Results Found");

@@ -33,6 +33,7 @@ class ProductResource extends JsonResource
             "brand" => $this->brand,
             "rating" => $this->rating,
             "product_code" => $this->product_code,
+            "product_details" => $this->whenLoaded('productDetail'),
         ];
     }
 }

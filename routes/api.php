@@ -92,6 +92,6 @@ Route::get("/allcategory", [CategoryController::class, "allCategory"]); //manage
 //manage home slider
 Route::get("/allSlider", [SliderController::class, "allSlider"]);
 //manage product details
-Route::get("/productdetails/{id}", [ProductDetailsController::class, "productDetails"]);
+Route::get("/productdetails/{id}", [ProductDetailsController::class, "index"]);
 //manage notification details
 Route::get("/notification/{id?}", [NotificationController::class, "notificationDetail"]);

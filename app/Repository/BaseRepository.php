@@ -67,11 +67,9 @@ class BaseRepository
     /**
      * query builder to filter results
      */
-    public function where($column, $filter, bool $first = false)
+    public function where($column, $filter): BUilder
     {
-        $query = $this->getQuery()->where($column, $filter);
-
-        return ($first) ? $query->firstOrFail() : $query->get();
+        return $this->getQuery()->where($column, $filter);
     }
 
     /**

@@ -10,22 +10,24 @@ class CategoryRepository extends BaseRepository
 {
     protected Subcategory $subCategoryModel;
 
-    public function __construct(Category $model, Subcategory $subCategoryModel)
+    public function __construct(Category $categoryModel, Subcategory $subCategoryModel)
     {
-        parent::__construct($model);
+        parent::__construct($categoryModel);
         $this->subCategoryModel = $subCategoryModel;
     }
 
 
-    public function firstCategoryByName(string $category_name): object
+    public function getByName(string $category_name, bool $first = false): object
     {
-        return  $this->where('category_name', $category_name, true);
+        $query = $this->where('category_name', $category_name);
+        return ($first) ? $query->firstOrFail() : $query->get();
     }
 
 
-    public function firstSubCategoryByName(string $subcategory_name): object
+    public function getSubCategoryByName(string $subcategory_name, bool $first = false): object
     {
         parent::__construct($this->subCategoryModel);
-        return  $this->where('subcategory_name', $subcategory_name, true);
+        $query = $this->where('subcategory_name', $subcategory_name);
+        return ($first) ? $query->firstOrFail() : $query->get();
     }
 }

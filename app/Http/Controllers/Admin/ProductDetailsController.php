@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProductDetails;
-use App\Models\ProductList;
+use App\Http\Resources\ProductResource;
+use App\Repository\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductDetailsController extends Controller
 {
-    public function productDetails(Request $request, ProductDetails $ProductDetails, ProductList $ProductList)
-    {
-        $productDetail = $ProductDetails->where('product_id', $request->id)->firstOrFail();
-        $productList = $ProductList->getById($request->id)->firstOrFail();
-        $details = [
-            "productDetail" => $productDetail,
-            "productList" => $productList,
-        ];
+    protected ProductRepository $productRepository;
 
-        return $details;
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
+    public function index(Request $request)
+    {
+        $product =  $this->productRepository->getById($request->id, true);
+        return $this->successResponse(['products' => new ProductResource($product)], "Successfully Retrived");
     }
 }

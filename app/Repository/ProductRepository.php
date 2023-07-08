@@ -16,8 +16,15 @@ class ProductRepository extends BaseRepository
         $this->productDetailsModel = $productDetailsModel;
     }
 
-    public function getByRemark(string $remark): object
+    public function getByRemark(string $remark, bool $first = false): object
     {
-        return $this->where('remark', $remark)->with('productDetail');
+        $query = $this->where('remark', $remark)->with('productDetail');
+        return ($first) ? $query->firstOrFail() : $query->get();
+    }
+
+    public function getById(int $id, bool $first = false): object
+    {
+        $query =  $this->where('id', $id)->with('productDetail');
+        return ($first) ? $query->firstOrFail() : $query->get();
     }
 }

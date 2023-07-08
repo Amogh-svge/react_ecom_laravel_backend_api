@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\SubCategoryResource;
 use App\Models\{Category, Subcategory};
+use App\Repository\CategoryRepository;
 use Intervention\Image\Facades\Image;
 
 
@@ -11,26 +12,19 @@ class CategoryService
 {
     protected Category $categoryModel;
     protected Subcategory $subcategoryModel;
+    protected CategoryRepository $categoryRepository;
 
-    public function __construct(Category $categoryModel, Subcategory $subcategoryModel)
+    public function __construct(Category $categoryModel, Subcategory $subcategoryModel, CategoryRepository $categoryRepository)
     {
         $this->categoryModel = $categoryModel;
         $this->subcategoryModel = $subcategoryModel;
+        $this->categoryRepository = $categoryRepository;
     }
 
 
-    public function allCategory(object $categories): array
+    public function all(): object
     {
-        $categoryDetails = $categories->map(function ($category) {
-            $sub_category = $this->subcategoryModel->category($category->category_name)->get();
-            return [
-                'category_name' => $category->category_name,
-                'category_image' => $category->category_image,
-                'subcategory_name' => SubCategoryResource::collection($sub_category),
-            ];
-        });
-
-        return $categoryDetails;
+        return $query = $this->categoryRepository->all();
     }
 
 

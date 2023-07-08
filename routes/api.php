@@ -70,9 +70,9 @@ Route::controller(ProductCartController::class)->group(function () {
 
 /*Favourite Controller */
 Route::controller(FavouriteController::class)->group(function () {
-    Route::get("/favourite/{product_code}/{email}",  "addFavourite");    //favourite route
-    Route::get("/favouritelist/{email}",  "favouriteList");    //favourite Items route
-    Route::get("/favouriteremove/{product_code}/{email}",  "favouriteRemove");    //favourite Items remove route
+    Route::post("/favourite",  "create");    //favourite route
+    Route::get("/favourite/{email}",  "index");    //favourite Items route
+    Route::delete("/favourite/remove/{product_code}/{email}",  "destroy");    //favourite Items remove route
 });
 
 
@@ -86,7 +86,7 @@ Route::controller(ProductReviewController::class)->group(function () {
 Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]); //get visitor
 Route::post("/postcontact", [ContactController::class, "postContactDetails"]); //contact page
 Route::get("/allsiteinfo", [SiteInfoController::class, "allSiteInfo"]); //siteInfo manage
-Route::get("/allcategory", [CategoryController::class, "allCategory"]); //manage category
+Route::get("/category", [CategoryController::class, "index"]); //manage category
 
 
 //manage home slider

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Repository\BaseRepository;
+use Illuminate\Database\Eloquent\Collection;
 
 class CategoryRepository extends BaseRepository
 {
@@ -16,6 +17,11 @@ class CategoryRepository extends BaseRepository
         $this->subCategoryModel = $subCategoryModel;
     }
 
+
+    public function all(): Collection
+    {
+        return $this->with('subCategory')->get();
+    }
 
     public function getByName(string $category_name, bool $first = false): object
     {

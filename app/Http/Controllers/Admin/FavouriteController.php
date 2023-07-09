@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FavouriteRequest;
 use App\Http\Resources\FavouriteResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Favourite;
 use App\Models\ProductList;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class FavouriteController extends Controller
 {
@@ -23,25 +25,21 @@ class FavouriteController extends Controller
 
     public function create(FavouriteRequest $request)
     {
-        $product_code = $request->product_code;
-        $email = $request->email;
-        $Product_details = $this->productList->productCode($product_code)->first();
-
-        $result = $this->favouriteModel->create([
-            'email' => $email,
-            'image' => $Product_details->image,
-            'product_name' => $Product_details->title,
-            'product_code' => $product_code,
-        ]);
-
-        return $result;
+        $created = $this->favouriteModel->create($request->validated());
+        $favourite = $created->with('products')->find($created->id);
+        return $created ?
+            $this->successResponse(['data' => new FavouriteResource($favourite)], "Successfully Retrieved") :
+            $this->successResponse(['data' => []], "No Results Found");
     }
 
     public function index(Request $request): JsonResponse
     {
-        $favourite_list = $this->favouriteModel->email($request->email)->with('products')->get();
-        return $favourite_list->isNotEmpty() ?
-            $this->successResponse(['data' => FavouriteResource::collection($favourite_list)], "Successfully Retrieved") :
+        $favourites = $this->favouriteModel->email($request->email)->with('products')->get();
+        $products = $favourites->pluck('products');
+        $products = Arr::collapse($products);
+
+        return $products ?
+            $this->successResponse(['data' => ProductResource::collection($products)], "Successfully Retrieved") :
             $this->successResponse(['data' => []], "No Results Found");
     }
 

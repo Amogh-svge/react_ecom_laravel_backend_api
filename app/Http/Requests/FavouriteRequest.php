@@ -13,7 +13,7 @@ class FavouriteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class FavouriteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "email" => ['required', 'email', 'exists:users'],
+            "product_id" => ['required', 'integer', 'exists:product_lists,id'],
         ];
     }
 }

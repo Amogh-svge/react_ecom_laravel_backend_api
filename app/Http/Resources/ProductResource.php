@@ -28,11 +28,12 @@ class ProductResource extends JsonResource
             "special_price" => $this->special_price,
             "image" => $this->image,
             "category" => $this->category,
-            "sub_category" => $this->sub_category,
+            "sub_category" => $this->subcategory_id,
             "remark" => $this->remark,
             "brand" => $this->brand,
             "rating" => $this->rating,
             "product_code" => $this->product_code,
+            "product_details" => $this->whenLoaded('productDetail'),
         ];
     }
 }

@@ -11,5 +11,5 @@ class UserController extends Controller
     public function user()
     {
         return Auth::user();
-    } //End method
+    }
 }

@@ -21,10 +21,11 @@ class CategoryController extends Controller
     }
 
 
-    public function allCategory(): JsonResponse
+    public function index(): JsonResponse
     {
-        $categories = $this->categoryModel->select(['category_name', 'category_image'])->get();
-        $category = $this->categoryService->allCategory($categories);
-        return $this->successResponse(['category' => $category], "Successfully Retrieved");
+        $category = $this->categoryService->all();
+        return $category->isNotEmpty() ?
+            $this->successResponse(['category' => $category], "Successfully Retrieved") :
+            $this->successResponse(['category' => []], "No Results Found");
     }
 }

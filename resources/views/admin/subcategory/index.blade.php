@@ -24,7 +24,10 @@
                         @foreach ($sub_categories as $key => $sub_category)
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
-                                <td>{{ $sub_category->category_name }}</td>
+                                <td>
+                                    1
+                                </td>
+
                                 <td>{{ $sub_category->subcategory_name }}</td>
                                 <td class="d-flex">
                                     <span>

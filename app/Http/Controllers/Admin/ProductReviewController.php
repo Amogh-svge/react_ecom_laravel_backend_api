@@ -3,44 +3,38 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewRequest;
 use App\Models\ProductReview;
-use Illuminate\Http\Request;
+use App\Repository\ProductRepository;
+use Illuminate\Http\JsonResponse;
 
 class ProductReviewController extends Controller
 {
     protected ProductReview $productReviewModel;
+    protected ProductRepository $productRepository;
 
-    public function __construct(ProductReview $productReviewModel)
+    public function __construct(ProductReview $productReviewModel, ProductRepository $productRepository)
     {
         $this->productReviewModel = $productReviewModel;
+        $this->productRepository = $productRepository;
     }
 
-    public function reviewList(Request $request)
+    public function index(string $code): JsonResponse
     {
-        $product_code = $request->code;
-        $review_list = $this->productReviewModel->where('product_code', $product_code)
-            ->orderBy('id', 'desc')->limit(4)->get();
-        return $review_list;
+        $review_list = $this->productRepository->getReviews($code, 4, 'desc');
+
+        return $review_list->isNotEmpty() ?
+            $this->successResponse(['data' => $review_list], "Successfully Retrived") :
+            $this->successResponse(['data' => []], "No Results Found");
     }
 
-    public function postReview(Request $request)
+    public function create(ReviewRequest $request): JsonResponse
     {
-        $product_code = $request->product_code;
-        $product_name = $request->product_name;
-        $reviewer_name = $request->reviewer_name;
-        $reviewer_photo = $request->photo;
-        $reviewer_rating = $request->reviewer_rating;
-        $reviewer_comment = $request->reviewer_comment;
+        $validated = $request->validated();
+        $review = $this->productReviewModel->create($validated);
 
-        $review_list = $this->productReviewModel->insert([
-            'product_code' =>  $product_code,
-            'product_name' =>  $product_name,
-            'reviewer_name' =>  $reviewer_name,
-            'reviewer_photo' =>  $reviewer_photo,
-            'reviewer_rating' =>  $reviewer_rating,
-            'reviewer_comment' =>  $reviewer_comment,
-        ]);
-
-        return $review_list;
+        return $review ?
+            $this->successResponse(['data' => $review], "Successfully Created") :
+            $this->errorResponse(['data' => []], "Failed To Create");
     }
 }

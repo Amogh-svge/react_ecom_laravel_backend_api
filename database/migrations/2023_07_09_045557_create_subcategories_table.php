@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('visitors', function (Blueprint $table) {
-            $table->id();
-            $table->string('ip_address');
-            $table->string('visit_time');
-            $table->string('visit_date');
+        Schema::create('subcategories', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('subcategory_name');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('visitors');
+        Schema::dropIfExists('subcategories');
     }
 };

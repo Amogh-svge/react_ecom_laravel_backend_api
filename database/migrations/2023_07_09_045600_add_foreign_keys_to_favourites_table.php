@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subcategories', function (Blueprint $table) {
-            $table->id();
-            $table->string('category_name');
-            $table->string('subcategory_name');
-            $table->timestamps();
+        Schema::table('favourites', function (Blueprint $table) {
+            $table->foreign(['product_id'])->references(['id'])->on('product_lists')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subcategories');
+        Schema::table('favourites', function (Blueprint $table) {
+            $table->dropForeign('favourites_product_id_foreign');
+        });
     }
 };

@@ -30,7 +30,7 @@ class ProductController extends Controller
 
     public function index(): View
     {
-        $products = $this->ProductListModel->latest()->get();
+        $products = $this->ProductListModel->with(['category'])->latest()->get();
         return view("admin.product.index", compact('products'));
     }
 
@@ -62,8 +62,8 @@ class ProductController extends Controller
 
     public function edit(ProductList $product): View
     {
-        $category = $this->categoryModel->pluck('category_name');
-        $subcategory = $this->subcategoryModel->pluck('subcategory_name');
+        $category = $this->categoryModel->select(['id', 'category_name'])->get();
+        $subcategory = $this->subcategoryModel->select(['id', 'subcategory_name'])->get();
         $product_info = $this->productService->edit($product);
         return view('admin.product.edit', compact(['product_info', 'subcategory', 'category']));
     }

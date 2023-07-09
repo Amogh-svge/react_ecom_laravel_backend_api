@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('favourites', function (Blueprint $table) {
-            $table->id();
-            $table->string('product_name');
-            $table->string('product_code');
+        Schema::create('product_carts', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('image');
             $table->string('email');
+            $table->string('product_name');
+            $table->string('product_code');
+            $table->string('size');
+            $table->string('color');
+            $table->string('quantity');
+            $table->string('unit_price');
+            $table->string('total_price');
             $table->timestamps();
         });
     }
@@ -30,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('favourites');
+        Schema::dropIfExists('product_carts');
     }
 };

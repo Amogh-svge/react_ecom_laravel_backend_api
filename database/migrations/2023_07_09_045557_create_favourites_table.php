@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('category_name');
-            $table->string('category_image');
+        Schema::create('favourites', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('email');
             $table->timestamps();
+            $table->unsignedBigInteger('product_id')->index('favourites_product_id_foreign');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('favourites');
     }
 };

@@ -26,7 +26,7 @@ class SubCategoryController extends Controller
      */
     public function index(): View
     {
-        $sub_categories = $this->subcategoryModel->latest()->get();
+        $sub_categories = $this->subcategoryModel->with('category:category_name')->get();
         return view('admin.subcategory.index', compact('sub_categories'));
     }
 
@@ -48,12 +48,7 @@ class SubCategoryController extends Controller
      */
     public function store(SubCategoryRequest $request): RedirectResponse
     {
-        $inputs = [
-            'category_name' => $request->category_name,
-            'subcategory_name' => $request->subcategory_name,
-        ];
-
-        $subcategory_create = $this->subcategoryModel->create($inputs);
+        $subcategory_create = $this->subcategoryModel->create($request->validated());
 
         $notification = $this->notification($subcategory_create, 'Sub_Category Successfully Created', 'Failed To Create Sub_Category');
         return  redirect(route("subcategory.index"))->with('notification', $notification);

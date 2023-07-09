@@ -70,28 +70,31 @@ Route::controller(ProductCartController::class)->group(function () {
 
 /*Favourite Controller */
 Route::controller(FavouriteController::class)->group(function () {
-    Route::get("/favourite/{product_code}/{email}",  "addFavourite");    //favourite route
-    Route::get("/favouritelist/{email}",  "favouriteList");    //favourite Items route
-    Route::get("/favouriteremove/{product_code}/{email}",  "favouriteRemove");    //favourite Items remove route
+    Route::post("/favourite",  "create");    //favourite route
+    Route::get("/favourite/{email}",  "index");    //favourite Items route
+    Route::delete("/favourite/{favourite}",  "destroy");    //favourite Items remove route
 });
 
 
 /*ProductReview Controller */
 Route::controller(ProductReviewController::class)->group(function () {
-    Route::get("/reviewlist/{code}",  "reviewList");    //review product route
-    Route::post("/postreview",  "postReview");    //post product review  route
+    Route::get("/review/{code}",  "index");    //review product route
+    Route::post("/review",  "create");    //post product review  route
+});
+
+Route::controller(SiteInfoController::class)->group(function () {
+    Route::get("/info", [SiteInfoController::class, "index"]); //siteInfo manage
 });
 
 
 Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]); //get visitor
-Route::post("/postcontact", [ContactController::class, "postContactDetails"]); //contact page
-Route::get("/allsiteinfo", [SiteInfoController::class, "allSiteInfo"]); //siteInfo manage
-Route::get("/allcategory", [CategoryController::class, "allCategory"]); //manage category
+Route::post("/contact", [ContactController::class, "create"]); //contact page
+Route::get("/category", [CategoryController::class, "index"]); //manage category
 
 
 //manage home slider
 Route::get("/allSlider", [SliderController::class, "allSlider"]);
 //manage product details
-Route::get("/productdetails/{id}", [ProductDetailsController::class, "productDetails"]);
+Route::get("/productdetails/{id}", [ProductDetailsController::class, "index"]);
 //manage notification details
 Route::get("/notification/{id?}", [NotificationController::class, "notificationDetail"]);

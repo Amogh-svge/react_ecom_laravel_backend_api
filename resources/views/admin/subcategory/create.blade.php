@@ -31,13 +31,13 @@
 
                     <div class="col-lg-12 my-2">
                         <label class="az-content-label mb-3" for="select-category">Select Category</label>
-                        <select name="category_name" class="invalid w-100 form-select" aria-label="Default select example">
+                        <select name="category_id" class="invalid w-100 form-select" aria-label="Default select example">
                             <option value="#">Choose Category</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
-                        @error('category_name')
+                        @error('category_id')
                             <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
                     </div><!-- col -->

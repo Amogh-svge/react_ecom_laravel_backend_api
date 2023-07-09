@@ -3,51 +3,48 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Favourite;
-use App\Models\ProductList;
-use Illuminate\Http\Request;
+use App\Http\Requests\FavouriteRequest;
+use App\Http\Resources\{FavouriteResource, ProductResource};
+use App\Models\{Favourite, ProductList};
+use Illuminate\Http\{JsonResponse, Request};
+use Illuminate\Support\Arr;
 
 class FavouriteController extends Controller
 {
     protected ProductList $productList;
-    protected Favourite $favourite;
+    protected Favourite $favouriteModel;
 
-    public function __construct(ProductList $productList, Favourite $favourite)
+    public function __construct(ProductList $productList, Favourite $favouriteModel)
     {
         $this->productList = $productList;
-        $this->favourite = $favourite;
+        $this->favouriteModel = $favouriteModel;
     }
 
-    public function addFavourite(Request $request)
+    public function create(FavouriteRequest $request): JsonResponse
     {
-        $product_code = $request->product_code;
-        $email = $request->email;
-        $Product_details = $this->productList->productCode($product_code)->first();
-
-        $result = $this->favourite->create([
-            'email' => $email,
-            'image' => $Product_details->image,
-            'product_name' => $Product_details->title,
-            'product_code' => $product_code,
-        ]);
-
-        return $result;
+        $created = $this->favouriteModel->create($request->validated());
+        $favourite = $created->with('products')->find($created->id);
+        return $created ?
+            $this->successResponse(['data' => new FavouriteResource($favourite)], "Successfully Retrieved") :
+            $this->successResponse(['data' => []], "No Results Found");
     }
 
-    public function favouriteList(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $email = $request->email;
-        $favourite_list = $this->favourite->where('email', $email)->get();
+        $favourites = $this->favouriteModel->email($request->email)->with('products')->get();
+        $products = $favourites->pluck('products');
+        $products = Arr::collapse($products);
 
-        return $favourite_list;
+        return $products ?
+            $this->successResponse(['data' => ProductResource::collection($products)], "Successfully Retrieved") :
+            $this->successResponse(['data' => []], "No Results Found");
     }
 
-    public function favouriteRemove(Request $request)
+    public function destroy(Favourite $favourite): JsonResponse
     {
-        $email = $request->email;
-        $product_code = $request->product_code;
-
-        $remove_product = $this->favourite->productCode($product_code)->where('email', $email)->delete();
-        return $remove_product;
+        $deleted = $favourite->delete();
+        return $deleted ?
+            $this->successResponse(['data' => []], "Successfully Deleted") :
+            $this->errorResponse(['data' => []], "Failed To Delete");
     }
 }

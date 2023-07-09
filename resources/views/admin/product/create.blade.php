@@ -103,32 +103,33 @@
 
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product Category</label>
-                                    <select name="category" class="form-select w-100 border-0" id="inputProductType">
+                                    <select name="category_id" class="form-select w-100 border-0" id="inputProductType">
                                         <option selected="">Select Category</option>
                                         @foreach ($category as $item)
-                                            <option value="{{ $item->category_name }}"
-                                                {{ old('category') == $item->category_name ? 'selected' : '' }}>
+                                            <option value="{{ $item->id }}"
+                                                {{ old('category_id') == $item->category_name ? 'selected' : '' }}>
                                                 {{ $item->category_name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @include('admin.common.error', ['field' => 'category'])
+                                    @include('admin.common.error', ['field' => 'category_id'])
                                 </div>
 
                                 <div class="col-12 mb-3">
                                     <label for="inputProductType" class="az-content-label mb-3">Product
                                         SubCategory</label>
-                                    <select name="sub_category" class="form-select w-100 border-0" id="inputProductType">
+                                    <select name="subcategory_id" class="form-select w-100 border-0"
+                                        id="inputProductType">
 
                                         <option selected="">Select SubCategory</option>
                                         @foreach ($subcategory as $item)
-                                            <option value="{{ $item->subcategory_name }}"
-                                                {{ old('sub_category') == $item->subcategory_name ? 'selected' : '' }}>
+                                            <option value="{{ $item->id }}"
+                                                {{ old('subcategory_id') == $item->subcategory_name ? 'selected' : '' }}>
                                                 {{ $item->subcategory_name }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @include('admin.common.error', ['field' => 'sub_category'])
+                                    @include('admin.common.error', ['field' => 'subcategory_id'])
                                 </div>
 
                                 <div class="col-12 mb-3">

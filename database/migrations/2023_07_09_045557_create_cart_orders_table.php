@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cart_orders', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('invoice_no');
             $table->string('product_name');
             $table->string('product_code');
@@ -33,6 +33,8 @@ return new class extends Migration
             $table->string('order_time');
             $table->string('order_status');
             $table->timestamps();
+            $table->unsignedBigInteger('product_id')->index('cart_orders_product_id_foreign');
+            $table->unsignedBigInteger('user_id')->index('cart_orders_user_id_foreign');
         });
     }
 

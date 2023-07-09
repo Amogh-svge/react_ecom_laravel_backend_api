@@ -26,7 +26,7 @@ class SubCategoryRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
                 return [
-                    'category_name' => 'required',
+                    'category_id' => 'required|integer',
                     'subcategory_name' => 'required|unique:subcategories'
                 ];
 
@@ -34,7 +34,7 @@ class SubCategoryRequest extends FormRequest
             case 'PATCH':
 
                 return [
-                    'category_name' => 'required',
+                    'category_id' => 'required|integer',
                     'subcategory_name' => 'required|unique:subcategories'
                 ];
         }

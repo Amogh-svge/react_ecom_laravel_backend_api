@@ -72,7 +72,7 @@ Route::controller(ProductCartController::class)->group(function () {
 Route::controller(FavouriteController::class)->group(function () {
     Route::post("/favourite",  "create");    //favourite route
     Route::get("/favourite/{email}",  "index");    //favourite Items route
-    Route::delete("/favourite/remove/{product_code}/{email}",  "destroy");    //favourite Items remove route
+    Route::delete("/favourite/{favourite}",  "destroy");    //favourite Items remove route
 });
 
 

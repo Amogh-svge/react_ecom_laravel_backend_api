@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FavouriteRequest;
+use App\Http\Resources\FavouriteResource;
 use App\Models\Favourite;
 use App\Models\ProductList;
 use Illuminate\Http\JsonResponse;
@@ -40,16 +41,15 @@ class FavouriteController extends Controller
     {
         $favourite_list = $this->favouriteModel->email($request->email)->with('products')->get();
         return $favourite_list->isNotEmpty() ?
-            $this->successResponse(['data' => $favourite_list], "Successfully Retrieved") :
+            $this->successResponse(['data' => FavouriteResource::collection($favourite_list)], "Successfully Retrieved") :
             $this->successResponse(['data' => []], "No Results Found");
     }
 
-    public function destroy(Request $request)
+    public function destroy(Favourite $favourite)
     {
-        $email = $request->email;
-        $product_code = $request->product_code;
-
-        $remove_product = $this->favouriteModel->productCode($product_code)->where('email', $email)->delete();
-        return $remove_product;
+        $deleted = $favourite->delete();
+        return $deleted ?
+            $this->successResponse(['data' => []], "Successfully Deleted") :
+            $this->errorResponse(['data' => []], "Failed To Delete");
     }
 }

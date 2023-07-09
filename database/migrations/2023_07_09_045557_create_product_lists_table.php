@@ -14,18 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_lists', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('title');
             $table->string('price');
             $table->string('special_price')->nullable();
             $table->string('image');
-            $table->string('category');
-            $table->string('sub_category');
             $table->string('remark');
             $table->string('brand');
-            $table->string('rating');
             $table->string('product_code');
             $table->timestamps();
+            $table->unsignedBigInteger('category_id')->index('product_lists_category_id_foreign');
+            $table->unsignedBigInteger('subcategory_id')->index('product_lists_subcategory_id_foreign');
         });
     }
 

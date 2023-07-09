@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class FavouriteRequest extends FormRequest
+class ReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +24,12 @@ class FavouriteRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => ['required', 'email', 'exists:users'],
-            "product_id" => [
-                'required', 'integer',
-                'exists:product_lists,id',
-                Rule::unique('favourites', 'product_id')->where(function ($query) {
-                    $query->where('email', $this->email);
-                })
-            ],
+            'reviewer_id' =>  'required|exists:users,id',
+            'product_id' =>  'required|exists:product_lists,id',
+            'reviewer_name' =>  'required|string',
+            'reviewer_photo' =>  'required',
+            'reviewer_rating' =>  'required|integer',
+            'reviewer_comment' =>  'required|string',
         ];
     }
 }

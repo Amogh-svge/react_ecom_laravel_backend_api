@@ -78,14 +78,17 @@ Route::controller(FavouriteController::class)->group(function () {
 
 /*ProductReview Controller */
 Route::controller(ProductReviewController::class)->group(function () {
-    Route::get("/reviewlist/{code}",  "reviewList");    //review product route
-    Route::post("/postreview",  "postReview");    //post product review  route
+    Route::get("/review/{code}",  "index");    //review product route
+    Route::post("/review",  "create");    //post product review  route
+});
+
+Route::controller(SiteInfoController::class)->group(function () {
+    Route::get("/info", [SiteInfoController::class, "index"]); //siteInfo manage
 });
 
 
 Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]); //get visitor
-Route::post("/postcontact", [ContactController::class, "postContactDetails"]); //contact page
-Route::get("/allsiteinfo", [SiteInfoController::class, "allSiteInfo"]); //siteInfo manage
+Route::post("/contact", [ContactController::class, "create"]); //contact page
 Route::get("/category", [CategoryController::class, "index"]); //manage category
 
 

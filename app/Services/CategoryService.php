@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Resources\SubCategoryResource;
 use App\Models\{Category, Subcategory};
 use App\Repository\CategoryRepository;
 use Intervention\Image\Facades\Image;

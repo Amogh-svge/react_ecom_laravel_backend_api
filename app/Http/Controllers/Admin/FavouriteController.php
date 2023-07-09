@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FavouriteRequest;
-use App\Http\Resources\FavouriteResource;
-use App\Http\Resources\ProductResource;
-use App\Models\Favourite;
-use App\Models\ProductList;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use App\Http\Resources\{FavouriteResource, ProductResource};
+use App\Models\{Favourite, ProductList};
+use Illuminate\Http\{JsonResponse, Request};
 use Illuminate\Support\Arr;
 
 class FavouriteController extends Controller
@@ -23,7 +20,7 @@ class FavouriteController extends Controller
         $this->favouriteModel = $favouriteModel;
     }
 
-    public function create(FavouriteRequest $request)
+    public function create(FavouriteRequest $request): JsonResponse
     {
         $created = $this->favouriteModel->create($request->validated());
         $favourite = $created->with('products')->find($created->id);
@@ -43,7 +40,7 @@ class FavouriteController extends Controller
             $this->successResponse(['data' => []], "No Results Found");
     }
 
-    public function destroy(Favourite $favourite)
+    public function destroy(Favourite $favourite): JsonResponse
     {
         $deleted = $favourite->delete();
         return $deleted ?

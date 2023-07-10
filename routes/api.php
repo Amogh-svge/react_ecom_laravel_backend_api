@@ -43,54 +43,60 @@ Route::get("/user", [UserController::class, "user"])->middleware('auth:api');
 
 /*ProductList Controller */
 Route::controller(ProductListController::class)->group(function () {
-    Route::get("/productlistbyremark/{remark}",  "productListByRemark");    //manage productlist by remark
-    Route::get("/productlistbycategory/{category}",  "productListByCategory");    //manage productlist by category
-    Route::get("/productlistbysubcategory/{category}/{subcategory}",  "productListBySubCategory");    //manage productlist by sub-category
-    Route::get("/productlist",  "productList");    //manage productlist by sub-category
-    Route::get("/search/{keyword}",  "searchProducts");    //manage search results
-    Route::get("/related/{subcategory}/{id}",  "relatedProducts");    //related product route
+    Route::get("/productlistbyremark/{remark}",  "productListByRemark");
+    Route::get("/productlistbycategory/{category}",  "productListByCategory");
+    Route::get("/productlistbysubcategory/{category}/{subcategory}",  "productListBySubCategory");
+    Route::get("/productlist",  "productList");
+    Route::get("/search/{keyword}",  "searchProducts");
+    Route::get("/related/{subcategory}/{id}",  "relatedProducts");
 });
 
 
 /*ProductCart Controller */
-Route::controller(ProductCartController::class)->group(function () {
-    Route::get("/cart/{email}", "index"); //cart list route
-    Route::delete("/cart/{cart}", "delete"); //Remove cart list route
-    Route::post("/cart/order", "order");    //cart Order route
-    Route::post("/cart", "add");    //product cart route
-    Route::get("/cart/count/{email}",  "count");    //cart count route
-    Route::get("/order/{email}", "orderListByUser");    //cart Order History route
-    Route::patch("/cart/item/plus/{cart}", "cartItemPlus"); //cart item increase route
-    Route::patch("/cart/item/minus/{cart}", "cartItemMinus");    //cart item decrease route
+Route::controller(ProductCartController::class)->prefix('cart')->group(function () {
+    Route::get("/{email}", "index");
+    Route::delete("/{cart}", "delete");
+    //cart Order route
+    Route::post("/order", "order");
+    Route::post("/", "add");
+    Route::get("/count/{email}",  "count");
+    //cart item increase route
+    Route::patch("/item/plus/{cart}", "cartItemPlus");
+    //cart item decrease route
+    Route::patch("/item/minus/{cart}", "cartItemMinus");
 });
 
+//cart Order History route
+Route::get("/order/{email}", [ProductCartController::class, "orderListByUser"]);
 
 /*Favourite Controller */
-Route::controller(FavouriteController::class)->group(function () {
-    Route::post("/favourite",  "create");    //favourite route
-    Route::get("/favourite/{email}",  "index");    //favourite Items route
-    Route::delete("/favourite/{favourite}",  "destroy");    //favourite Items remove route
+Route::controller(FavouriteController::class)->prefix('favourite')->group(function () {
+    Route::post("/",  "create");
+    Route::get("/{email}",  "index");
+    Route::delete("/{favourite}",  "destroy");
 });
 
 
 /*ProductReview Controller */
-Route::controller(ProductReviewController::class)->group(function () {
-    Route::get("/review/{code}",  "index");    //review product route
-    Route::post("/review",  "create");    //post product review  route
+Route::controller(ProductReviewController::class)->prefix('review')->group(function () {
+    Route::get("/{code}",  "index");
+    Route::post("/",  "create");
 });
 
 Route::controller(SiteInfoController::class)->group(function () {
-    Route::get("/info", [SiteInfoController::class, "index"]); //siteInfo manage
+    Route::get("/info", [SiteInfoController::class, "index"]);
 });
 
 
-Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]); //get visitor
-Route::post("/contact", [ContactController::class, "create"]); //contact page
-Route::get("/category", [CategoryController::class, "index"]); //manage category
+Route::get("/getvisitor", [VisitorController::class, "getVisitorDetails"]);
+//manage contact
+Route::post("/contact", [ContactController::class, "create"]);
+//manage category
+Route::get("/category", [CategoryController::class, "index"]);
 
 
 //manage home slider
-Route::get("/allSlider", [SliderController::class, "allSlider"]);
+Route::get("/slider", [SliderController::class, 'index']);
 //manage product details
 Route::get("/productdetails/{id}", [ProductDetailsController::class, "index"]);
 //manage notification details

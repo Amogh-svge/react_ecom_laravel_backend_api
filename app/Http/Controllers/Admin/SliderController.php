@@ -8,9 +8,9 @@ use Illuminate\Http\JsonResponse;
 
 class SliderController extends Controller
 {
-    public function allSlider(): JsonResponse
+    public function index(): JsonResponse
     {
-        $result = HomeSlider::all();
+        $result = HomeSlider::paginate();
         return $this->successResponse([$result], "Successfully Retrieved");
     }
 }

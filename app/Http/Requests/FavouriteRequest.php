@@ -25,13 +25,13 @@ class FavouriteRequest extends FormRequest
     public function rules()
     {
         return [
-            "email" => ['required', 'email', 'exists:users'],
-            "product_id" => [
+            'email' => ['required', 'email', 'exists:users'],
+            'product_id' => [
                 'required', 'integer',
                 'exists:product_lists,id',
                 Rule::unique('favourites', 'product_id')->where(function ($query) {
                     $query->where('email', $this->email);
-                })
+                }),
             ],
         ];
     }

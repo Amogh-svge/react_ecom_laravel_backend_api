@@ -17,17 +17,17 @@ class ProductCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            "id" => $this->id,
-            "title" => $this->title,
-            "price" => $this->price,
-            "special_price" => $this->special_price,
-            "image" => $this->image,
-            "category" => $this->category,
-            "sub_category" => $this->sub_category,
-            "remark" => $this->remark,
-            "brand" => $this->brand,
-            "rating" => $this->rating,
-            "product_code" => $this->product_code,
-        ];;
+            'id' => $this->id,
+            'title' => $this->title,
+            'price' => $this->price,
+            'special_price' => $this->special_price,
+            'image' => $this->image,
+            'category' => $this->category,
+            'sub_category' => $this->sub_category,
+            'remark' => $this->remark,
+            'brand' => $this->brand,
+            'rating' => $this->rating,
+            'product_code' => $this->product_code,
+        ];
     }
 }

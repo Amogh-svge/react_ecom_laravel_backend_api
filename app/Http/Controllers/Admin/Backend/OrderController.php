@@ -12,9 +12,6 @@ class OrderController extends Controller
 {
     protected CartOrder $cartOrderModel;
 
-    /**
-     * @param CartOrder $cartOrderModel
-     */
     public function __construct(CartOrder $cartOrderModel)
     {
         $this->cartOrderModel = $cartOrderModel;
@@ -22,19 +19,22 @@ class OrderController extends Controller
 
     public function pendingList(): View
     {
-        $pending_orders =  $this->cartOrderModel->orderStatus(OrderStatusEnum::PENDING)->get();
+        $pending_orders = $this->cartOrderModel->orderStatus(OrderStatusEnum::PENDING)->get();
+
         return view('admin.order.order_pending', compact('pending_orders'));
     }
 
     public function processingList(): View
     {
-        $processing_orders =  $this->cartOrderModel->orderStatus(OrderStatusEnum::PROCESSING)->get();
+        $processing_orders = $this->cartOrderModel->orderStatus(OrderStatusEnum::PROCESSING)->get();
+
         return view('admin.order.order_processing', compact('processing_orders'));
     }
 
     public function purchasedList(): View
     {
-        $purchased_orders =  $this->cartOrderModel->orderStatus(OrderStatusEnum::PURCHASED)->get();
+        $purchased_orders = $this->cartOrderModel->orderStatus(OrderStatusEnum::PURCHASED)->get();
+
         return view('admin.order.order_purchase', compact('purchased_orders'));
     }
 
@@ -50,7 +50,8 @@ class OrderController extends Controller
         $processed = $process->update(['order_status' => OrderStatusEnum::PROCESSING]);
 
         $notification = $this->notification($processed, 'Order Succesfully Processed', 'Failed To Process Order');
-        return  redirect(route("pending.list"))->with('notification', $notification);
+
+        return redirect(route('pending.list'))->with('notification', $notification);
     }
 
     //completes processing order
@@ -59,7 +60,8 @@ class OrderController extends Controller
         $purchased = $purchase->update(['order_status' => OrderStatusEnum::PURCHASED]);
 
         $notification = $this->notification($purchased, 'Order Succesfully Purchased', 'Failed To Purchase Order');
-        return  redirect(route("processing.list"))->with('notification', $notification);
+
+        return redirect(route('processing.list'))->with('notification', $notification);
     }
 
     //Deletes completed purchased order statements
@@ -68,6 +70,7 @@ class OrderController extends Controller
         $deleted = $delete->delete();
 
         $notification = $this->notification($deleted, 'Order Statement Succesfully Deleted', 'Failed To Delete Order Statement');
-        return  redirect(route("purchased.list"))->with('notification', $notification);
+
+        return redirect(route('purchased.list'))->with('notification', $notification);
     }
 }

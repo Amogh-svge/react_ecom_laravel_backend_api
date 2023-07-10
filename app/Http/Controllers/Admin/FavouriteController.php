@@ -4,14 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FavouriteRequest;
-use App\Http\Resources\{FavouriteResource, ProductResource};
-use App\Models\{Favourite, ProductList};
-use Illuminate\Http\{JsonResponse, Request};
+use App\Http\Resources\FavouriteResource;
+use App\Http\Resources\ProductResource;
+use App\Models\Favourite;
+use App\Models\ProductList;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class FavouriteController extends Controller
 {
     protected ProductList $productList;
+
     protected Favourite $favouriteModel;
 
     public function __construct(ProductList $productList, Favourite $favouriteModel)
@@ -24,9 +28,10 @@ class FavouriteController extends Controller
     {
         $created = $this->favouriteModel->create($request->validated());
         $favourite = $created->with('products')->find($created->id);
+
         return $created ?
-            $this->successResponse(['data' => new FavouriteResource($favourite)], "Successfully Retrieved") :
-            $this->successResponse(['data' => []], "No Results Found");
+            $this->successResponse(['data' => new FavouriteResource($favourite)], 'Successfully Retrieved') :
+            $this->successResponse(['data' => []], 'No Results Found');
     }
 
     public function index(Request $request): JsonResponse
@@ -36,15 +41,16 @@ class FavouriteController extends Controller
         $products = Arr::collapse($products);
 
         return $products ?
-            $this->successResponse(['data' => ProductResource::collection($products)], "Successfully Retrieved") :
-            $this->successResponse(['data' => []], "No Results Found");
+            $this->successResponse(['data' => ProductResource::collection($products)], 'Successfully Retrieved') :
+            $this->successResponse(['data' => []], 'No Results Found');
     }
 
     public function destroy(Favourite $favourite): JsonResponse
     {
         $deleted = $favourite->delete();
+
         return $deleted ?
-            $this->successResponse(['data' => []], "Successfully Deleted") :
-            $this->errorResponse(['data' => []], "Failed To Delete");
+            $this->successResponse(['data' => []], 'Successfully Deleted') :
+            $this->errorResponse(['data' => []], 'Failed To Delete');
     }
 }

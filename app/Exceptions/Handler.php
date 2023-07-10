@@ -58,9 +58,9 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson()) {
             return $this->handleApiException($request, $exception);
         }
+
         return parent::render($request, $exception);
     }
-
 
     private function handleApiException($request, Exception $exception)
     {
@@ -76,7 +76,6 @@ class Handler extends ExceptionHandler
 
         return $this->customApiResponse($request, $exception);
     }
-
 
     private function customApiResponse($request, $exception)
     {
@@ -103,11 +102,12 @@ class Handler extends ExceptionHandler
                 $response['errors'] = $exception->original['errors'];
                 break;
             default:
-                $response['message'] = $exception->getMessage() ?? "Internal Server Error";
+                $response['message'] = $exception->getMessage() ?? 'Internal Server Error';
                 break;
         }
 
-        Log::error($response['message'] . " || " . $request->getRequestUri() . " || " . $request->getMethod());
+        Log::error($response['message'].' || '.$request->getRequestUri().' || '.$request->getMethod());
+
         return response()->json($response, $statusCode);
     }
 }

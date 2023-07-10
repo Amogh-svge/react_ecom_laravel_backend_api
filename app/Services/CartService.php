@@ -10,11 +10,14 @@ use App\Repository\ProductRepository;
 class CartService
 {
     protected ProductList $productListModel;
+
     protected ProductCart $productCartModel;
+
     protected CartOrder $cartOrderModel;
+
     protected ProductRepository $productRepository;
 
-    public function __construct(ProductList $productListModel,  ProductCart $productCartModel, CartOrder $cartOrderModel, ProductRepository $productRepository)
+    public function __construct(ProductList $productListModel, ProductCart $productCartModel, CartOrder $cartOrderModel, ProductRepository $productRepository)
     {
         $this->productListModel = $productListModel;
         $this->productCartModel = $productCartModel;
@@ -30,11 +33,11 @@ class CartService
         $special_price = $product->special_price;
 
         if ($special_price != null) {
-            $total_price =  $special_price * $data['quantity'];
-            $unit_price =  $special_price;
+            $total_price = $special_price * $data['quantity'];
+            $unit_price = $special_price;
         } else {
-            $total_price =  $price * $data['quantity'];
-            $unit_price =  $price;
+            $total_price = $price * $data['quantity'];
+            $unit_price = $price;
         }
 
         $data += [
@@ -52,10 +55,11 @@ class CartService
     {
         $quantity = $validated['quantity'] + 1;
         $total_price = $quantity * $cart->unit_price;
-        $result  = $cart->update([
+        $result = $cart->update([
             'quantity' => $quantity,
             'total_price' => $total_price,
         ]);
+
         return $result;
     }
 
@@ -63,10 +67,11 @@ class CartService
     {
         $quantity = ($validated['quantity'] > 0) ?: $validated['quantity'] - 1;
         $total_price = $quantity * $cart->unit_price;
-        $result  = $cart->update([
+        $result = $cart->update([
             'quantity' => $quantity,
             'total_price' => $total_price,
         ]);
+
         return $result;
     }
 }

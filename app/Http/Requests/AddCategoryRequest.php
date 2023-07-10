@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddCategoryRequest extends FormRequest
@@ -32,7 +31,7 @@ class AddCategoryRequest extends FormRequest
 
                 return [
                     'category_name' => 'required|unique:categories',
-                    'category_image' => 'required|mimes:png,jpg,jpeg'
+                    'category_image' => 'required|mimes:png,jpg,jpeg',
                 ];
 
             case 'PUT':
@@ -40,7 +39,7 @@ class AddCategoryRequest extends FormRequest
 
                 return [
                     'category_name' => 'required',
-                    'category_image' => 'required|mimes:png,jpg,jpeg'
+                    'category_image' => 'required|mimes:png,jpg,jpeg',
                 ];
         }
     }

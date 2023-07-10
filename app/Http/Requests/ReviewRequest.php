@@ -24,12 +24,12 @@ class ReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            'reviewer_id' =>  'required|exists:users,id',
-            'product_id' =>  'required|exists:product_lists,id',
-            'reviewer_name' =>  'required|string',
-            'reviewer_photo' =>  'required',
-            'reviewer_rating' =>  'required|integer',
-            'reviewer_comment' =>  'required|string',
+            'reviewer_id' => 'required|exists:users,id',
+            'product_id' => 'required|exists:product_lists,id',
+            'reviewer_name' => 'required|string',
+            'reviewer_photo' => 'required',
+            'reviewer_rating' => 'required|integer',
+            'reviewer_comment' => 'required|string',
         ];
     }
 }

@@ -19,7 +19,8 @@ class ProductDetailsController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $product =  $this->productRepository->getById($request->id, true);
-        return $this->successResponse(['products' => new ProductResource($product)], "Successfully Retrived");
+        $product = $this->productRepository->getById($request->id, true);
+
+        return $this->successResponse(['products' => new ProductResource($product)], 'Successfully Retrived');
     }
 }

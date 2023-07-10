@@ -2,19 +2,24 @@
 
 namespace App\Services;
 
-use App\Models\{ProductDetails, ProductList};
-use App\Repository\{CategoryRepository, ProductRepository};
-use Illuminate\Support\{Arr, Str};
+use App\Models\ProductDetails;
+use App\Models\ProductList;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class ProductService
 {
     protected ProductList $ProductListModel;
-    protected ProductDetails $ProductDetailsModel;
-    protected ProductRepository $productRepository;
-    protected CategoryRepository $categoryRepository;
 
+    protected ProductDetails $ProductDetailsModel;
+
+    protected ProductRepository $productRepository;
+
+    protected CategoryRepository $categoryRepository;
 
     public function __construct(ProductList $ProductListModel, ProductDetails $ProductDetailsModel, ProductRepository $productRepository, CategoryRepository $categoryRepository)
     {
@@ -24,21 +29,20 @@ class ProductService
         $this->categoryRepository = $categoryRepository;
     }
 
-
     /**
      * Generate Image for thumbnail and returns its url
      */
     public function getThumbnailUrl(object $request): string
     {
         if ($request->hasFile('image')) {
-            $image_name = date('YmdHi') . uniqid() . $request->file('image')->getClientOriginalName();
-            $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/' . $image_name;
+            $image_name = date('YmdHi').uniqid().$request->file('image')->getClientOriginalName();
+            $thumbnail_url = 'http://localhost:8000/storage/product_thumbnails/'.$image_name;
             Image::make($request->file('image'))->resize(350, 250)
-                ->save(public_path('storage/product_thumbnails/') . $image_name);
-            return  $thumbnail_url;
+                ->save(public_path('storage/product_thumbnails/').$image_name);
+
+            return $thumbnail_url;
         }
     }
-
 
     /**
      * Generate sub-Image and returns its url
@@ -47,15 +51,15 @@ class ProductService
     {
         if ($request->hasFile('sub_images')) {
             foreach ($request->file('sub_images') as $file) {
-                $image_name = date('YmdHi') . uniqid() . $file->getClientOriginalName();
-                $url[] = 'http://localhost:8000/storage/images/' . $image_name;
+                $image_name = date('YmdHi').uniqid().$file->getClientOriginalName();
+                $url[] = 'http://localhost:8000/storage/images/'.$image_name;
                 Image::make($file)->resize(280, 230)
-                    ->save(public_path('storage/images/') . $image_name);
+                    ->save(public_path('storage/images/').$image_name);
             }
+
             return $url;
         }
     }
-
 
     /**
      * create product list
@@ -65,9 +69,9 @@ class ProductService
         $product_list = Arr::except($validated, ['short_description', 'long_description', 'image', 'size', 'color', 'sub_images']);
         $product_list += ['image' => $thumbnail_url];
         $productList = $this->ProductListModel->create($product_list);
+
         return $productList;
     }
-
 
     /**
      * create product details
@@ -75,19 +79,19 @@ class ProductService
     public function createProductDetails(object $productList, array $validated, array $url): object
     {
         if ($productList) {
-            $product_details =  Arr::only($validated, ['short_description', 'long_description', 'color', 'size']);
+            $product_details = Arr::only($validated, ['short_description', 'long_description', 'color', 'size']);
             $product_details += [
                 'product_id' => $productList->id,
                 'image_one' => array_key_exists(0, $url) ? $url[0] : null, //checks if array index exists
                 'image_two' => array_key_exists(1, $url) ? $url[1] : null,
-                'image_three' =>  array_key_exists(2, $url) ? $url[2] : null,
+                'image_three' => array_key_exists(2, $url) ? $url[2] : null,
                 'image_four' => array_key_exists(3, $url) ? $url[3] : null,
             ];
             $productDetails = $this->ProductDetailsModel->create($product_details);
+
             return $productDetails;
         }
     }
-
 
     /**
      * update product list
@@ -97,9 +101,9 @@ class ProductService
         $product_list = Arr::except($validated, ['short_description', 'long_description', 'image', 'size', 'color', 'sub_images']);
         $product_list += ['image' => $thumbnail_url];
         $product->update($product_list);
+
         return $product;
     }
-
 
     /**
      * update product details
@@ -108,28 +112,28 @@ class ProductService
     {
         if ($productList) {
             $existing_image_path = [
-                $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
-                $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
-                $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_one ? Str::after($productDetail->image_one, 'http://localhost:8000/storage/images/') : null,
+                $productDetail->image_two ? Str::after($productDetail->image_two, 'http://localhost:8000/storage/images/') : null,
+                $productDetail->image_three ? Str::after($productDetail->image_three, 'http://localhost:8000/storage/images/') : null,
             ];
 
             //separate image name and unlink
             unlink_image_names($existing_image_path); //helper
 
-            $product_details =  Arr::only($validated, ['short_description', 'long_description', 'color', 'size']);
+            $product_details = Arr::only($validated, ['short_description', 'long_description', 'color', 'size']);
             $product_details += [
                 'product_id' => $product->id,
                 'image_one' => array_key_exists(0, $url) ? $url[0] : null, //checks if array index exists
                 'image_two' => array_key_exists(1, $url) ? $url[1] : null,
-                'image_three' =>  array_key_exists(2, $url) ? $url[2] : null,
+                'image_three' => array_key_exists(2, $url) ? $url[2] : null,
                 'image_four' => array_key_exists(3, $url) ? $url[3] : null,
             ];
             //update product details
             $productDetails = $productDetail->update($product_details);
+
             return $productDetail;
         }
     }
-
 
     /**
      * store product list and detail
@@ -144,9 +148,9 @@ class ProductService
         $productList = $this->createProductList($validated, $thumbnail_url);
         $productDetails = $this->createProductDetails($productList, $validated, $url);
         $productList && $productDetails ? DB::commit() : DB::rollback();
+
         return $productList && $productDetails ? true : false;
     }
-
 
     /**
      * Edit product
@@ -158,14 +162,14 @@ class ProductService
         $product_info = $product->toArray() + $productDetails;
         $product_info += [
             'product_details_id' => $product_details->id,
-            'image_one' =>  $product_details->image_one ? $product_details->image_one : null,
-            'image_two' =>  $product_details->image_two ? $product_details->image_two : null,
-            'image_three' =>  $product_details->image_three ? $product_details->image_three : null,
-            'image_four' =>  $product_details->image_four ? $product_details->image_four : null,
+            'image_one' => $product_details->image_one ? $product_details->image_one : null,
+            'image_two' => $product_details->image_two ? $product_details->image_two : null,
+            'image_three' => $product_details->image_three ? $product_details->image_three : null,
+            'image_four' => $product_details->image_four ? $product_details->image_four : null,
         ];
+
         return $product_info;
     }
-
 
     /**
      * update product and product detail
@@ -183,9 +187,9 @@ class ProductService
         $productList = $this->updateProductList($validated, $thumbnail_url, $product);
         $productDetails = $this->updateProductDetails($productList, $validated, $url, $productDetail, $product);
         $productList && $productDetails ? DB::commit() : DB::rollback();
+
         return $productList && $productDetails ? true : false;
     }
-
 
     /**
      * delete product and product detail
@@ -199,18 +203,20 @@ class ProductService
         //Seperate image name from the url
         seperate_thumbnail_image_name_and_remove($product->image);
 
-        if ($productDetail && $deleteProduct)
+        if ($productDetail && $deleteProduct) {
             $existing_image_path = [
-                $productDetail->image_one ? Str::after($productDetail->image_one, "http://localhost:8000/storage/images/") : null,
-                $productDetail->image_two ? Str::after($productDetail->image_two, "http://localhost:8000/storage/images/") : null,
-                $productDetail->image_three ? Str::after($productDetail->image_three, "http://localhost:8000/storage/images/") : null,
+                $productDetail->image_one ? Str::after($productDetail->image_one, 'http://localhost:8000/storage/images/') : null,
+                $productDetail->image_two ? Str::after($productDetail->image_two, 'http://localhost:8000/storage/images/') : null,
+                $productDetail->image_three ? Str::after($productDetail->image_three, 'http://localhost:8000/storage/images/') : null,
             ];
+        }
 
         //separate image name and unlink
         unlink_image_names($existing_image_path); //helper
 
         $deleteProductDetails = $productDetail->delete();
         $deleteProduct && $deleteProductDetails ? DB::commit() : DB::rollback();
+
         return $deleteProduct && $deleteProductDetails ? true : false;
     }
 
@@ -221,6 +227,7 @@ class ProductService
     {
         $category = $this->categoryRepository->getByName($category_name, true);
         $product_list = $this->ProductListModel->getByCategory($category->id)->with('productDetail')->get();
+
         return $product_list;
     }
 
@@ -231,7 +238,8 @@ class ProductService
     {
         $category = $this->categoryRepository->getByName($category_name, true);
         $subcategory = $this->categoryRepository->getSubCategoryByName($subcategory_name, true);
-        $product_list =  $this->ProductListModel->getByCategory($category->id)->subCategory($subcategory->id)->with('productDetail')->get();
+        $product_list = $this->ProductListModel->getByCategory($category->id)->subCategory($subcategory->id)->with('productDetail')->get();
+
         return $product_list;
     }
 
@@ -241,6 +249,7 @@ class ProductService
     public function getRelatedProducts($product_id, $relatedProduct): object
     {
         $subcategory = $this->categoryRepository->getSubCategoryByName($relatedProduct, true);
+
         return $this->ProductListModel->subCategory($subcategory->id)
             ->whereNot('id', $product_id)->with('productDetail')
             ->latest()->limit(6)->get();

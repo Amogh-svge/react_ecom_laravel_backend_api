@@ -29,7 +29,7 @@ class BaseRepository
     }
 
     /**
-     * returns all the records 
+     * returns all the records
      */
     public function all(): Collection
     {
@@ -45,7 +45,7 @@ class BaseRepository
     }
 
     /**
-     * returns a paginated data 
+     * returns a paginated data
      */
     public function paginate($limit = 10)
     {

@@ -17,7 +17,7 @@ trait HttpResponse
     public function successResponse(array $data, string $message = null, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json([
-            'status' => 'Success',
+            'status' => $code,
             'message' => $message,
             key($data) ?: 'data' => reset($data)
         ], $code);
@@ -34,7 +34,7 @@ trait HttpResponse
     public function errorResponse($data, string $message = null, int $code = Response::HTTP_INTERNAL_SERVER_ERROR): JsonResponse
     {
         return response()->json([
-            'status' => 'Error',
+            'status' => $code,
             'message' => $message,
             key($data) ?: 'data' => reset($data)
         ], $code);

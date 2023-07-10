@@ -83,6 +83,7 @@ class Handler extends ExceptionHandler
         $statusCode = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : 500;
 
         $response = [];
+        $response['status'] = $statusCode;
 
         switch ($statusCode) {
             case 401:
@@ -106,7 +107,6 @@ class Handler extends ExceptionHandler
                 break;
         }
 
-        $response['status'] = $statusCode;
         Log::error($response['message'] . " || " . $request->getRequestUri() . " || " . $request->getMethod());
         return response()->json($response, $statusCode);
     }

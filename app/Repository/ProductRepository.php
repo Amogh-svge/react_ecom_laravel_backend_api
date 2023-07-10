@@ -37,4 +37,10 @@ class ProductRepository extends BaseRepository
         return $this->where('product_code', $product_code)
             ->orderBy('id', $direction)->limit($limit)->get();
     }
+
+    public function getByProductCode(string $code, bool $first = false): object
+    {
+        $query = ProductList::productCode($code)->with('productDetail');
+        return ($first) ? $query->firstOrFail() : $query->get();
+    }
 }

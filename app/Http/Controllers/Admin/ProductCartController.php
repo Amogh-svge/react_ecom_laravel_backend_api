@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddToCartRequest;
-use App\Models\CartOrder;
-use App\Models\ProductCart;
-use App\Models\ProductList;
+use App\Models\{CartOrder, ProductCart, ProductList};
+use App\Services\CartService;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductCartController extends Controller
@@ -15,69 +15,40 @@ class ProductCartController extends Controller
     protected ProductList $productListModel;
     protected ProductCart $productCartModel;
     protected CartOrder $cartOrderModel;
+    protected CartService $service;
 
-    public function __construct(ProductList $productListModel,  ProductCart $productCartModel, CartOrder $cartOrderModel)
+    public function __construct(ProductList $productListModel,  ProductCart $productCartModel, CartOrder $cartOrderModel, CartService $service)
     {
         $this->productListModel = $productListModel;
         $this->productCartModel = $productCartModel;
         $this->cartOrderModel = $cartOrderModel;
+        $this->service = $service;
     }
 
-    public function addToCart(AddToCartRequest $request)
+    public function add(AddToCartRequest $request): JsonResponse
     {
-        try {
-            $email = $request->email;
-            $size = $request->size;
-            $color = $request->color;
-            $quantity = $request->quantity;
-            $product_code = $request->product_code;
+        $validated = $request->validated();
+        $data = $this->service->addToCart($validated);
 
-            $Product_details = $this->productListModel->productCode($product_code)->first();
-            $price = $Product_details->price;
-            $special_price = $Product_details->special_price;
+        return $data ?
+            $this->successResponse(['data' => $data], "Successfully Created") :
+            $this->errorResponse(['data' => []], "Failed To Create");
+    }
 
-            if ($special_price != null) {
-                $total_price =  $special_price * $quantity;
-                $unit_price =  $special_price;
-            } else {
-                $total_price =  $price * $quantity;
-                $unit_price =  $price;
-            }
-
-            $result = $this->productCartModel->create([
-                'email' => $email,
-                'image' => $Product_details->image,
-                'product_name' => $Product_details->title,
-                'product_code' => $Product_details->product_code,
-                'size' => 'Size: ' . $size,
-                'color' => 'Color: ' . $color,
-                'quantity' => $quantity,
-                'unit_price' => $unit_price,
-                'total_price' => $total_price,
-            ]);
-
-            return $result;
-        } catch (Exception $exception) {
-            return response([
-                'message' => $exception->getMessage()
-            ], 400);
-        }
-    } //End Method
-
-    public function cartCount(Request $request)
+    public function count(Request $request)
     {
         $email = $request->email;
         $result = $this->productCartModel->email($email)->count();
         return $result;
     } //End Method
 
-    public function cartList(Request $request)
+    public function index(Request $request)
     {
         $email = $request->email;
         return $cart_list = $this->productCartModel->email($email)->get();
     }
 
-    public function removeCartList(Request $request)
+    public function delete(Request $request)
     {
         $id = $request->id;
         $result = $this->productCartModel->getById($id)->delete();
@@ -122,7 +93,7 @@ class ProductCartController extends Controller
         }
     }
 
-    public function cartOrder(Request $request)
+    public function order(Request $request)
     {
         $city = $request->city;
         $payment = $request->payment_method;

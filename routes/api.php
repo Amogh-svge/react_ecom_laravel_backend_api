@@ -55,13 +55,13 @@ Route::controller(ProductListController::class)->group(function () {
 /*ProductCart Controller */
 Route::controller(ProductCartController::class)->group(function () {
     Route::get("/cart/{email}", "index"); //cart list route
-    Route::delete("/cart/{id}", "delete"); //Remove cart list route
+    Route::delete("/cart/{cart}", "delete"); //Remove cart list route
     Route::post("/cart/order", "order");    //cart Order route
     Route::post("/cart", "add");    //product cart route
     Route::get("/cart/count/{email}",  "count");    //cart count route
     Route::get("/order/{email}", "orderListByUser");    //cart Order History route
-    Route::get("/cart/item/plus/{id}/{quantity}/{price}", "cartItemPlus"); //cart item increase route
-    Route::get("/cart/item/minus/{id}/{quantity}/{price}", "cartItemMinus");    //cart item decrease route
+    Route::patch("/cart/item/plus/{cart}", "cartItemPlus"); //cart item increase route
+    Route::patch("/cart/item/minus/{cart}", "cartItemMinus");    //cart item decrease route
 });
 
 

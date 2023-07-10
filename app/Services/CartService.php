@@ -6,7 +6,6 @@ use App\Models\CartOrder;
 use App\Models\ProductCart;
 use App\Models\ProductList;
 use App\Repository\ProductRepository;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class CartService
 {
@@ -26,7 +25,6 @@ class CartService
     public function addToCart(array $data): object
     {
         $product = $this->productRepository->getByProductCode($data['product_code'], true);
-        dd($product);
 
         $price = $product->price;
         $special_price = $product->special_price;
@@ -48,5 +46,27 @@ class CartService
         ];
 
         return $data = $this->productCartModel->create($data);
+    }
+
+    public function addItem(array $validated, object $cart): bool
+    {
+        $quantity = $validated['quantity'] + 1;
+        $total_price = $quantity * $cart->unit_price;
+        $result  = $cart->update([
+            'quantity' => $quantity,
+            'total_price' => $total_price,
+        ]);
+        return $result;
+    }
+
+    public function removeItem(array $validated, object $cart): bool
+    {
+        $quantity = ($validated['quantity'] > 0) ?: $validated['quantity'] - 1;
+        $total_price = $quantity * $cart->unit_price;
+        $result  = $cart->update([
+            'quantity' => $quantity,
+            'total_price' => $total_price,
+        ]);
+        return $result;
     }
 }

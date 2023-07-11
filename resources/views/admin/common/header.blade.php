@@ -45,7 +45,7 @@
                     </nav>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="" class="nav-link with-sub"><i class="typcn typcn-document"></i> Customer Order</a>
                     <nav class="az-menu-sub">
                         <div class="m-2 border-dark" onmouseleave="hideMenuOnOver(this)">
@@ -61,7 +61,7 @@
                         </div>
 
                     </nav>
-                </li>
+                </li> --}}
             </ul>
         </div><!-- az-header-menu -->
         <div class="az-header-right">

@@ -55,16 +55,19 @@
     @include('admin.common.header')
     <!-- az-header ends -->
 
-    <div class="az-content container az-content-dashboard">
-        <!-- content-body starts -->
-        <div class="az-content-body">
-            {{-- nav bar starts --}}
-            @include('admin.common.navbar')
-            {{-- nav bar ends --}}
-            @yield('main_content')
-        </div>
-        <!-- content-body ends -->
+    <div class="az-content">
+        <div class="container-fluid">
+            @include('admin.common.sidebar')
+            <div class="az-content-body pd-lg-l-40 d-flex flex-column">
+                @yield('main_content')
+                <div class="ht-40"></div>
+            </div><!-- az-content-body -->
+        </div><!-- container -->
     </div><!-- az-content -->
+
+    <!-- az-footer starts -->
+    @include('admin.common.footer')
+    <!-- az-footer ends -->
 
     <div class="toast_container">
         <div class="toaster" id="liveToast">
@@ -74,11 +77,6 @@
             </div>
         </div>
     </div>
-
-
-    <!-- az-footer start -->
-    @include('admin.common.footer')
-    <!-- az-footer ends -->
 </body>
 
 </html>

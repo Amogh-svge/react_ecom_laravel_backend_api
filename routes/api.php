@@ -52,13 +52,10 @@ Route::controller(ProductListController::class)->group(function () {
 Route::controller(ProductCartController::class)->prefix('cart')->group(function () {
     Route::get('/{email}', 'index');
     Route::delete('/{cart}', 'delete');
-    //cart Order route
     Route::post('/order', 'order');
     Route::post('/', 'add');
     Route::get('/count/{email}', 'count');
-    //cart item increase route
     Route::patch('/item/plus/{cart}', 'cartItemPlus');
-    //cart item decrease route
     Route::patch('/item/minus/{cart}', 'cartItemMinus');
 });
 
@@ -81,6 +78,7 @@ Route::controller(ProductReviewController::class)->prefix('review')->group(funct
 Route::controller(SiteInfoController::class)->group(function () {
     Route::get('/info', [SiteInfoController::class, 'index']);
 });
+
 
 Route::get('/getvisitor', [VisitorController::class, 'getVisitorDetails']);
 //manage contact

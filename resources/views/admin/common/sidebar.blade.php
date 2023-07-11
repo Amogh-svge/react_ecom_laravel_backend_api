@@ -9,7 +9,7 @@
 
         <label>Roles And Permission</label>
         <nav class="nav flex-column">
-            <a href="form-elements.html" class="nav-link">Form Elements</a>
+            <a href="{{ route('permission.index') }}" class="nav-link">List Permissions</a>
         </nav>
     </div>
 </div>

@@ -16,7 +16,7 @@
                         <tr>
                             <th>S.N</th>
                             <th>Permission</th>
-                            <th>Guard Name</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,7 +24,23 @@
                             <tr>
                                 <td scope="row">{{ $key + 1 }}</td>
                                 <td>{{ $permission->name }}</td>
-                                <td>{{ $permission->guard_name }}</td>
+                                <td class="d-flex">
+                                    <span>
+                                        <a class="btn btn-info mx-1"
+                                            href={{ route('permission.show', $permission->id) }}>Details</a>
+                                    </span>
+                                    <span>
+                                        <a class="btn btn-primary mx-2"
+                                            href={{ route('permission.edit', $permission->id) }}>Edit</a>
+                                    </span>
+
+                                    <form action="{{ route('permission.destroy', $permission->id) }}"
+                                        data-id="{{ $permission->id }}" class="permission_form_delete" method="POST">
+                                        @method('DELETE') @csrf
+                                        <button class="btn btn-danger" type="submit"
+                                            onclick="confirmDelete(this)">Remove</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -9,6 +9,7 @@
 
         <label>Roles And Permission</label>
         <nav class="nav flex-column">
+            <a href="{{ route('permission.create') }}" class="nav-link">Add Permissions</a>
             <a href="{{ route('permission.index') }}" class="nav-link">List Permissions</a>
         </nav>
     </div>

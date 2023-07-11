@@ -21,14 +21,16 @@ class SiteInfoController extends Controller
     public function index(): JsonResponse
     {
         $data = $this->siteInfoModel->all();
+
         return $data->isNotEmpty() ?
-            $this->successResponse(['data' => $data], "Successfully Retrived") :
-            $this->successResponse(['data' => []], "No Results Found");
+            $this->successResponse(['data' => $data], 'Successfully Retrived') :
+            $this->successResponse(['data' => []], 'No Results Found');
     }
 
     public function manageSiteInfo(): View
     {
         $site_info = $this->siteInfoModel->first();
+
         return view('admin.siteInfo.manage_site', compact('site_info'));
     }
 
@@ -38,6 +40,7 @@ class SiteInfoController extends Controller
         $siteInfo->update($validated);
 
         $notification = $this->notification($siteInfo, 'SiteInfo Successfully Updated', 'Failed To Update SiteInfo');
+
         return redirect('/siteinfo')->with('notification', $notification);
     }
 }

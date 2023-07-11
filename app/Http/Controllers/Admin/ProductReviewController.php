@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 class ProductReviewController extends Controller
 {
     protected ProductReview $productReviewModel;
+
     protected ProductRepository $productRepository;
 
     public function __construct(ProductReview $productReviewModel, ProductRepository $productRepository)
@@ -24,8 +25,8 @@ class ProductReviewController extends Controller
         $review_list = $this->productRepository->getReviews($code, 4, 'desc');
 
         return $review_list->isNotEmpty() ?
-            $this->successResponse(['data' => $review_list], "Successfully Retrived") :
-            $this->successResponse(['data' => []], "No Results Found");
+            $this->successResponse(['data' => $review_list], 'Successfully Retrived') :
+            $this->successResponse(['data' => []], 'No Results Found');
     }
 
     public function create(ReviewRequest $request): JsonResponse
@@ -34,7 +35,7 @@ class ProductReviewController extends Controller
         $review = $this->productReviewModel->create($validated);
 
         return $review ?
-            $this->successResponse(['data' => $review], "Successfully Created") :
-            $this->errorResponse(['data' => []], "Failed To Create");
+            $this->successResponse(['data' => $review], 'Successfully Created') :
+            $this->errorResponse(['data' => []], 'Failed To Create');
     }
 }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-
 use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 
 class AuthController extends Controller
 {
@@ -24,21 +21,21 @@ class AuthController extends Controller
                 $token = $user->createToken('app')->accessToken;
 
                 return response([
-                    'message' => "Successfully Login",
+                    'message' => 'Successfully Login',
                     'token' => $token,
-                    'user' => $user
+                    'user' => $user,
                 ], 200); // Status Code
             }
         } catch (Exception $exception) {
             return response([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 400);
         }
+
         return response([
-            'message' => 'Invalid Email Or Password'
+            'message' => 'Invalid Email Or Password',
         ], 401);
     }
-
 
     public function register(RegisterRequest $request)
     {
@@ -48,19 +45,19 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
             ]);
             $token = $user->createToken('app')->accessToken;
 
             return response([
-                'message' => "Registration Successfull",
+                'message' => 'Registration Successfull',
                 'token' => $token,
-                'user' => $user
+                'user' => $user,
             ], 200);
         } catch (Exception $exception) {
             return response([
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
             ], 400);
         }
-    } // end method 
+    } // end method
 }

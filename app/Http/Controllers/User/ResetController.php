@@ -18,14 +18,14 @@ class ResetController extends Controller
         $emailcheck = DB::table('password_resets')->where('email', $email)->first();
         $pincheck = DB::table('password_resets')->where('token', $token)->first();
 
-        if (!$emailcheck) {
+        if (! $emailcheck) {
             return response([
-                'message' => "Email Not Found"
+                'message' => 'Email Not Found',
             ], 401);
         }
-        if (!$pincheck) {
+        if (! $pincheck) {
             return response([
-                'message' => "Pin Code Invalid"
+                'message' => 'Pin Code Invalid',
             ], 401);
         }
 
@@ -33,7 +33,7 @@ class ResetController extends Controller
         DB::table('password_resets')->where('email', $email)->delete();
 
         return response([
-            'message' => 'Password Change Successfully'
+            'message' => 'Password Change Successfully',
         ], 200);
     }
 

@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class ProductList extends Model
 {
     use HasFactory;
-    protected $guarded = [];
 
+    protected $guarded = [];
 
     // RELATIONS
     public function category(): BelongsTo

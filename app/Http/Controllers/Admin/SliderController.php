@@ -11,6 +11,7 @@ class SliderController extends Controller
     public function index(): JsonResponse
     {
         $result = HomeSlider::paginate();
-        return $this->successResponse([$result], "Successfully Retrieved");
+
+        return $this->successResponse([$result], 'Successfully Retrieved');
     }
 }

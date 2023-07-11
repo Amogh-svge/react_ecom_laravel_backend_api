@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\{
-    Controllers\Controller,
-    Requests\AddToCartRequest
-};
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AddToCartRequest;
 use App\Http\Requests\CartItemRequest;
-use App\Models\{CartOrder, ProductCart, ProductList};
+use App\Models\CartOrder;
+use App\Models\ProductCart;
+use App\Models\ProductList;
 use App\Repository\ProductRepository;
 use App\Services\CartService;
 use Illuminate\Http\{JsonResponse};
 
-
 class ProductCartController extends Controller
 {
     protected ProductList $productListModel;
+
     protected ProductCart $productCartModel;
+
     protected CartOrder $cartOrderModel;
+
     protected CartService $service;
+
     protected ProductRepository $productRepository;
 
     public function __construct(
@@ -43,8 +46,8 @@ class ProductCartController extends Controller
         $data = $this->productCartModel->email($email)->orderBy('id', 'DESC')->paginate(10);
 
         return $data ?
-            $this->successResponse(['data' => $data], "Successfully Retrieved") :
-            $this->errorResponse(['data' => []], "Failed To Create");
+            $this->successResponse(['data' => $data], 'Successfully Retrieved') :
+            $this->errorResponse(['data' => []], 'Failed To Create');
     }
 
     /**
@@ -56,8 +59,8 @@ class ProductCartController extends Controller
         $data = $this->service->addToCart($validated);
 
         return $data ?
-            $this->successResponse(['data' => $data], "Successfully Created") :
-            $this->errorResponse(['data' => []], "Failed To Create");
+            $this->successResponse(['data' => $data], 'Successfully Created') :
+            $this->errorResponse(['data' => []], 'Failed To Create');
     }
 
     /**
@@ -66,9 +69,10 @@ class ProductCartController extends Controller
     public function count(string $email): JsonResponse
     {
         $data = $this->productCartModel->email($email)->count();
+
         return $data ?
-            $this->successResponse(['data' => $data], "Successfully Retrieved") :
-            $this->errorResponse(['data' => []], "Failed To Retrieved");
+            $this->successResponse(['data' => $data], 'Successfully Retrieved') :
+            $this->errorResponse(['data' => []], 'Failed To Retrieved');
     }
 
     /**
@@ -79,8 +83,8 @@ class ProductCartController extends Controller
         $data = $cart->delete();
 
         return $data ?
-            $this->successResponse(['data' => []], "Successfully Deleted") :
-            $this->errorResponse(['data' => []], "Failed To Delete");
+            $this->successResponse(['data' => []], 'Successfully Deleted') :
+            $this->errorResponse(['data' => []], 'Failed To Delete');
     }
 
     /**
@@ -92,8 +96,8 @@ class ProductCartController extends Controller
         $result = $this->service->addItem($validated, $cart);
 
         return $result ?
-            $this->successResponse(['data' => []], "Successfully Updated") :
-            $this->errorResponse(['data' => []], "Failed To Update");
+            $this->successResponse(['data' => []], 'Successfully Updated') :
+            $this->errorResponse(['data' => []], 'Failed To Update');
     }
 
     /**
@@ -105,7 +109,7 @@ class ProductCartController extends Controller
         $result = $this->service->removeItem($validated, $cart);
 
         return $result ?
-            $this->successResponse(['data' => []], "Successfully Updated") :
-            $this->errorResponse(['data' => []], "Failed To Update");
+            $this->successResponse(['data' => []], 'Successfully Updated') :
+            $this->errorResponse(['data' => []], 'Failed To Update');
     }
 }

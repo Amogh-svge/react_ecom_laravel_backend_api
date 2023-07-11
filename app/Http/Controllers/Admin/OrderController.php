@@ -12,8 +12,11 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     protected ProductCart $productCartModel;
+
     protected CartOrder $cartOrderModel;
+
     protected CartService $service;
+
     protected ProductRepository $productRepository;
 
     public function __construct(
@@ -38,16 +41,16 @@ class OrderController extends Controller
         $invoice_no = $request->invoice_no;
         $delivery_charge = $request->delivery_charge;
 
-        $request_time = date("h:i:sa");
-        $request_date = date("d-m-y");
+        $request_time = date('h:i:sa');
+        $request_date = date('d-m-y');
 
         $cart_list = $this->productCartModel->email($email)->get();
 
         foreach ($cart_list as $cart_item) {
-            $cartInsertDeleteResult = "";
+            $cartInsertDeleteResult = '';
 
-            $result =  $this->cartOrderModel->insert([
-                'invoice_no' => "Easy" . $invoice_no,
+            $result = $this->cartOrderModel->insert([
+                'invoice_no' => 'Easy'.$invoice_no,
                 'product_name' => $cart_item['product_name'],
                 'product_code' => $cart_item['product_code'],
                 'size' => $cart_item['size'],
@@ -63,7 +66,7 @@ class OrderController extends Controller
                 'delivery_charge' => $delivery_charge,
                 'order_date' => $request_date,
                 'order_time' => $request_time,
-                'order_status' => "Pending",
+                'order_status' => 'Pending',
             ]);
 
             if ($result == 1) {
@@ -82,7 +85,8 @@ class OrderController extends Controller
     public function orderListByUser(Request $request)
     {
         $email = $request->email;
-        $result =  $this->cartOrderModel->email($email)->orderBy('id', 'DESC')->get();
+        $result = $this->cartOrderModel->email($email)->orderBy('id', 'DESC')->get();
+
         return $result;
     }
 }

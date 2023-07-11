@@ -4,16 +4,15 @@ namespace App\Enum;
 
 enum StatusEnum: string
 {
+    const ACTIVE = 'active';
 
-    const ACTIVE = "active";
+    const DEACTIVE = 'deactive';
 
-    const DEACTIVE = "deactive";
+    const DISABLED = 'disable';
 
-    const DISABLED = "disable";
+    const ENABLED = 'enable';
 
-    const ENABLED = "enable";
+    const SUCCESS = 'success';
 
-    const SUCCESS = "success";
-
-    const FAILED = "failed";
+    const FAILED = 'failed';
 }

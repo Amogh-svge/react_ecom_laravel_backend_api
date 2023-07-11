@@ -27,7 +27,7 @@ class SubCategoryRequest extends FormRequest
             case 'POST':
                 return [
                     'category_id' => 'required|integer',
-                    'subcategory_name' => 'required|unique:subcategories'
+                    'subcategory_name' => 'required|unique:subcategories',
                 ];
 
             case 'PUT':
@@ -35,7 +35,7 @@ class SubCategoryRequest extends FormRequest
 
                 return [
                     'category_id' => 'required|integer',
-                    'subcategory_name' => 'required|unique:subcategories'
+                    'subcategory_name' => 'required|unique:subcategories',
                 ];
         }
     }

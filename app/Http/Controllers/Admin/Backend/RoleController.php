@@ -7,21 +7,22 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
     protected Role $roleModel;
+    protected Permission $permissionModel;
 
-    public function __construct(Role $roleModel)
+    public function __construct(Role $roleModel, Permission $permissionModel)
     {
         $this->roleModel = $roleModel;
+        $this->permissionModel = $permissionModel;
     }
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(): View
     {
@@ -31,19 +32,14 @@ class RoleController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.roles.create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(StoreRoleRequest $request): RedirectResponse
     {
@@ -55,9 +51,7 @@ class RoleController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function show(Role $role)
     {
@@ -66,23 +60,16 @@ class RoleController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Role $role): View
     {
         return view('admin.roles.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
         $role_updated = $role->update($request->validated());
 
@@ -92,15 +79,24 @@ class RoleController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role): RedirectResponse
     {
         $role_deleted = $role->delete();
 
         $notification = $this->notification($role_deleted, 'Role Deleted Successfully', 'Failed To Delete Role');
         return back()->with('notification', $notification);
+    }
+
+
+    /**
+     * All roles to permission methods
+     */
+
+    public function AddRolesPermission(): View
+    {
+        $roles = $this->roleModel->latest()->get();
+        $permissions = $this->permissionModel->latest()->get();
+        return view('admin.roles.add_roles_to_permission', compact('roles', 'permissions'));
     }
 }

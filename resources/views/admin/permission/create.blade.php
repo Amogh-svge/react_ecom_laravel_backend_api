@@ -26,6 +26,19 @@
                     @include('admin.common.error', ['field' => 'name']) {{-- error message --}}
                 </div>
 
+                <div class="col-lg-12 my-2">
+                    <label class="az-content-label mb-3">Group Name</label>
+                    <select name="group" class="form-control select2">
+                        <option label="Choose one"></option>
+                        @php
+                            $groups = ['products', 'categories', 'roles', 'order', 'settings', 'subcategory', 'slider', 'siteInfo'];
+                        @endphp
+                        @foreach ($groups as $group)
+                            <option value={{ $group }}>{{ $group }}</option>
+                        @endforeach
+                    </select>
+                    @include('admin.common.error', ['field' => 'group']) {{-- error message --}}
+                </div>
 
                 <div class="col-lg-12 my-3 d-flex">
                     <Button class="btn btn-primary">Create</Button>

@@ -30,8 +30,8 @@ class PermissionRequest extends FormRequest
                 'required',
                 'string',
                 new SupportOnlyAlphabets($this),
-                // $this->method() === 'POST' ? Rule::unique('permissions', 'name') : Rule::unique('permissions')->ignore($this->permission ?? 0),
             ],
+            'group' => ['required', 'alpha', 'string']
         ];
     }
 }

@@ -132,7 +132,6 @@
                             class="typcn typcn-user-outline"></i>
                         My
                         Profile</a>
-                    <a href="" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
                     <a href="" class="dropdown-item"><i class="typcn typcn-time"></i> Activity Logs</a>
                     <a href="" class="dropdown-item"><i class="typcn typcn-cog-outline"></i> Account
                         Settings</a>
@@ -141,7 +140,6 @@
                             @csrf
                             <input type="submit" value="Sign Out" class="dropdown-item mt-1"
                                 @click.prevent="$root.submit();">
-
                         </form>
                     </span>
 

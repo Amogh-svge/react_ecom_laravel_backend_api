@@ -39,8 +39,9 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request): RedirectResponse
     {
-        $name =  preg_replace('/\s+/', '.', $request->validated('name'));
-        $permission_created = $this->model->create(['name' => $name]);
+        $validated = $request->validated();
+        $validated['name'] =  preg_replace('/\s+/', '.', $validated['name']);
+        $permission_created = $this->model->create($validated);
 
         $notification = $this->notification($permission_created, 'Permission Successfully Created', 'Failed To Create Permission');
         return redirect(route('permission.index'))->with('notification', $notification);
@@ -59,8 +60,9 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission): RedirectResponse
     {
-        $name =  preg_replace('/\s+/', '.', $request->validated('name'));
-        $permission_updated = $permission->update(['name' => $name]);
+        $validated = $request->validated();
+        $validated['name'] =  preg_replace('/\s+/', '.', $validated['name']);
+        $permission_updated = $permission->update($validated);
 
         $notification = $this->notification($permission_updated, 'Permission Updated Successfully', 'Failed To Update Permission');
         return redirect(route('permission.index'))->with('notification', $notification);

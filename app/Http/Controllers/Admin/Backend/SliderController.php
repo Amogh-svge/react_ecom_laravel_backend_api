@@ -51,10 +51,10 @@ class SliderController extends Controller
 
         $file = $request->file('slider_image');
         if ($file) {
-            $image_name = 'slider'.date('YmdHi').$file->getClientOriginalName();
-            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/').$image_name);
+            $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
         }
-        $img_url = 'http://localhost:8000/storage/slider_image/'.$image_name;
+        $img_url = 'http://localhost:8000/storage/slider_image/' . $image_name;
         $addSlide = $this->homeSliderModel->create(['slider_image' => $img_url]);
 
         $notification = [
@@ -101,15 +101,15 @@ class SliderController extends Controller
 
         $file = $request->file('slider_image');
         if ($file) {
-            $image_name = 'slider'.date('YmdHi').$file->getClientOriginalName();
-            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/').$image_name);
+            $image_name = 'slider' . date('YmdHi') . $file->getClientOriginalName();
+            Image::make($file)->resize(1000, 430)->save(public_path('storage/slider_image/') . $image_name);
 
             //Seperate image name from the url
             $existing_image_path = explode('http://localhost:8000/storage/slider_image/', $slider->slider_image);
             $stored_image_name = $existing_image_path[1];
-            unlink(public_path('storage/slider_image/').$stored_image_name);
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
         }
-        $img_url = 'http://localhost:8000/storage/slider_image/'.$image_name;
+        $img_url = 'http://localhost:8000/storage/slider_image/' . $image_name;
         $updateSlide = $slider->update(['slider_image' => $img_url]);
 
         $notification = [
@@ -133,13 +133,13 @@ class SliderController extends Controller
 
         $deleted = $slider->delete();
         if ($deleted) {
-            unlink(public_path('storage/slider_image/').$stored_image_name);
+            unlink(public_path('storage/slider_image/') . $stored_image_name);
         }
         $notification = [
             'alert' => $deleted ? 'success' : 'failed',
             'message' => $deleted ? 'Slide Succesfully Deleted' : 'Failed To Delete Slide',
         ];
 
-        return redirect(route('slider.index'))->with('notification', $notification);
+        return back()->with('notification', $notification);
     }
 }

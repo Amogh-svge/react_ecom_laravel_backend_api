@@ -71,6 +71,6 @@ class OrderController extends Controller
 
         $notification = $this->notification($deleted, 'Order Statement Succesfully Deleted', 'Failed To Delete Order Statement');
 
-        return redirect(route('purchased.list'))->with('notification', $notification);
+        return back()->with('notification', $notification);
     }
 }

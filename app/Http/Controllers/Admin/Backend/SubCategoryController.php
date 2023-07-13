@@ -107,6 +107,6 @@ class SubCategoryController extends Controller
 
         $notification = $this->notification($deleted, 'Sub_Category Successfully Deleted', 'Failed To Delete Sub_Category');
 
-        return redirect(route('subcategory.index'))->with('notification', $notification);
+        return back()->with('notification', $notification);
     }
 }

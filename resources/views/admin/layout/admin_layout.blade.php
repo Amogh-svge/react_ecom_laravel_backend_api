@@ -52,9 +52,6 @@
         </div><!-- container -->
     </div><!-- az-content -->
 
-    <!-- az-footer starts -->
-    @include('admin.common.footer')
-    <!-- az-footer ends -->
 
     <div class="toast_container">
         <div class="toaster" id="liveToast">
@@ -64,6 +61,10 @@
             </div>
         </div>
     </div>
+
+    <!-- az-footer starts -->
+    @include('admin.common.footer')
+    <!-- az-footer ends -->
 </body>
 
 </html>

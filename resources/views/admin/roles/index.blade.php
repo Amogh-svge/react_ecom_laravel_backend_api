@@ -2,39 +2,38 @@
 
 @section('main_content')
     <div class="box-height">
-        <h2 class="az-content-title">Permissions List</h2>
+        <h2 class="az-content-title">Role List</h2>
         <div class="az-content-breadcrumb">
             <span>Dashboard</span>
-            <span>Permissions</span>
-            <span>List Permissions</span>
+            <span>Role</span>
+            <span>List Roles</span>
         </div>
 
         <div class="card-body">
             <div class="d-flex my-4">
-                <a href="{{ route('permission.create') }}" class="btn btn-info">Add Permissions</a>
+                <a href="{{ route('roles.create') }}" class="btn btn-info">Add Role</a>
             </div>
             <div class="table-responsive  mt-1">
                 <table id="table_id" class="table table-striped " width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>S.N</th>
-                            <th>Permission</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($permissions as $key => $permission)
+                        @foreach ($roles as $key => $role)
                             <tr>
-                                <td scope="row">{{ $key + 1 }}</td>
-                                <td>{{ $permission->name }}</td>
+                                <th scope="row">{{ $key + 1 }}</th>
+                                <td>{{ $role->name }}</td>
                                 <td class="d-flex">
                                     <span>
-                                        <a class="btn btn-primary mx-2"
-                                            href={{ route('permission.edit', $permission->id) }}>Edit</a>
+                                        <a class="btn btn-primary mx-2" href={{ route('roles.edit', $role->id) }}>Edit</a>
                                     </span>
 
-                                    <form action="{{ route('permission.destroy', $permission->id) }}"
-                                        data-id="{{ $permission->id }}" class="permission_form_delete" method="POST">
+                                    <form action="{{ route('roles.destroy', $role->id) }}" data-id="{{ $role->id }}"
+                                        class="role_form_delete" method="POST">
                                         @method('DELETE') @csrf
                                         <button class="btn btn-danger" type="submit"
                                             onclick="confirmDelete(this)">Remove</button>

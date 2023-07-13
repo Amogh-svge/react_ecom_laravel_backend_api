@@ -3,19 +3,30 @@
 namespace App\Http\Controllers\Admin\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    protected Role $roleModel;
+
+    public function __construct(Role $roleModel)
+    {
+        $this->roleModel = $roleModel;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
-        //
+        $roles = $this->roleModel->paginate(10);
+        return view('admin.roles.index', compact('roles'));
     }
 
     /**
@@ -25,7 +36,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.roles.create');
     }
 
     /**
@@ -34,9 +45,12 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request): RedirectResponse
     {
-        //
+        $role = $this->roleModel->create($request->validated());
+
+        $notification = $this->notification($role, 'Role Successfully Created', 'Failed To Create Role');
+        return redirect(route('roles.index'))->with('notification', $notification);
     }
 
     /**
@@ -58,7 +72,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('admin.roles.edit', compact('role'));
     }
 
     /**
@@ -68,9 +82,12 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role_updated = $role->update($request->validated());
+
+        $notification = $this->notification($role_updated, 'Role Updated Successfully', 'Failed To Update Role');
+        return redirect(route('roles.index'))->with('notification', $notification);
     }
 
     /**
@@ -81,6 +98,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        $role_deleted = $role->delete();
+
+        $notification = $this->notification($role_deleted, 'Role Deleted Successfully', 'Failed To Delete Role');
+        return back()->with('notification', $notification);
     }
 }

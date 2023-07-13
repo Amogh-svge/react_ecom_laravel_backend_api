@@ -100,6 +100,6 @@ class CategoryController extends Controller
 
         $notification = $this->notification($deleted, 'Category Successfully Deleted', 'Failed To Delete Category');
 
-        return redirect(route('category.index'))->with('notification', $notification);
+        return back()->with('notification', $notification);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 
@@ -36,7 +37,7 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PermissionRequest $request)
+    public function store(PermissionRequest $request): RedirectResponse
     {
         $name =  preg_replace('/\s+/', '.', $request->validated('name'));
         $permission_created = $this->model->create(['name' => $name]);
@@ -45,22 +46,34 @@ class PermissionController extends Controller
         return redirect(route('permission.index'))->with('notification', $notification);
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(Permission $permission): View
     {
         return view('admin.permission.edit', compact('permission'));
     }
 
-    public function update(PermissionRequest $request, Permission $permissiont)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(PermissionRequest $request, Permission $permission): RedirectResponse
     {
         $name =  preg_replace('/\s+/', '.', $request->validated('name'));
-        $permission_updated = $permissiont->update(['name' => $name]);
+        $permission_updated = $permission->update(['name' => $name]);
 
-        $notification = $this->notification($permission_updated, 'Permission Update Created', 'Failed To Update Permission');
+        $notification = $this->notification($permission_updated, 'Permission Updated Successfully', 'Failed To Update Permission');
         return redirect(route('permission.index'))->with('notification', $notification);
     }
 
-    public function destroy(Permission $permission)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Permission $permission): RedirectResponse
     {
-        //
+        $permission_deleted = $permission->delete();
+
+        $notification = $this->notification($permission_deleted, 'Permission Deleted Successfully', 'Failed To Deleted Permission');
+        return back()->with('notification', $notification);
     }
 }

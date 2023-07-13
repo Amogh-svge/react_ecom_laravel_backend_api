@@ -90,13 +90,22 @@ class RoleController extends Controller
 
 
     /**
-     * All roles to permission methods
+     * show form to add permission to roles
      */
-
     public function AddRolesPermission(): View
     {
         $roles = $this->roleModel->latest()->get();
-        $permissions = $this->permissionModel->latest()->get();
+        $permissions = $this->permissionModel->get()->groupBy('group');
+
         return view('admin.roles.add_roles_to_permission', compact('roles', 'permissions'));
+    }
+
+    /**
+     * Display a listing of every role's permission.
+     */
+    public function ListRolesPermission(): View
+    {
+        $roles = $this->roleModel->with('permissions:id,name')->get();
+        return view('admin.roles.list_roles_permission', compact('roles'));
     }
 }

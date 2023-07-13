@@ -26,19 +26,28 @@
                         @forelse ($roles as $role)
                             <option value={{ $role->id }}>{{ $role->name }}</option>
                         @empty
+                            <option value="#">No Roles</option>
                         @endforelse
                     </select>
                     @include('admin.common.error', ['field' => 'name']) {{-- error message --}}
                 </div>
 
                 <div class="col-lg-12 my-2 p-1 border-bottom border-secondary">
-                    <input type="checkbox" class="m-1"><span>Permission All</span>
+                    <input type="checkbox" class="m-1"><span class=" font-bold">PERMISSION ALL</span>
                 </div>
-                <div class="col-lg-12 my-2 p-1 d-flex flex-column">
-                    @forelse ($permissions as $permission)
-                        <div class="d-flex m-1">
-                            <input type="checkbox" class="m-1"
-                                value={{ $permission->id }}><span>{{ $permission->name }}</span>
+                <div class="col-lg-12 my-2 p-1 d-flex flex-wrap justify-content-between">
+                    @forelse ($permissions as $key =>  $groups)
+                        <div class="border-bottom p-2">
+                            <label
+                                class="text-uppercase font-bold text-md text-gray-800 leading-tight mx-1">{{ $key }}
+                            </label>
+                            <input type="checkbox">
+                            @foreach ($groups as $permission)
+                                <div class="d-flex m-1">
+                                    <input type="checkbox" class="m-1"
+                                        value={{ $permission->id }}><span>{{ $permission->name }}</span>
+                                </div>
+                            @endforeach
                         </div>
                     @empty
                     @endforelse

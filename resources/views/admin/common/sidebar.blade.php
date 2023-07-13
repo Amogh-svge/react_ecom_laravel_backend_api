@@ -11,7 +11,7 @@
         <nav class="nav flex-column">
             <a href="{{ route('permission.index') }}" class="nav-link">List Permissions</a>
             <a href="{{ route('roles.index') }}" class="nav-link">List Roles</a>
-            <a href="{{ route('roles.add_roles_to_permission') }}" class="nav-link">Add Roles to Permission</a>
+            <a href="{{ route('roles.list_roles_permission') }}" class="nav-link">List Roles Permission</a>
         </nav>
     </div>
 </div>

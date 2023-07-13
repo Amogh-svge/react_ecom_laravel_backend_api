@@ -54,4 +54,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('roles', RoleController::class);
 
     Route::get('permission/roles/create', [RoleController::class, 'AddRolesPermission'])->name('roles.add_roles_to_permission');
+    Route::get('permission/roles/index', [RoleController::class, 'ListRolesPermission'])->name('roles.list_roles_permission');
 });

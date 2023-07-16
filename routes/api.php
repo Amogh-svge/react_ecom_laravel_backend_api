@@ -23,15 +23,12 @@ use Illuminate\Support\Facades\Route;
 
 ////// User Login Api ///////
 Route::controller(AuthController::class)->group(function () {
-    Route::post('/login', 'login'); //manage login
-    Route::post('/register', 'register'); //manage register
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
 });
 
-//manage forget password
 Route::post('/forgetpassword', [ForgetController::class, 'forgetPassword']);
-//manage reset password
 Route::post('/resetpassword', [ResetController::class, 'resetPassword']);
-//manage reset data
 Route::get('/resetInfo/{token}', [ResetController::class, 'getResetInfo']);
 //manage user
 Route::get('/user', [UserController::class, 'user'])->middleware('auth:api');
@@ -51,12 +48,12 @@ Route::controller(ProductListController::class)->group(function () {
 /*ProductCart Controller */
 Route::controller(ProductCartController::class)->prefix('cart')->group(function () {
     Route::get('/{email}', 'index');
-    Route::delete('/{cart}', 'delete');
+    Route::get('/count/{email}', 'count');
     Route::post('/order', 'order');
     Route::post('/', 'add');
-    Route::get('/count/{email}', 'count');
     Route::patch('/item/plus/{cart}', 'cartItemPlus');
     Route::patch('/item/minus/{cart}', 'cartItemMinus');
+    Route::delete('/{cart}', 'delete');
 });
 
 //cart Order History route
@@ -80,15 +77,9 @@ Route::controller(SiteInfoController::class)->group(function () {
 });
 
 
-Route::get('/getvisitor', [VisitorController::class, 'getVisitorDetails']);
-//manage contact
+Route::get('/visitor', [VisitorController::class, 'getVisitorDetails']);
 Route::post('/contact', [ContactController::class, 'create']);
-//manage category
 Route::get('/category', [CategoryController::class, 'index']);
-
-//manage home slider
 Route::get('/slider', [SliderController::class, 'index']);
-//manage product details
 Route::get('/productdetails/{id}', [ProductDetailsController::class, 'index']);
-//manage notification details
 Route::get('/notification/{id?}', [NotificationController::class, 'notificationDetail']);

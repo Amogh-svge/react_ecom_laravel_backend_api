@@ -29,7 +29,7 @@ class PermissionRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                new SupportOnlyAlphabets($this),
+                'alpha_dash',
             ],
             'group' => ['required', 'alpha', 'string']
         ];

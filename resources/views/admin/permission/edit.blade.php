@@ -32,11 +32,12 @@
                     <select name="group" class="form-control select2">
                         <option label="Choose one"></option>
                         @php
-                            $groups = ['products', 'categories', 'roles', 'order', 'settings', 'subcategory', 'slider', 'siteInfo'];
+                            $groups = ['product', 'category', 'role', 'order', 'setting', 'subcategory', 'slider', 'siteInfo'];
                         @endphp
                         @foreach ($groups as $group)
                             <option value={{ $permission->group }} {{ $permission->group === $group ? 'selected' : null }}>
-                                {{ $permission->group }}</option>
+                                {{ $group }}
+                            </option>
                         @endforeach
                     </select>
                     @include('admin.common.error', ['field' => 'group']) {{-- error message --}}

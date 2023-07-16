@@ -2,62 +2,61 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Enum\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    /** 
+     * Login to the system
+     */
+    public function login(Request $request): JsonResponse
     {
         try {
-
             if (Auth::attempt($request->only('email', 'password'))) {
                 $user = Auth::user();
-                $token = $user->createToken('app')->accessToken;
+                $token = $user->createToken('app');
 
                 return response([
                     'message' => 'Successfully Login',
                     'token' => $token,
                     'user' => $user,
-                ], 200); // Status Code
+                ], 200);
             }
         } catch (Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-            ], 400);
+            return $this->errorResponse([], $exception->getMessage(), 400);
         }
 
-        return response([
-            'message' => 'Invalid Email Or Password',
-        ], 401);
+        return $this->errorResponse([], 'Invalid Email Or Password');
     }
 
-    public function register(RegisterRequest $request)
+    /**
+     * register new user
+     */
+    public function register(RegisterRequest $request): JsonResponse
     {
+        $validated = $request->validated();
 
+        DB::beginTransaction();
         try {
+            $user = User::create($validated);
+            $role = $user->assignRole([RolesEnum::User->value]);
+            $role->givePermissionTo(['create_product', 'delete_product', 'edit_product']);
+            DB::commit();
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-            ]);
-            $token = $user->createToken('app')->accessToken;
-
-            return response([
-                'message' => 'Registration Successfull',
-                'token' => $token,
-                'user' => $user,
-            ], 200);
+            return  $this->successResponse(['user' => new UserResource($user)], 'Registration Successfull');
         } catch (Exception $exception) {
-            return response([
-                'message' => $exception->getMessage(),
-            ], 400);
+            DB::rollBack();
+
+            return  $this->errorResponse([], $exception->getMessage());
         }
-    } // end method
+    }
 }

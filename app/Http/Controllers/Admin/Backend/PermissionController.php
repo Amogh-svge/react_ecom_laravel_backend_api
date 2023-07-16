@@ -40,7 +40,6 @@ class PermissionController extends Controller
     public function store(PermissionRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $validated['name'] =  preg_replace('/\s+/', '.', $validated['name']);
         $permission_created = $this->model->create($validated);
 
         $notification = $this->notification($permission_created, 'Permission Successfully Created', 'Failed To Create Permission');
@@ -61,7 +60,6 @@ class PermissionController extends Controller
     public function update(PermissionRequest $request, Permission $permission): RedirectResponse
     {
         $validated = $request->validated();
-        $validated['name'] =  preg_replace('/\s+/', '.', $validated['name']);
         $permission_updated = $permission->update($validated);
 
         $notification = $this->notification($permission_updated, 'Permission Updated Successfully', 'Failed To Update Permission');

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Backend\SliderController;
 use App\Http\Controllers\Admin\Backend\SubCategoryController;
 use App\Http\Controllers\Admin\SiteInfoController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +23,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.layout.index');
-    })->name('dashboard');
+Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
+
+    Route::get('/', [UserController::class, 'dashboard'])->name('dashboard');
 
     Route::prefix('admin')->group(function () {
         Route::get('/user/profile', [AdminController::class, 'userProfile'])->name('user.profile');
